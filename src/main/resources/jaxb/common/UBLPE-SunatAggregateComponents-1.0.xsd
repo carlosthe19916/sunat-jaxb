@@ -1,4 +1,9 @@
-<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Autor:			       SUNAT
+  Document Type:     Definiciones SUNAT
+  Generated On:      01 Mayo 2012
+-->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:sunat:names:specification:ubl:peru:schema:xsd:SunatAggregateComponents-1" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" xmlns:ccts="urn:un:unece:uncefact:documentation:2" xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2" targetNamespace="urn:sunat:names:specification:ubl:peru:schema:xsd:SunatAggregateComponents-1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<!-- ===== Imports ===== -->
 	<xsd:import namespace="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" schemaLocation="UBL-CommonAggregateComponents-2.0.xsd"/>
@@ -20,138 +25,6 @@
 	<xsd:element name="AdditionalProperty" type="AdditionalPropertyType"/>
 	<xsd:element name="ReferenceAmount" type="cbc:AmountType"/>
 	<xsd:element name="TotalAmount" type="cbc:AmountType"/>
-	<!-- Agregar para TransactionConditions
-	-->
-	<xsd:element name="SUNATTransaction" type="SUNATTransactionType"/>
-	
-	<xsd:element name="SUNATEmbededDespatchAdvice" type="SUNATEmbededDespatchAdviceType"/>		
-	<xsd:element name="SUNATShipment" type="SUNATShipmentType"/>
-	<xsd:element name="SUNATShipmentStage" type="SUNATShipmentStageType"/>
-	<xsd:element name="SUNATTransportMeans" type="SUNATTransportMeansType"/>
-	<xsd:element name="SUNATRoadTransport" type="SUNATRoadTransportType"/>
-	<xsd:element name="SUNATDespatchLine" type="SUNATDespatchLineType"/>
-	<xsd:element name="DriverParty" type="DriverPartyType"/>
-	<xsd:element name="SUNATCarrierParty" type="SUNATCarrierPartyType"/>
-	<xsd:element name="TransportReasonCode" type="udt:CodeType"/>
-	<xsd:element name="SemiTrailer" type="cac:RoadTransportType"/>
-	<xsd:element name="DeliveryCarrierDate" type="DeliveryCarrierDateType"/>
-	<xsd:element name="DeliveryCarrierTime" type="cbc:DeliveryTimeType"/>
-	<xsd:element name="OriginalDespatchDocumentReference" type="cac:DocumentReferenceType"/>
-	<xsd:element name="DespatchChangeReason" type="cbc:IDType"/>
-	<xsd:element name="OldOriginAddress" type="cac:AddressType"/>
-	<xsd:element name="OldDeliveryAddress" type="cac:AddressType"/>
-	<xsd:element name="OutsourcedIndicator" type="cbc:IndicatorType"/>
-	<xsd:element name="MultiStageIndicator" type="cbc:IndicatorType"/>
-	<xsd:element name="ShipmentStageTypeCode" type="cbc:IDType"/>
-	<xsd:element name="SUNATFiscalPath" type="SUNATFiscalPathType"/>
-	<xsd:element name="SUNATVerificationCode" type="cbc:IDType"/>
-	
-  	<xsd:complexType name="SUNATEmbededDespatchAdviceType">
-		<xsd:sequence>
-			<xsd:element ref="cac:DeliveryAddress" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cac:OriginAddress" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="SUNATCarrierParty" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="DriverParty" minOccurs="0"/>
-			<xsd:element ref="SUNATRoadTransport" minOccurs="0" maxOccurs="unbounded"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="DriverPartyType">
-		<xsd:sequence>
-			<xsd:element ref="cbc:CustomerAssignedAccountID" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:AdditionalAccountID" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element ref="cac:Party" minOccurs="0" maxOccurs="1"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="SUNATCarrierPartyType">
-		<xsd:sequence>
-			<xsd:element ref="cbc:CustomerAssignedAccountID" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:AdditionalAccountID" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element ref="cbc:TransportAuthorizationCode" minOccurs="0"/>
-			<xsd:element ref="OutsourcedIndicator" minOccurs="0"/>
-			<xsd:element ref="cac:Party" minOccurs="0" maxOccurs="1"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="SUNATRoadTransportType">
-		<xsd:complexContent>
-			<xsd:extension base="cac:RoadTransportType">
-				<xsd:sequence>
-					<xsd:element ref="cbc:TransportMeansTypeCode" minOccurs="0"/>
-					<xsd:element ref="cbc:TransportAuthorizationCode" minOccurs="0"/>
-					<xsd:element ref="SemiTrailer" minOccurs="0" maxOccurs="5"/>
-					<xsd:element ref="cbc:BrandName" minOccurs="0"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	<xsd:complexType name="SUNATTransportMeansType">
-		<xsd:complexContent>
-			<xsd:extension base="cac:TransportMeansType">
-				<xsd:sequence>
-					<xsd:element ref="DriverParty" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element ref="SUNATRoadTransport" minOccurs="0" maxOccurs="unbounded"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	<xsd:complexType name="SUNATShipmentStageType">
-		<xsd:sequence>
-			<xsd:element ref="cbc:ID" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="ShipmentStageTypeCode" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:TransportModeCode" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:TransportMeansTypeCode" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="SUNATCarrierParty" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="SUNATTransportMeans" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cac:OriginAddress" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cac:DeliveryAddress" minOccurs="0" maxOccurs="1"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="SUNATShipmentType">
-		<xsd:sequence>
-			<xsd:element ref="cbc:GrossWeightMeasure" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cac:DeliveryAddress" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cac:OriginAddress" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="OldDeliveryAddress" minOccurs="0"/>
-			<xsd:element ref="OldOriginAddress" minOccurs="0"/>
-			<xsd:element ref="SUNATShipmentStage" minOccurs="0" maxOccurs="unbounded"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="SUNATDespatchLineType">
-		<xsd:sequence>
-			<xsd:element ref="cbc:ID" minOccurs="1" maxOccurs="1"/>
-			<xsd:element ref="cbc:UUID" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:Note" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:LineStatusCode" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:DeliveredQuantity" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:BackorderQuantity" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:BackorderReason" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:OutstandingQuantity" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:OutstandingReason" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cbc:OversupplyQuantity" minOccurs="0" maxOccurs="1"/>			
-			<xsd:element ref="cac:OrderLineReference" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element ref="cac:DocumentReference" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element ref="cac:Item" minOccurs="1" maxOccurs="1"/>
-			<xsd:element ref="cbc:GrossWeightMeasure" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="cac:Shipment" minOccurs="0" maxOccurs="unbounded"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="DeliveryCarrierDateType">
-		<xsd:simpleContent>
-			<xsd:extension base="udt:DateType"/>
-		</xsd:simpleContent>
-	</xsd:complexType>
-	<xsd:complexType name="SUNATFiscalPathType">
-		<xsd:sequence>
-			<xsd:element ref="cbc:ID" minOccurs="1" maxOccurs="1"/>
-			<xsd:element ref="cbc:Name" minOccurs="0" maxOccurs="1"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="SUNATTransactionType">
-		<xsd:sequence>
-			<xsd:element ref="cbc:ID" minOccurs="1" maxOccurs="1"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<!-- ===== End Despatch advice elements ===== -->
 	<!-- ===== Aggregate Business Information Entity Type Definitions ===== -->
 	<xsd:complexType name="SummaryDocumentsLineType">
 		<xsd:annotation>
@@ -440,11 +313,6 @@
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element ref="SUNATTransaction" minOccurs="0" maxOccurs="1">				
-			</xsd:element>
-			<xsd:element ref="SUNATEmbededDespatchAdvice" minOccurs="0" maxOccurs="1">
-			</xsd:element>
-			
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="AdditionalMonetaryTotalType">
@@ -610,36 +478,4 @@
 			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
-	<!---	Agregar  TransactionConditions
-	
-	<xsd:complexType name="TransactionConditionsType">
-		<xsd:annotation>
-			<xsd:documentation>
-				<ccts:Component>
-					<ccts:ComponentType>ABIE</ccts:ComponentType>
-					<ccts:DictionaryEntryName>Consolidated Invoice Line Details</ccts:DictionaryEntryName>
-					<ccts:Definition>Information about a Consolidated Invoice Line.</ccts:Definition>
-					<ccts:ObjectClass>Consolidated  Invoice Line</ccts:ObjectClass>
-				</ccts:Component>
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element ref="cbc:ID">
-				<xsd:annotation>
-					<xsd:documentation>
-						<ccts:Component>
-							<ccts:ComponentType>ASBIE</ccts:ComponentType>
-							<ccts:DictionaryEntryName>Consolidated Invoice Line Billing Payment</ccts:DictionaryEntryName>
-							<ccts:Definition>An association to Billing Payment.</ccts:Definition>
-							<ccts:Cardinality>0..n</ccts:Cardinality>
-							<ccts:ObjectClass>Consolidated Invoice Line</ccts:ObjectClass>
-							<ccts:PropertyTerm>Billing Payment</ccts:PropertyTerm>
-							<ccts:AssociatedObjectClass>Consolidated Invoice Line</ccts:AssociatedObjectClass>
-						</ccts:Component>
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-		</xsd:sequence>
-	</xsd:complexType>
-	-->
 </xsd:schema>

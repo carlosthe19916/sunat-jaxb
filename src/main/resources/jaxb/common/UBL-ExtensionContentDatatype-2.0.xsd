@@ -9,18 +9,18 @@
 -->
 <!-- ===== xsd:schema Element With Namespaces Declarations ===== -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" targetNamespace="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
-  <!-- ===== Type Declaration ===== -->
-  <xsd:complexType name="ExtensionContentType">
-    <xsd:sequence>
-      <xsd:any namespace="##any" minOccurs="0" maxOccurs="1" processContents="skip">
-        <xsd:annotation>
-          <xsd:documentation>
+	<!-- ===== Type Declaration ===== -->
+	<xsd:complexType name="ExtensionContentType">
+		<xsd:sequence>
+			<xsd:any namespace="##any" processContents="skip" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
             The definition of the extension content.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:any>
-    </xsd:sequence>
-  </xsd:complexType>
+				</xsd:annotation>
+			</xsd:any> 
+		</xsd:sequence>
+	</xsd:complexType>
 </xsd:schema>
 <!-- ===== Copyright Notice ===== -->
 <!--
