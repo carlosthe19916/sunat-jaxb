@@ -48,23 +48,10 @@ public class SUNATRetentionInformationType {
         this.sunatRetentionAmount = value;
     }
 
-    /**
-     * Gets the value of the sunatRetentionDate property.
-     * 
-     * @return possible object is {@link SUNATRetentionDateType }
-     * 
-     */
     public DateType getSUNATRetentionDate() {
         return sunatRetentionDate;
     }
 
-    /**
-     * Sets the value of the sunatRetentionDate property.
-     * 
-     * @param value
-     *            allowed object is {@link SUNATRetentionDateType }
-     * 
-     */
     public void setSUNATRetentionDate(DateType value) {
         this.sunatRetentionDate = value;
     }
