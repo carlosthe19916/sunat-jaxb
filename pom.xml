@@ -59,7 +59,11 @@
     </distributionManagement>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.helger</groupId>
+            <artifactId>ph-ubl21</artifactId>
+            <version>5.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
