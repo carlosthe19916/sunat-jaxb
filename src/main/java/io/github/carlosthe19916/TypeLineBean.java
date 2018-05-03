@@ -1,4 +1,4 @@
-package io.github.carlosthe19916.type;
+package io.github.carlosthe19916;
 
 import java.math.BigDecimal;
 

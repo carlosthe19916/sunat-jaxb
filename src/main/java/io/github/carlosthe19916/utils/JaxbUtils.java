@@ -1,4 +1,4 @@
-package io.github.carlosthe19916.type.utils;
+package io.github.carlosthe19916.utils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
