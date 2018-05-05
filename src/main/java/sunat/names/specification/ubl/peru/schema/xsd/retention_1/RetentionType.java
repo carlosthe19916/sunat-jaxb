@@ -1,10 +1,10 @@
 package sunat.names.specification.ubl.peru.schema.xsd.retention_1;
 
-import com.helger.commons.annotation.CodingStyleguideUnaware;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SignatureType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.*;
-import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_21.UBLExtensionsType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.PartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.SignatureType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.*;
+import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_2.UBLExtensionsType;
+import un.unece.uncefact.codelist.specification._54217._2001.CurrencyCodeContentType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,7 +25,6 @@ import java.util.List;
         "totalInvoiceAmount", "sunatTotalPaid", "sunatRetentionDocumentReference"
 
 })
-@CodingStyleguideUnaware
 public class RetentionType  implements Serializable, Cloneable{
     @XmlElement(name = "UBLExtensions", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2")
     protected UBLExtensionsType ublExtensions;
@@ -182,7 +181,8 @@ public class RetentionType  implements Serializable, Cloneable{
     public UBLVersionIDType setUblVersionID(@Nullable final String valueParam) {
         UBLVersionIDType aObj = getUblVersionID();
         if (aObj == null) {
-            aObj = new UBLVersionIDType(valueParam);
+            aObj = new UBLVersionIDType();
+            aObj.setValue(valueParam);
             setUblVersionID(aObj);
         } else {
             aObj.setValue(valueParam);
@@ -194,7 +194,8 @@ public class RetentionType  implements Serializable, Cloneable{
     public CustomizationIDType setCustomizationID(@Nullable final String valueParam) {
         CustomizationIDType aObj = getCustomizationID();
         if (aObj == null) {
-            aObj = new CustomizationIDType(valueParam);
+            aObj = new CustomizationIDType();
+            aObj.setValue(valueParam);
             setCustomizationID(aObj);
         } else {
             aObj.setValue(valueParam);
@@ -214,7 +215,8 @@ public class RetentionType  implements Serializable, Cloneable{
     public IDType setId(@Nullable final String valueParam) {
         IDType aObj = getId();
         if (aObj == null) {
-            aObj = new IDType(valueParam);
+            aObj = new IDType();
+            aObj.setValue(valueParam);
             setId(aObj);
         } else {
             aObj.setValue(valueParam);
@@ -225,7 +227,8 @@ public class RetentionType  implements Serializable, Cloneable{
     public IDType setSunatRetentionSystemCode(@Nullable final String valueParam) {
         IDType aObj = getSunatRetentionSystemCode();
         if (aObj == null) {
-            aObj = new IDType(valueParam);
+            aObj = new IDType();
+            aObj.setValue(valueParam);
             setSunatRetentionSystemCode(aObj);
         } else {
             aObj.setValue(valueParam);
@@ -236,7 +239,8 @@ public class RetentionType  implements Serializable, Cloneable{
     public PercentType setSunatRetentionPercent(@Nullable final BigDecimal valueParam) {
         PercentType aObj = getSunatRetentionPercent();
         if (aObj == null) {
-            aObj = new PercentType(valueParam);
+            aObj = new PercentType();
+            aObj.setValue(valueParam);
             setSunatRetentionPercent(aObj);
         } else {
             aObj.setValue(valueParam);
@@ -248,12 +252,13 @@ public class RetentionType  implements Serializable, Cloneable{
             @Nullable final String currencyID) {
         TotalInvoiceAmountType aObj = getTotalInvoiceAmount();
         if (aObj == null) {
-            aObj = new TotalInvoiceAmountType(valueParam);
-            aObj.setCurrencyID(currencyID);
+            aObj = new TotalInvoiceAmountType();
+            aObj.setValue(valueParam);
+            aObj.setCurrencyID(CurrencyCodeContentType.valueOf(currencyID));
             setTotalInvoiceAmount(aObj);
         } else {
             aObj.setValue(valueParam);
-            aObj.setCurrencyID(currencyID);
+            aObj.setCurrencyID(CurrencyCodeContentType.valueOf(currencyID));
         }
         return aObj;
     }
@@ -262,12 +267,13 @@ public class RetentionType  implements Serializable, Cloneable{
             @Nullable final String currencyID) {
         AmountType aObj = getSunatTotalPaid();
         if (aObj == null) {
-            aObj = new AmountType(valueParam);
-            aObj.setCurrencyID(currencyID);
+            aObj = new AmountType();
+            aObj.setValue(valueParam);
+            aObj.setCurrencyID(CurrencyCodeContentType.valueOf(currencyID));
             setSunatTotalPaid(aObj);
         } else {
             aObj.setValue(valueParam);
-            aObj.setCurrencyID(currencyID);
+            aObj.setCurrencyID(CurrencyCodeContentType.valueOf(currencyID));
         }
         return aObj;
     }
@@ -276,7 +282,8 @@ public class RetentionType  implements Serializable, Cloneable{
     public IssueDateType setIssueDate(@Nullable final XMLGregorianCalendar valueParam) {
         IssueDateType aObj = getIssueDate();
         if (aObj == null) {
-            aObj = new IssueDateType(valueParam);
+            aObj = new IssueDateType();
+            aObj.setValue(valueParam);
             setIssueDate(aObj);
         } else {
             aObj.setValue(valueParam);

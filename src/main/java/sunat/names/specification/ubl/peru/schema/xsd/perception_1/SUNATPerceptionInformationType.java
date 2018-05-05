@@ -1,8 +1,9 @@
 package sunat.names.specification.ubl.peru.schema.xsd.perception_1;
 
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ExchangeRateType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AmountType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DateType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.ExchangeRateType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.AmountType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.DateType;
+import un.unece.uncefact.codelist.specification._54217._2001.CurrencyCodeContentType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -61,7 +62,8 @@ public class SUNATPerceptionInformationType {
     public AmountType setSunatPerceptionAmount(@Nullable final BigDecimal valueParam) {
         AmountType aObj = getSunatPerceptionAmount();
         if (aObj == null) {
-            aObj = new AmountType(valueParam);
+            aObj = new AmountType();
+            aObj.setValue(valueParam);
             setSunatPerceptionAmount(aObj);
         } else {
             aObj.setValue(valueParam);
@@ -73,7 +75,8 @@ public class SUNATPerceptionInformationType {
     public DateType setSunatPerceptionDate(@Nullable final XMLGregorianCalendar valueParam) {
         DateType aObj = getSunatPerceptionDate();
         if (aObj == null) {
-            aObj = new DateType(valueParam);
+            aObj = new DateType();
+            aObj.setValue(valueParam);
             setSunatPerceptionDate(aObj);
         } else {
             aObj.setValue(valueParam);
@@ -85,12 +88,13 @@ public class SUNATPerceptionInformationType {
             @Nullable final String currencyID) {
         AmountType aObj = getSunatNetTotalCashed();
         if (aObj == null) {
-            aObj = new AmountType(valueParam);
-            aObj.setCurrencyID(currencyID);
+            aObj = new AmountType();
+            aObj.setValue(valueParam);
+            aObj.setCurrencyID(CurrencyCodeContentType.valueOf(currencyID));
             setSunatNetTotalCashed(aObj);
         } else {
             aObj.setValue(valueParam);
-            aObj.setCurrencyID(currencyID);
+            aObj.setCurrencyID(CurrencyCodeContentType.valueOf(currencyID));
         }
         return aObj;
     }

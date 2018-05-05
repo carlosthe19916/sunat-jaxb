@@ -1,9 +1,10 @@
 package sunat.names.specification.ubl.peru.schema.xsd.retention_1;
 
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IssueDateType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TotalInvoiceAmountType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.PaymentType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.IDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.IssueDateType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.TotalInvoiceAmountType;
+import un.unece.uncefact.codelist.specification._54217._2001.CurrencyCodeContentType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -138,7 +139,8 @@ public class SUNATRetentionDocumentReferenceType {
     public IDType setID(@Nullable final String valueParam) {
         IDType aObj = getID();
         if (aObj == null) {
-            aObj = new IDType(valueParam);
+            aObj = new IDType();
+            aObj.setValue(valueParam);
             setID(aObj);
         } else {
             aObj.setValue(valueParam);
@@ -150,7 +152,8 @@ public class SUNATRetentionDocumentReferenceType {
     public IssueDateType setIssueDate(@Nullable final XMLGregorianCalendar valueParam) {
         IssueDateType aObj = getIssueDate();
         if (aObj == null) {
-            aObj = new IssueDateType(valueParam);
+            aObj = new IssueDateType();
+            aObj.setValue(valueParam);
             setIssueDate(aObj);
         } else {
             aObj.setValue(valueParam);
@@ -162,12 +165,13 @@ public class SUNATRetentionDocumentReferenceType {
             @Nullable final String currencyID) {
         TotalInvoiceAmountType aObj = getTotalInvoiceAmount();
         if (aObj == null) {
-            aObj = new TotalInvoiceAmountType(valueParam);
-            aObj.setCurrencyID(currencyID);
+            aObj = new TotalInvoiceAmountType();
+            aObj.setValue(valueParam);
+            aObj.setCurrencyID(CurrencyCodeContentType.valueOf(currencyID));
             setTotalInvoiceAmount(aObj);
         } else {
             aObj.setValue(valueParam);
-            aObj.setCurrencyID(currencyID);
+            aObj.setCurrencyID(CurrencyCodeContentType.valueOf(currencyID));
         }
         return aObj;
     }
