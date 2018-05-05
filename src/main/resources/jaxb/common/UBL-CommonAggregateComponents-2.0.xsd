@@ -15433,7 +15433,7 @@ Thus, the column "Preference Criterion" will indicate either A, B, C,...</ccts:E
             <ccts:Component>
               <ccts:ComponentType>BBIE</ccts:ComponentType>
               <ccts:DictionaryEntryName>Supplier Party. Customer Assigned_ Account Identifier. Identifier</ccts:DictionaryEntryName>
-              <ccts:Definition>The customer's internal identifier for the supplier.</ccts:Definition>
+              <ccts:Definition>The customer's internal identifier for the proveedor.</ccts:Definition>
               <ccts:Cardinality>0..1</ccts:Cardinality>
               <ccts:ObjectClass>Supplier Party</ccts:ObjectClass>
               <ccts:PropertyTermQualifier>Customer Assigned</ccts:PropertyTermQualifier>
@@ -15450,7 +15450,7 @@ Thus, the column "Preference Criterion" will indicate either A, B, C,...</ccts:E
             <ccts:Component>
               <ccts:ComponentType>BBIE</ccts:ComponentType>
               <ccts:DictionaryEntryName>Supplier Party. Additional_ Account Identifier. Identifier</ccts:DictionaryEntryName>
-              <ccts:Definition>The customer's internal identifier for the supplier.</ccts:Definition>
+              <ccts:Definition>The customer's internal identifier for the proveedor.</ccts:Definition>
               <ccts:Cardinality>0..n</ccts:Cardinality>
               <ccts:ObjectClass>Supplier Party</ccts:ObjectClass>
               <ccts:PropertyTermQualifier>Additional</ccts:PropertyTermQualifier>
@@ -15473,7 +15473,7 @@ Thus, the column "Preference Criterion" will indicate either A, B, C,...</ccts:E
               <ccts:PropertyTerm>Data Sending Capability</ccts:PropertyTerm>
               <ccts:RepresentationTerm>Text</ccts:RepresentationTerm>
               <ccts:DataType>Text. Type</ccts:DataType>
-              <ccts:Examples>The customer's internal identifier for the supplier.</ccts:Examples>
+              <ccts:Examples>The customer's internal identifier for the proveedor.</ccts:Examples>
             </ccts:Component>
           </xsd:documentation>
         </xsd:annotation>

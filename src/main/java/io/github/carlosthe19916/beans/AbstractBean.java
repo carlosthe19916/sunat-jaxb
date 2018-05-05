@@ -1,21 +1,29 @@
 package io.github.carlosthe19916.beans;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
-public class TypeBean {
+public abstract class AbstractBean {
 
+    @NotNull(message = "Serie no puede ser null")
+    @Size(min = 4, max = 4, message = "Serie debe de tener 4 digitos")
     private String serie;
+
+    @NotNull(message = "Número no puede ser null")
     private Integer numero;
+
+    @NotNull(message = "Codigo del tipo de comprobante no puede ser null")
     private String codigoTipoComprobante;
 
-    private String observaciones;
-
+    @NotNull
     private Date fechaEmision;
     private Date fechaVencimiento;
 
+    @NotNull
     private String moneda;
     private BigDecimal tipoCambio;
 
@@ -31,13 +39,16 @@ public class TypeBean {
     private BigDecimal totalExonerado;
     private BigDecimal totalGratuito;
 
-    private String codigoTipoDocumentoCliente;
-    private String numeroDocumentoCliente;
-    private String nombreCliente;
-    private String emailCliente;
-    private String direccionCliente;
+    private String observaciones;
 
-    private SupplierBean supplier;
+    @NotNull
+    @Valid
+    private ClienteBean cliente;
+
+    @NotNull
+    @Valid
+    private ProveedorBean proveedor;
+
     private List<TypeLineBean> detalle;
 
     public String getSerie() {
@@ -216,12 +227,12 @@ public class TypeBean {
         this.direccionCliente = direccionCliente;
     }
 
-    public SupplierBean getSupplier() {
-        return supplier;
+    public ProveedorBean getProveedor() {
+        return proveedor;
     }
 
-    public void setSupplier(SupplierBean supplier) {
-        this.supplier = supplier;
+    public void setProveedor(ProveedorBean proveedor) {
+        this.proveedor = proveedor;
     }
 
     public List<TypeLineBean> getDetalle() {
@@ -230,5 +241,13 @@ public class TypeBean {
 
     public void setDetalle(List<TypeLineBean> detalle) {
         this.detalle = detalle;
+    }
+
+    public ClienteBean getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(ClienteBean cliente) {
+        this.cliente = cliente;
     }
 }

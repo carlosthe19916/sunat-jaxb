@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.beans;
 
-public class SupplierBean {
+public class ProveedorBean {
 
     private String codigoTipoDocumento;
     private String numeroDocumento;
