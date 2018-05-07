@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-public class InvoiceBeanTest {
+public class InvoiceBeanBuilderTest {
 
     @Test
     public void testBuilder() {
@@ -41,10 +41,10 @@ public class InvoiceBeanTest {
                 )
                 .totalInformacionAdicional(
                         TotalInformacionAdicionalBeanBuilder.TotalInformacionAdicionalBean()
-                                .gravado(new BigDecimal("5"))
-                                .inafecto(new BigDecimal("7"))
-                                .exonerado(new BigDecimal(""))
-                                .gratuito(new BigDecimal("4"))
+                                .gravado(BigDecimal.ZERO)
+                                .inafecto(BigDecimal.ZERO)
+                                .exonerado(BigDecimal.ZERO)
+                                .gratuito(BigDecimal.ZERO)
                                 .build()
                 )
                 .proveedor(

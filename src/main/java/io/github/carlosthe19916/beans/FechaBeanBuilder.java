@@ -3,6 +3,7 @@ package io.github.carlosthe19916.beans;
 import java.util.Date;
 
 public class FechaBeanBuilder {
+
     private final FechaBean fecha;
 
     public FechaBeanBuilder() {
@@ -26,4 +27,5 @@ public class FechaBeanBuilder {
     public FechaBean build() {
         return fecha;
     }
+
 }
