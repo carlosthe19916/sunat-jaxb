@@ -67,6 +67,11 @@ public class InvoiceBeanBuilder {
         return this;
     }
 
+    public InvoiceBeanBuilder addDetalle(DetalleBean detalle) {
+        invoice.getDetalle().add(detalle);
+        return this;
+    }
+
     public InvoiceBean build() {
         return invoice;
     }

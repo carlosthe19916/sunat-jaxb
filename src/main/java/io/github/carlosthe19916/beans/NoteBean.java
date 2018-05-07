@@ -47,7 +47,7 @@ public class NoteBean {
 
     @Size(min = 1)
     @NotNull
-    private List<@Valid TypeLineBean> detalle;
+    private List<@Valid DetalleBean> detalle;
 
     private String observaciones;
     
@@ -138,11 +138,11 @@ public class NoteBean {
         this.proveedor = proveedor;
     }
 
-    public List<TypeLineBean> getDetalle() {
+    public List<DetalleBean> getDetalle() {
         return detalle;
     }
 
-    public void setDetalle(List<TypeLineBean> detalle) {
+    public void setDetalle(List<DetalleBean> detalle) {
         this.detalle = detalle;
     }
 

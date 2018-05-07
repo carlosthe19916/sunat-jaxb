@@ -1,5 +1,6 @@
 package io.github.carlosthe19916.beans;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -71,5 +72,18 @@ public class InvoiceBeanBuilderTest {
                                 .build()
                 )
                 .build();
+
+        Assert.assertNotNull(invoiceBean);
+        Assert.assertEquals(invoiceBean.getSerie(), "F001");
+        Assert.assertEquals(invoiceBean.getNumero(), Integer.valueOf(1));
+        Assert.assertEquals(invoiceBean.getCodigoTipoComprobante(), "01");
+        Assert.assertEquals(invoiceBean.getObservaciones(), "Sin observaciones");
+        Assert.assertNotNull(invoiceBean.getFecha());
+        Assert.assertNotNull(invoiceBean.getMoneda());
+        Assert.assertNotNull(invoiceBean.getImpuestos());
+        Assert.assertNotNull(invoiceBean.getTotal());
+        Assert.assertNotNull(invoiceBean.getTotalInformacionAdicional());
+        Assert.assertNotNull(invoiceBean.getProveedor());
+        Assert.assertNotNull(invoiceBean.getCliente());
     }
 }

@@ -112,7 +112,7 @@ public class BeanToType {
 
         // Detalle
         int i = 1;
-        for (TypeLineBean lineBean : invoiceBean.getDetalle()) {
+        for (DetalleBean lineBean : invoiceBean.getDetalle()) {
             invoiceType.getInvoiceLine().add(buildInvoiceLineType(i, monedaBean.getCodigo(), lineBean));
             i++;
         }
@@ -185,7 +185,7 @@ public class BeanToType {
 
         // Detalle
         int i = 1;
-        for (TypeLineBean lineBean : noteBean.getDetalle()) {
+        for (DetalleBean lineBean : noteBean.getDetalle()) {
             creditNoteType.getCreditNoteLine().add(buildCreditNoteLineType(i, monedaBean.getCodigo(), lineBean));
             i++;
         }
@@ -258,7 +258,7 @@ public class BeanToType {
 
         // Detalle
         int i = 1;
-        for (TypeLineBean lineBean : noteBean.getDetalle()) {
+        for (DetalleBean lineBean : noteBean.getDetalle()) {
             debitNoteType.getDebitNoteLine().add(buildDebitNoteLineType(i, monedaBean.getCodigo(), lineBean));
             i++;
         }
@@ -339,10 +339,10 @@ public class BeanToType {
 
         // Party Address
         AddressType addressType = new AddressType();
-        addressType.setID(TypeUtils.buildIDType(proveedorBean.getCodigoTipoDocumento()));
+        addressType.setID(TypeUtils.buildIDType(proveedorBean.getCodigoPostal()));
         addressType.setStreetName(TypeUtils.buildStreetNameType(proveedorBean.getDireccion()));
-        addressType.setCitySubdivisionName(TypeUtils.buildCitySubdivisionNameType(proveedorBean.getProvincia()));
-        addressType.setCityName(TypeUtils.buildCityNameType(proveedorBean.getDistrito()));
+        addressType.setDistrict(TypeUtils.buildDistrictType(proveedorBean.getDistrito()));
+        addressType.setCityName(TypeUtils.buildCityNameType(proveedorBean.getProvincia()));
         addressType.setCountrySubentity(TypeUtils.buildCountrySubEntityType(proveedorBean.getRegion()));
         addressType.setCountry(TypeUtils.buildCountryType(proveedorBean.getCodigoPais()));
         partyType.setPostalAddress(addressType);
@@ -496,7 +496,7 @@ public class BeanToType {
     private static SignatureType buildSignatureType(ProveedorBean proveedorBean) {
         SignatureType signatureType = new SignatureType();
 
-        String signID = "IDSign" + proveedorBean.getRazonSocial().toUpperCase().replaceAll("\\s", "");
+        String signID = "IDSign" + proveedorBean.getNombreComercial().replaceAll("\\s", "");
         signatureType.setID(TypeUtils.buildIDType(signID));
 
 
@@ -506,7 +506,7 @@ public class BeanToType {
 
         signatureType.setSignatoryParty(partyType);
 
-        String URI = "#signature" + proveedorBean.getRazonSocial().toUpperCase().replaceAll("\\s", "");
+        String URI = "#signature" + proveedorBean.getNombreComercial().replaceAll("\\s", "");
         AttachmentType attachmentType = new AttachmentType();
         attachmentType.setExternalReference(TypeUtils.buildExternalReferenceType(URI));
         signatureType.setDigitalSignatureAttachment(attachmentType);
@@ -514,7 +514,7 @@ public class BeanToType {
         return signatureType;
     }
 
-    private static InvoiceLineType buildInvoiceLineType(int index, String moneda, TypeLineBean lineBean) {
+    private static InvoiceLineType buildInvoiceLineType(int index, String moneda, DetalleBean lineBean) {
         InvoiceLineType invoiceLineType = new InvoiceLineType();
 
         invoiceLineType.setID(TypeUtils.buildIDType(String.valueOf(index)));
@@ -534,7 +534,7 @@ public class BeanToType {
         return invoiceLineType;
     }
 
-    private static CreditNoteLineType buildCreditNoteLineType(int index, String moneda, TypeLineBean datosVentaModel) {
+    private static CreditNoteLineType buildCreditNoteLineType(int index, String moneda, DetalleBean datosVentaModel) {
         CreditNoteLineType creditNoteLineType = new CreditNoteLineType();
 
         creditNoteLineType.setID(TypeUtils.buildIDType(String.valueOf(index)));
@@ -554,7 +554,7 @@ public class BeanToType {
         return creditNoteLineType;
     }
 
-    private static DebitNoteLineType buildDebitNoteLineType(int index, String moneda, TypeLineBean lineBean) {
+    private static DebitNoteLineType buildDebitNoteLineType(int index, String moneda, DetalleBean lineBean) {
         DebitNoteLineType debitNoteLineType = new DebitNoteLineType();
 
         debitNoteLineType.setID(TypeUtils.buildIDType(String.valueOf(index)));
@@ -574,7 +574,7 @@ public class BeanToType {
         return debitNoteLineType;
     }
 
-    private static PricingReferenceType buildPricingReferenceType(String moneda, TypeLineBean lineBean) {
+    private static PricingReferenceType buildPricingReferenceType(String moneda, DetalleBean lineBean) {
         PricingReferenceType pricingReferenceType = new PricingReferenceType();
 
         TipoAfectacionIgv tipoAfectacionIgv = TipoAfectacionIgv.searchFromCodigo(lineBean.getCodigoTipoIgv()).orElseThrow(() -> new BeanException("Codigo de tipo de IGV invalido"));
