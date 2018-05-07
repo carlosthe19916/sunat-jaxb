@@ -1,7 +1,5 @@
 package io.github.carlosthe19916.beans;
 
-import java.util.function.Function;
-
 public class ClienteBean {
 
     private String codigoTipoDocumento;

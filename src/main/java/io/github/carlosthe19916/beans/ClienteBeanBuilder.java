@@ -4,12 +4,12 @@ public class ClienteBeanBuilder {
 
     private final ClienteBean cliente;
 
-    public ClienteBeanBuilder(ClienteBean cliente) {
-        this.cliente = cliente;
+    public ClienteBeanBuilder() {
+        this.cliente = new ClienteBean();
     }
 
-    public ClienteBean getCliente() {
-        return cliente;
+    public static ClienteBeanBuilder ClienteBean() {
+        return new ClienteBeanBuilder();
     }
 
     public ClienteBeanBuilder codigoTipoDocumento(String codigoTipoDocumento) {
@@ -36,4 +36,9 @@ public class ClienteBeanBuilder {
         cliente.setDireccion(direccion);
         return this;
     }
+
+    public ClienteBean build() {
+        return cliente;
+    }
+
 }
