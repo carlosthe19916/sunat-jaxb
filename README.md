@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/carlosthe19916/sunat-jaxb.svg?branch=master)](https://travis-ci.org/w4tracking/w4tracking)
-
 [![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=carlosthe19916&metric=alert_status)](https://sonarcloud.io/dashboard?id=carlosthe19916)
 
 # sunat-jaxb
