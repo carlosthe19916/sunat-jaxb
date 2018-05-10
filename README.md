@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/carlosthe19916/sunat-jaxb.svg?branch=master)](https://travis-ci.org/w4tracking/w4tracking)
+
 # sunat-jaxb
 Libreria que permite la creación de comprobantes de pago electrónicos de acuerdo al estadar UBL 2.
 
