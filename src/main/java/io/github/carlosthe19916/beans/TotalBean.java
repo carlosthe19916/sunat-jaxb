@@ -6,7 +6,7 @@ public class TotalBean {
 
     private BigDecimal pagar;
     private BigDecimal otrosCargos;
-    private BigDecimal descuento;
+    private BigDecimal descuentoGlobal;
 
     public BigDecimal getPagar() {
         return pagar;
@@ -24,11 +24,11 @@ public class TotalBean {
         this.otrosCargos = otrosCargos;
     }
 
-    public BigDecimal getDescuento() {
-        return descuento;
+    public BigDecimal getDescuentoGlobal() {
+        return descuentoGlobal;
     }
 
-    public void setDescuento(BigDecimal descuento) {
-        this.descuento = descuento;
+    public void setDescuentoGlobal(BigDecimal descuentoGlobal) {
+        this.descuentoGlobal = descuentoGlobal;
     }
 }

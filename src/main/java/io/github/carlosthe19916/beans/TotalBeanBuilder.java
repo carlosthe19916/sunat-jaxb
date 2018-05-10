@@ -24,8 +24,8 @@ public class TotalBeanBuilder {
         return this;
     }
 
-    public TotalBeanBuilder descuento(BigDecimal descuento) {
-        total.setDescuento(descuento);
+    public TotalBeanBuilder descuentoGlobal(BigDecimal descuento) {
+        total.setDescuentoGlobal(descuento);
         return this;
     }
 

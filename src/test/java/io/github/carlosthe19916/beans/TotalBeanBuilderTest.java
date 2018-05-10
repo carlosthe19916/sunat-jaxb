@@ -12,13 +12,13 @@ public class TotalBeanBuilderTest {
         TotalBean bean = TotalBeanBuilder.Total()
                 .pagar(new BigDecimal("100"))
                 .otrosCargos(new BigDecimal("10"))
-                .descuento(new BigDecimal("5"))
+                .descuentoGlobal(new BigDecimal("5"))
                 .build();
 
         Assert.assertNotNull(bean);
         Assert.assertEquals(bean.getPagar(), new BigDecimal("100"));
         Assert.assertEquals(bean.getOtrosCargos(), new BigDecimal("10"));
-        Assert.assertEquals(bean.getDescuento(), new BigDecimal("5"));
+        Assert.assertEquals(bean.getDescuentoGlobal(), new BigDecimal("5"));
     }
 
 }

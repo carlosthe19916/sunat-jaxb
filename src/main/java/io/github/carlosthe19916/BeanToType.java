@@ -384,7 +384,7 @@ public class BeanToType {
 
     private static MonetaryTotalType buildMonetaryTotalType(String codigoMoneda, TotalBean totalBean) {
         MonetaryTotalType monetaryTotalType = new MonetaryTotalType();
-        monetaryTotalType.setAllowanceTotalAmount(TypeUtils.buildAllowanceTotalAmountType(codigoMoneda, totalBean.getDescuento()));
+        monetaryTotalType.setAllowanceTotalAmount(TypeUtils.buildAllowanceTotalAmountType(codigoMoneda, totalBean.getDescuentoGlobal()));
         monetaryTotalType.setChargeTotalAmount(TypeUtils.buildChargeTotalAmountType(codigoMoneda, totalBean.getOtrosCargos()));
         monetaryTotalType.setPayableAmount(TypeUtils.buildPayableAmountType(codigoMoneda, totalBean.getPagar()));
         return monetaryTotalType;

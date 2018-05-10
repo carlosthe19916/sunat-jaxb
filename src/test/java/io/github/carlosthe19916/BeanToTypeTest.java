@@ -26,6 +26,8 @@ public class BeanToTypeTest {
         SimpleNamespaceContext namespaceContext = new SimpleNamespaceContext("ns", "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2");
         namespaceContext.addPrefixMapping("cbc", "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2");
         namespaceContext.addPrefixMapping("cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2");
+        namespaceContext.addPrefixMapping("ext", "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2");
+        namespaceContext.addPrefixMapping("sac", "urn:sunat:names:specification:ubl:peru:schema:xsd:SunatAggregateComponents-1");
 
         XPathFactory xPathFactory = XPathFactory.newInstance();
         XPath xPath = xPathFactory.newXPath();
@@ -73,16 +75,16 @@ public class BeanToTypeTest {
                 .total(
                         TotalBeanBuilder.Total()
                                 .pagar(new BigDecimal("5"))
-                                .descuento(new BigDecimal("6"))
-                                .otrosCargos(new BigDecimal("5"))
+                                .descuentoGlobal(new BigDecimal("6"))
+                                .otrosCargos(new BigDecimal("7"))
                                 .build()
                 )
                 .totalInformacionAdicional(
                         TotalInformacionAdicionalBeanBuilder.TotalInformacionAdicionalBean()
-                                .gravado(BigDecimal.ZERO)
-                                .inafecto(BigDecimal.ZERO)
-                                .exonerado(BigDecimal.ZERO)
-                                .gratuito(BigDecimal.ZERO)
+                                .gravado(new BigDecimal("1"))
+                                .inafecto(new BigDecimal("2"))
+                                .exonerado(new BigDecimal("3"))
+                                .gratuito(new BigDecimal("4"))
                                 .build()
                 )
                 .proveedor(
@@ -110,17 +112,17 @@ public class BeanToTypeTest {
                 )
                 .addDetalle(
                         DetalleBeanBuilder.Detalle()
-                                .unidadMedida("Kg")
+                                .unidadMedida("NIU")
                                 .descripcion("Bolsa de arroz")
                                 .codigoTipoIgv("10")
                                 .codigoTipoIsc("00")
-                                .cantidad(BigDecimal.ONE)
-                                .valorUnitario(new BigDecimal("8.2"))
-                                .precioUnitario(BigDecimal.TEN)
-                                .subtotal(new BigDecimal("11"))
-                                .total(new BigDecimal("12"))
-                                .totalIgv(new BigDecimal("1.8"))
-                                .totalIsc(new BigDecimal("0.7"))
+                                .cantidad(new BigDecimal("100"))
+                                .valorUnitario(new BigDecimal("10"))
+                                .precioUnitario(new BigDecimal("11.8"))
+                                .subtotal(new BigDecimal("1000"))
+                                .total(new BigDecimal("1180"))
+                                .totalIgv(new BigDecimal("180"))
+                                .totalIsc(new BigDecimal("0"))
                                 .build()
                 )
                 .build();
@@ -134,6 +136,27 @@ public class BeanToTypeTest {
         JAXBElement<InvoiceType> jaxbElement = factory.createInvoice(invoiceType);
         Document xmlDocument = JaxbUtils.toDocument(InvoiceType.class, jaxbElement);
 
+        // Extensions
+        Assert.assertEquals("1001", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:ID/text()").item(0).getTextContent());
+        Assert.assertEquals("1", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:PayableAmount/text()").item(0).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:PayableAmount/@currencyID").item(0).getTextContent());
+
+        Assert.assertEquals("1002", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:ID/text()").item(1).getTextContent());
+        Assert.assertEquals("2", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:PayableAmount/text()").item(1).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:PayableAmount/@currencyID").item(1).getTextContent());
+
+        Assert.assertEquals("1003", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:ID/text()").item(2).getTextContent());
+        Assert.assertEquals("3", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:PayableAmount/text()").item(2).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:PayableAmount/@currencyID").item(2).getTextContent());
+
+        Assert.assertEquals("1004", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:ID/text()").item(3).getTextContent());
+        Assert.assertEquals("4", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:PayableAmount/text()").item(3).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sac:AdditionalInformation/sac:AdditionalMonetaryTotal/cbc:PayableAmount/@currencyID").item(3).getTextContent());
+
+        // Empty extension to sign
+        Assert.assertEquals(2, getNodesWithXPath(xmlDocument, "//ns:Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent").getLength());
+
+        // General data
         Assert.assertEquals("2.0", getNodesWithXPath(xmlDocument, "//ns:Invoice/cbc:UBLVersionID/text()").item(0).getTextContent());
         Assert.assertEquals("1.0", getNodesWithXPath(xmlDocument, "//ns:Invoice/cbc:CustomizationID/text()").item(0).getTextContent());
         Assert.assertEquals("F001-1", getNodesWithXPath(xmlDocument, "//ns:Invoice/cbc:ID/text()").item(0).getTextContent());
@@ -159,6 +182,54 @@ public class BeanToTypeTest {
         Assert.assertEquals("PE", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:AccountingSupplierParty/cac:Party/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()").item(0).getTextContent());
 
         // Customer
+        Assert.assertEquals("46779354", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:AccountingCustomerParty/cbc:CustomerAssignedAccountID/text()").item(0).getTextContent());
+        Assert.assertEquals("3", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:AccountingCustomerParty/cbc:AdditionalAccountID/text()").item(0).getTextContent());
+
+        Assert.assertEquals("Carlos Esteban Feria Vila", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:AccountingCustomerParty/cac:Party/cac:PartyLegalEntity/cbc:RegistrationName/text()").item(0).getTextContent());
+
+        // Tax Total
+        Assert.assertEquals("10", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:TaxTotal/cbc:TaxAmount/text()").item(0).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:TaxTotal/cbc:TaxAmount/@currencyID").item(0).getTextContent());
+
+        Assert.assertEquals("10", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:TaxTotal/cac:TaxSubtotal/cbc:TaxAmount/text()").item(0).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:TaxTotal/cac:TaxSubtotal/cbc:TaxAmount/@currencyID").item(0).getTextContent());
+        Assert.assertEquals("1000", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:TaxTotal/cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID").item(0).getTextContent());
+        Assert.assertEquals("IGV", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:TaxTotal/cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:Name").item(0).getTextContent());
+        Assert.assertEquals("VAT", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:TaxTotal/cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:TaxTypeCode").item(0).getTextContent());
+
+        // Legal Monetary Total
+        Assert.assertEquals("5", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:LegalMonetaryTotal/cbc:PayableAmount/text()").item(0).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:LegalMonetaryTotal/cbc:PayableAmount/@currencyID").item(0).getTextContent());
+
+        Assert.assertEquals("6", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:LegalMonetaryTotal/cbc:AllowanceTotalAmount/text()").item(0).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:LegalMonetaryTotal/cbc:AllowanceTotalAmount/@currencyID").item(0).getTextContent());
+
+        Assert.assertEquals("7", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:LegalMonetaryTotal/cbc:ChargeTotalAmount/text()").item(0).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:LegalMonetaryTotal/cbc:ChargeTotalAmount/@currencyID").item(0).getTextContent());
+
+        // Lines
+        Assert.assertEquals("1", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cbc:ID/text()").item(0).getTextContent());
+
+        Assert.assertEquals("100", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cbc:InvoicedQuantity/text()").item(0).getTextContent());
+        Assert.assertEquals("NIU", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cbc:InvoicedQuantity/@unitCode").item(0).getTextContent());
+
+        Assert.assertEquals("1000", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cbc:LineExtensionAmount/text()").item(0).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cbc:LineExtensionAmount/@currencyID").item(0).getTextContent());
+
+        Assert.assertEquals("11.8", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:PricingReference/cac:AlternativeConditionPrice/cbc:PriceAmount/text()").item(0).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:PricingReference/cac:AlternativeConditionPrice/cbc:PriceAmount/@currencyID").item(0).getTextContent());
+        Assert.assertEquals("01", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:PricingReference/cac:AlternativeConditionPrice/cbc:PriceTypeCode/text()").item(0).getTextContent());
+
+        Assert.assertEquals("180", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:TaxTotal/cbc:TaxAmount/text()").item(0).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:TaxTotal/cbc:TaxAmount/@currencyID").item(0).getTextContent());
+        Assert.assertEquals("10", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:TaxTotal/cac:TaxSubtotal/cac:TaxCategory/cbc:TaxExemptionReasonCode/text()").item(0).getTextContent());
+        Assert.assertEquals("1000", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:TaxTotal/cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID/text()").item(0).getTextContent());
+        Assert.assertEquals("IGV", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:TaxTotal/cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:Name/text()").item(0).getTextContent());
+        Assert.assertEquals("VAT", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:TaxTotal/cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:TaxTypeCode/text()").item(0).getTextContent());
+        Assert.assertEquals("Bolsa de arroz", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:Item/cbc:Description/text()").item(0).getTextContent());
+        Assert.assertEquals("10", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:Price/cbc:PriceAmount/text()").item(0).getTextContent());
+        Assert.assertEquals("PEN", getNodesWithXPath(xmlDocument, "//ns:Invoice/cac:InvoiceLine/cac:Price/cbc:PriceAmount/@currencyID").item(0).getTextContent());
+
     }
 
 }

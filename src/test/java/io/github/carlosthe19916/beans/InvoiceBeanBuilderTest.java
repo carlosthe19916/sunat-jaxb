@@ -36,7 +36,7 @@ public class InvoiceBeanBuilderTest {
                 .total(
                         TotalBeanBuilder.Total()
                                 .pagar(new BigDecimal("5"))
-                                .descuento(new BigDecimal("6"))
+                                .descuentoGlobal(new BigDecimal("6"))
                                 .otrosCargos(new BigDecimal("5"))
                                 .build()
                 )
