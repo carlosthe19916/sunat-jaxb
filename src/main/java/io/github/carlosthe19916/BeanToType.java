@@ -446,7 +446,7 @@ public class BeanToType {
             Element element = JaxbUtils.marshalToElement(ObjectFactory.class, jaxbElement);
             extensionContentType1.setAny(element);
         } catch (JAXBException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         // Firma Digital
