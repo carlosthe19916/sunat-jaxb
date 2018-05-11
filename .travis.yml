@@ -6,8 +6,7 @@ addons:
     organization: carlosthe19916
     token:
       secure: $SONAR_TOKEN
-install: mvn install -P !build-extras -DskipTests=true -Dmaven.javadoc.skip=true -B
-  -V
+install: mvn install -P !build-extras -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script:
   - mvn test -P !build-extras -B
   - mvn jacoco:report coveralls:report -Dcoveralls.token=$COVERALLS_TOKEN
