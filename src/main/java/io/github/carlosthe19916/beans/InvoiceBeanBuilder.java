@@ -1,5 +1,8 @@
 package io.github.carlosthe19916.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class InvoiceBeanBuilder {
 
     private final InvoiceBean invoice;
@@ -68,6 +71,11 @@ public class InvoiceBeanBuilder {
     }
 
     public InvoiceBeanBuilder addDetalle(DetalleBean detalle) {
+        List<DetalleBean> list = invoice.getDetalle();
+        if (list == null) {
+            list = new ArrayList<>();
+            invoice.setDetalle(list);
+        }
         invoice.getDetalle().add(detalle);
         return this;
     }

@@ -1,7 +1,7 @@
 package io.github.carlosthe19916;
 
 import io.github.carlosthe19916.beans.*;
-import io.github.carlosthe19916.exceptions.BeanException;
+import io.github.carlosthe19916.exceptions.InvalidCodeException;
 import io.github.carlosthe19916.exceptions.InvoiceBeanValidacionException;
 import io.github.carlosthe19916.exceptions.NoteBeanValidacionException;
 import io.github.carlosthe19916.sunat.*;
@@ -577,7 +577,7 @@ public class BeanToType {
     private static PricingReferenceType buildPricingReferenceType(String moneda, DetalleBean lineBean) {
         PricingReferenceType pricingReferenceType = new PricingReferenceType();
 
-        TipoAfectacionIgv tipoAfectacionIgv = TipoAfectacionIgv.searchFromCodigo(lineBean.getCodigoTipoIgv()).orElseThrow(() -> new BeanException("Codigo de tipo de IGV invalido"));
+        TipoAfectacionIgv tipoAfectacionIgv = TipoAfectacionIgv.searchFromCodigo(lineBean.getCodigoTipoIgv()).orElseThrow(() -> new InvalidCodeException("Codigo de tipo de IGV invalido"));
         if (tipoAfectacionIgv.isOperacionNoOnerosa()) {
             pricingReferenceType.getAlternativeConditionPrice().add(
                     TypeUtils.buildPriceType(moneda, BigDecimal.ZERO, TipoPrecioVentaUnitario.PRECIO_UNITARIO.getCodigo())

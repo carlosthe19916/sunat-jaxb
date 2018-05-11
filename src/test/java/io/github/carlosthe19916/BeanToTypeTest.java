@@ -1,6 +1,8 @@
 package io.github.carlosthe19916;
 
 import io.github.carlosthe19916.beans.*;
+import io.github.carlosthe19916.exceptions.InvalidCodeException;
+import io.github.carlosthe19916.exceptions.InvoiceBeanValidacionException;
 import io.github.carlosthe19916.utils.JaxbUtils;
 import oasis.names.specification.ubl.schema.xsd.SimpleNamespaceContext;
 import oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType;
@@ -11,11 +13,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.validation.ConstraintViolation;
 import javax.xml.bind.JAXBElement;
 import javax.xml.xpath.*;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 public class BeanToTypeTest {
 
@@ -126,6 +131,26 @@ public class BeanToTypeTest {
                                 .build()
                 )
                 .build();
+    }
+
+    @Test
+    public void testInvalidInvoice() {
+        invoiceBean.setSerie(null);
+        invoiceBean.setNumero(null);
+
+        try {
+            BeanToType.toInvoiceType(invoiceBean, timeZone);
+        } catch (InvoiceBeanValidacionException e) {
+            Set<String> paths = e.getViolations().stream().map(f -> f.getPropertyPath().toString()).collect(Collectors.toSet());
+            Assert.assertTrue(paths.contains("serie"));
+            Assert.assertTrue(paths.contains("numero"));
+        }
+    }
+
+    @Test(expected = InvalidCodeException.class)
+    public void testInvalidCodeOnInvoiceLine() {
+        invoiceBean.getDetalle().get(0).setCodigoTipoIgv("09");
+        BeanToType.toInvoiceType(invoiceBean, timeZone);
     }
 
     @Test

@@ -133,9 +133,6 @@ public class InvoiceBean {
     }
 
     public List<DetalleBean> getDetalle() {
-        if (detalle == null) {
-            detalle = new ArrayList<>();
-        }
         return detalle;
     }
 
