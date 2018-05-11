@@ -130,7 +130,7 @@ public class BeanToTypeTest {
 
     @Test
     public void toInvoiceTypeTest() throws Exception {
-        InvoiceType invoiceType = BeanToType.toInvoiceType(invoiceBean, TimeZone.getDefault());
+        InvoiceType invoiceType = BeanToType.toInvoiceType(invoiceBean, timeZone);
 
         oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory();
         JAXBElement<InvoiceType> jaxbElement = factory.createInvoice(invoiceType);
