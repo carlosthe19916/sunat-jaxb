@@ -51,7 +51,7 @@ public class BeanToType {
 
     public static InvoiceType toInvoiceType(InvoiceBean invoiceBean, TimeZone timeZone) throws InvoiceBeanValidacionException {
         Set<ConstraintViolation<InvoiceBean>> violations = validate(invoiceBean);
-        if (violations.size() > 0) {
+        if (!violations.isEmpty()) {
             throw new InvoiceBeanValidacionException("Invoice bean inválido", violations);
         }
 
@@ -122,7 +122,7 @@ public class BeanToType {
 
     public static CreditNoteType toCreditNoteType(NoteBean noteBean, TimeZone timeZone) throws NoteBeanValidacionException {
         Set<ConstraintViolation<NoteBean>> violations = validate(noteBean);
-        if (violations.size() > 0) {
+        if (!violations.isEmpty()) {
             throw new NoteBeanValidacionException("CreditNote bean inválido", violations);
         }
 
@@ -195,7 +195,7 @@ public class BeanToType {
 
     public static DebitNoteType toDebitNoteType(NoteBean noteBean, TimeZone timeZone) throws NoteBeanValidacionException {
         Set<ConstraintViolation<NoteBean>> violations = validate(noteBean);
-        if (violations.size() > 0) {
+        if (!violations.isEmpty()) {
             throw new NoteBeanValidacionException("DebitNote bean inválido", violations);
         }
 
