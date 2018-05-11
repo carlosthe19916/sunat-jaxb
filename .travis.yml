@@ -10,6 +10,7 @@ install: mvn install -P !build-extras -DskipTests=true -Dmaven.javadoc.skip=true
   -V
 script:
   - mvn test -P !build-extras -B
+  - mvn jacoco:report coveralls:report -Dcoveralls.token=$COVERALLS.TOKEN
   - sonar-scanner
 cache:
   directories:
