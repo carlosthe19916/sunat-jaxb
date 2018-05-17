@@ -6,6 +6,7 @@ import io.github.carlosthe19916.exceptions.InvoiceBeanValidacionException;
 import io.github.carlosthe19916.utils.JaxbUtils;
 import oasis.names.specification.ubl.schema.xsd.SimpleNamespaceContext;
 import oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType;
+import oasis.names.specification.ubl.schema.xsd.invoice_2.SimpleInvoiceNamespaceContext;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import org.w3c.dom.NodeList;
 
 import javax.validation.ConstraintViolation;
 import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.*;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -28,11 +30,7 @@ public class BeanToTypeTest {
     private InvoiceBean invoiceBean;
 
     public static NodeList getNodesWithXPath(Node aNode, String aXPath) throws XPathExpressionException {
-        SimpleNamespaceContext namespaceContext = new SimpleNamespaceContext("ns", "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2");
-        namespaceContext.addPrefixMapping("cbc", "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2");
-        namespaceContext.addPrefixMapping("cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2");
-        namespaceContext.addPrefixMapping("ext", "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2");
-        namespaceContext.addPrefixMapping("sac", "urn:sunat:names:specification:ubl:peru:schema:xsd:SunatAggregateComponents-1");
+        NamespaceContext namespaceContext = new SimpleInvoiceNamespaceContext();
 
         XPathFactory xPathFactory = XPathFactory.newInstance();
         XPath xPath = xPathFactory.newXPath();
