@@ -59,7 +59,7 @@ public class JaxbUtils {
         return ((Document) res.getNode()).getDocumentElement();
     }
 
-    public static <T> Document marshalToDocument(Class classToBeBound, JAXBElement<T> jaxbElement) throws JAXBException {
+    public static <T> Document toDocument(Class classToBeBound, JAXBElement<T> jaxbElement) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(classToBeBound);
         Marshaller marshaller = context.createMarshaller();
 

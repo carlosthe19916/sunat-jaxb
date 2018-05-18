@@ -2,7 +2,7 @@ package io.github.carlosthe19916.beans;
 
 import java.math.BigDecimal;
 
-public class TypeLineBean {
+public class DetalleBean {
 
     private String unidadMedida;
     private String descripcion;

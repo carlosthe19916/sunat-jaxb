@@ -3,6 +3,7 @@ package io.github.carlosthe19916.beans;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceBean {
@@ -47,7 +48,7 @@ public class InvoiceBean {
 
     @Size(min = 1)
     @NotNull
-    private List<@Valid TypeLineBean> detalle;
+    private List<@Valid DetalleBean> detalle;
 
     private String observaciones;
 
@@ -131,11 +132,11 @@ public class InvoiceBean {
         this.proveedor = proveedor;
     }
 
-    public List<TypeLineBean> getDetalle() {
+    public List<DetalleBean> getDetalle() {
         return detalle;
     }
 
-    public void setDetalle(List<TypeLineBean> detalle) {
+    public void setDetalle(List<DetalleBean> detalle) {
         this.detalle = detalle;
     }
 

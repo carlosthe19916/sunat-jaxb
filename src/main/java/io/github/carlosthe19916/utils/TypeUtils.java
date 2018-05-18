@@ -63,6 +63,11 @@ public class TypeUtils {
         return citySubdivisionNameType;
     }
 
+    public static DistrictType buildDistrictType(String value) {
+        DistrictType districtType = new DistrictType();
+        districtType.setValue(value);
+        return districtType;
+    }
     public static DocumentCurrencyCodeType buildDocumentCurrencyCodeType(String value) {
         DocumentCurrencyCodeType documentCurrencyCodeType = new DocumentCurrencyCodeType();
         documentCurrencyCodeType.setValue(value);

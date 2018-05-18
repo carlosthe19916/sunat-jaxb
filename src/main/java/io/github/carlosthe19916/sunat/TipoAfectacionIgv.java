@@ -12,17 +12,17 @@ public enum TipoAfectacionIgv {
     GRAVADO_RETIRO_POR_PUBLICIDAD("14", "Gravado - Retiro por publicidad", true, TipoValorVenta.GRAVADO, true),
     GRAVADO_BONIFICACIONES("15", "Gravado - Bonificaciones", true, TipoValorVenta.GRAVADO, true),
     GRAVADO_RETIRO_POR_ENTREGA_A_TRABAJADORES("16", "Gravado – Retiro por entrega a trabajadores", true, TipoValorVenta.GRAVADO, true),
-    //GRAVADO_IVAP("17", "Gravado – IVAP", false, TipoValorVenta.GRAVADO),
+    GRAVADO_IVAP("17", "Gravado – IVAP", false, TipoValorVenta.GRAVADO, true),
     EXONERADO_OPERACION_ONEROSA("20", "Exonerado - Operación Onerosa", false, TipoValorVenta.EXONERADO, false),
-    //EXONERADO_TRANSFERENCIA_GRATUITA("21", "Exonerado – Transferencia Gratuita", false, TipoValorVenta.EXONERADO),
+    EXONERADO_TRANSFERENCIA_GRATUITA("21", "Exonerado – Transferencia Gratuita", false, TipoValorVenta.EXONERADO, false),
     INAFECTO_OPERACION_ONEROSA("30", "Inafecto - Operación Onerosa", false, TipoValorVenta.INAFECTO, false),
     INAFECTO_RETIRO_POR_BONIFICACION("31", "Inafecto - Retiro por Bonificación", false, TipoValorVenta.INAFECTO, true),
     INAFECTO_RETIRO("32", "Inafecto - Retiro", false, TipoValorVenta.INAFECTO, true),
     INAFECTO_RETIRO_POR_MUESTRAS_MEDICAS("33", "Inafecto - Retiro por Muestras Médicas", false, TipoValorVenta.INAFECTO, true),
     INAFECTO_RETIRO_POR_CONVENIO_COLECTIVO("34", "Inafecto - Retiro por Convenio Colectivo", false, TipoValorVenta.INAFECTO, true),
     INAFECTO_RETIRO_POR_PREMIO("35", "Inafecto - Retiro por premio", false, TipoValorVenta.INAFECTO, true),
-    INAFECTO_RETIRO_POR_PUBLICIDAD("36", "Inafecto - Retiro por publicidad", false, TipoValorVenta.INAFECTO, true);
-    //EXPORTACION("40", "Exportacion", false, TipoValorVenta.INAFECTO)
+    INAFECTO_RETIRO_POR_PUBLICIDAD("36", "Inafecto - Retiro por publicidad", false, TipoValorVenta.INAFECTO, true),
+    EXPORTACION("40", "Exportacion", false, TipoValorVenta.INAFECTO, true);
 
     private final String codigo;
     private final String denominacion;
@@ -60,12 +60,7 @@ public enum TipoAfectacionIgv {
         this.operacionNoOnerosa = hasAlternativeConditionPrice;
     }
 
-    public static TipoAfectacionIgv searchFromCodigo(String codigo) {
-        Optional<TipoAfectacionIgv> op = Stream.of(TipoAfectacionIgv.values()).filter(p -> p.getCodigo().equals(codigo)).findFirst();
-        if (op.isPresent()) {
-            return op.get();
-        } else {
-            return null;
-        }
+    public static Optional<TipoAfectacionIgv> searchFromCodigo(String codigo) {
+        return Stream.of(TipoAfectacionIgv.values()).filter(p -> p.getCodigo().equals(codigo)).findFirst();
     }
 }

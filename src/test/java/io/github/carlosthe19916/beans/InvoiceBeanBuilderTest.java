@@ -1,11 +1,12 @@
 package io.github.carlosthe19916.beans;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-public class InvoiceBeanTest {
+public class InvoiceBeanBuilderTest {
 
     @Test
     public void testBuilder() {
@@ -35,16 +36,16 @@ public class InvoiceBeanTest {
                 .total(
                         TotalBeanBuilder.Total()
                                 .pagar(new BigDecimal("5"))
-                                .descuento(new BigDecimal("6"))
+                                .descuentoGlobal(new BigDecimal("6"))
                                 .otrosCargos(new BigDecimal("5"))
                                 .build()
                 )
                 .totalInformacionAdicional(
                         TotalInformacionAdicionalBeanBuilder.TotalInformacionAdicionalBean()
-                                .gravado(new BigDecimal("5"))
-                                .inafecto(new BigDecimal("7"))
-                                .exonerado(new BigDecimal(""))
-                                .gratuito(new BigDecimal("4"))
+                                .gravado(BigDecimal.ZERO)
+                                .inafecto(BigDecimal.ZERO)
+                                .exonerado(BigDecimal.ZERO)
+                                .gratuito(BigDecimal.ZERO)
                                 .build()
                 )
                 .proveedor(
@@ -71,5 +72,18 @@ public class InvoiceBeanTest {
                                 .build()
                 )
                 .build();
+
+        Assert.assertNotNull(invoiceBean);
+        Assert.assertEquals(invoiceBean.getSerie(), "F001");
+        Assert.assertEquals(invoiceBean.getNumero(), Integer.valueOf(1));
+        Assert.assertEquals(invoiceBean.getCodigoTipoComprobante(), "01");
+        Assert.assertEquals(invoiceBean.getObservaciones(), "Sin observaciones");
+        Assert.assertNotNull(invoiceBean.getFecha());
+        Assert.assertNotNull(invoiceBean.getMoneda());
+        Assert.assertNotNull(invoiceBean.getImpuestos());
+        Assert.assertNotNull(invoiceBean.getTotal());
+        Assert.assertNotNull(invoiceBean.getTotalInformacionAdicional());
+        Assert.assertNotNull(invoiceBean.getProveedor());
+        Assert.assertNotNull(invoiceBean.getCliente());
     }
 }

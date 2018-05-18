@@ -17,7 +17,7 @@ public class InvoiceTypeTest {
         InvoiceType invoiceType = factory.createInvoiceType();
 
         JAXBElement<InvoiceType> jaxbElement = factory.createInvoice(invoiceType);
-        Document xmlDocument = JaxbUtils.marshalToDocument(InvoiceType.class, jaxbElement);
+        Document xmlDocument = JaxbUtils.toDocument(InvoiceType.class, jaxbElement);
 
         Assert.assertTrue(xmlDocument.isDefaultNamespace("urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"));
     }
