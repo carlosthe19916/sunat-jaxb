@@ -17,6 +17,9 @@ public class Total21Bean extends TotalBean {
     @NotNull
     private BigDecimal inclusiveAmount;
 
+    public Total21Bean() {
+    }
+
     public Total21Bean(TotalBean total) {
         super(total);
     }

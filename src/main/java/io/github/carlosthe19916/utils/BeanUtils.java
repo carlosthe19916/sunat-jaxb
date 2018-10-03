@@ -6,18 +6,21 @@ import io.github.carlosthe19916.beans.ubl.UBLDefaults;
 import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
 import io.github.carlosthe19916.beans.ubl.ubl20.UBL20Defaults;
 import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
+import io.github.carlosthe19916.beans.ubl.ubl21.Total21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.UBL21Defaults;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+
+import java.math.BigDecimal;
 import java.util.Set;
 
 public class BeanUtils {
 
     private BeanUtils() {
-        //  Just static methods
+        // Just static methods
     }
 
     public static <T> Set<ConstraintViolation<T>> validate(T t) {
@@ -38,7 +41,6 @@ public class BeanUtils {
 
         for (UBL20Defaults ubl20Defaults : defaults) {
 
-
         }
 
         return result;
@@ -55,7 +57,27 @@ public class BeanUtils {
         applyDefaults(result, defaults);
 
         for (UBL21Defaults ubl21Defaults : defaults) {
+            // totales
+            if (ubl21Defaults.calculoAutomatico()) {
+                if (result.getTotal() == null) {
+                    result.setTotal(new Total21Bean());
+                }
 
+                Total21Bean total = result.getTotal();
+                if (total.getExtensionAmount() == null && total.getInclusiveAmount() == null) {
+                    BigDecimal totalAPAgar = total.getPagar();
+                    BigDecimal otrosCarl = total.getOtrosCargos();
+                    BigDecimal descuentosr = total.getDescuentoGlobal();
+                    BigDecimal anticipo = total.getAnticipos()!=null?total.getAnticipos():BigDecimal.ZERO;
+                    
+                    BigDecimal extensionAmount = (totalAPAgar.subtract(otrosCarl).subtract(descuentosr).subtract(anticipo)).divide(ubl21Defaults.getIgv().add(BigDecimal.ONE));
+                    BigDecimal inclusiveAmount = extensionAmount.multiply(ubl21Defaults.getIgv().add(BigDecimal.ONE));
+
+                    total.setExtensionAmount(extensionAmount);
+                    total.setInclusiveAmount(inclusiveAmount);
+                }
+                // total.setAnticipos(xxx);
+            }
         }
 
         return result;

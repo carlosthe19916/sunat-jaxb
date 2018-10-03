@@ -7,4 +7,6 @@ public interface UBL21Defaults extends UBLDefaults {
 
     Catalog51 getTipoOperacion();
 
+    boolean calculoAutomatico();
+
 }

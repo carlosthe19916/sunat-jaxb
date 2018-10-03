@@ -11,4 +11,8 @@ public abstract class AbstractUBL21Defaults implements UBL21Defaults {
         return null;
     }
 
+    @Override
+    public boolean calculoAutomatico() {
+        return false;
+    }
 }
