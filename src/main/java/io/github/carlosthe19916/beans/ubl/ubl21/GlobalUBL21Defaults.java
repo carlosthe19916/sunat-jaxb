@@ -28,4 +28,9 @@ public class GlobalUBL21Defaults extends AbstractUBL21Defaults {
         return Catalog51.VENTA_INTERNA;
     }
 
+    @Override
+    public boolean calculoAutomatico() {
+        return false;
+    }
+
 }
