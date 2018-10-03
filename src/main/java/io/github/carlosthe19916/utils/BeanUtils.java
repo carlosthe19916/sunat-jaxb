@@ -68,9 +68,10 @@ public class BeanUtils {
                     BigDecimal totalAPAgar = total.getPagar();
                     BigDecimal otrosCarl = total.getOtrosCargos();
                     BigDecimal descuentosr = total.getDescuentoGlobal();
-                    BigDecimal anticipo = total.getAnticipos()!=null?total.getAnticipos():BigDecimal.ZERO;
-                    
-                    BigDecimal extensionAmount = (totalAPAgar.subtract(otrosCarl).subtract(descuentosr).subtract(anticipo)).divide(ubl21Defaults.getIgv().add(BigDecimal.ONE));
+                    BigDecimal anticipo = total.getAnticipos() != null ? total.getAnticipos() : BigDecimal.ZERO;
+
+                    BigDecimal extensionAmount = (totalAPAgar.subtract(otrosCarl).subtract(descuentosr)
+                            .subtract(anticipo)).divide(ubl21Defaults.getIgv().add(BigDecimal.ONE));
                     BigDecimal inclusiveAmount = extensionAmount.multiply(ubl21Defaults.getIgv().add(BigDecimal.ONE));
 
                     total.setExtensionAmount(extensionAmount);
