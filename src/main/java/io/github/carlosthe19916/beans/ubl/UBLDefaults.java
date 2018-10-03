@@ -13,4 +13,8 @@ public interface UBLDefaults {
         return new BigDecimal("0.18");
     }
 
+    // default BigDecimal getIsc() {
+    //     return new BigDecimal("0.10");
+    // }
+
 }
