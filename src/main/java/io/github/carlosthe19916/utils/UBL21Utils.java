@@ -151,9 +151,20 @@ public class UBL21Utils {
         return taxAmountType;
     }
 
-    public static TaxCategoryType buildTaxCategoryType(String ID, String name, String code) {
+    public static TaxCategoryType buildTaxCategoryType(String ID, String schemeID, String name, String code) {
         TaxCategoryType taxCategoryType = new TaxCategoryType();
-        taxCategoryType.setTaxScheme(buildTaxSchemeType(ID, name, code));
+
+        IDType idType = new IDType();
+        taxCategoryType.setID(idType);
+
+
+        idType.setValue(ID);
+        idType.setSchemeID("UN/ECE 5305");
+        idType.setSchemeName("Tax Category Identifie");
+        idType.setSchemeAgencyName("United Nations Economic Commission for Europe");
+
+
+        taxCategoryType.setTaxScheme(buildTaxSchemeType(schemeID, name, code));
         return taxCategoryType;
     }
 
@@ -165,18 +176,19 @@ public class UBL21Utils {
 
 
         idType.setValue(ID);
-        idType.setSchemeID("UN/ECE 5305");
-        idType.setSchemeName("United Nations Economic Commission for Europe");
+        idType.setSchemeID("UN/ECE 5153");
+        idType.setSchemeAgencyID("6");
 
-        taxSchemeType.setName(buildNameType(name));
-        taxSchemeType.setTaxTypeCode(buildTaxTypeCodeType(code));
+        taxSchemeType.setName(name);
+        taxSchemeType.setTaxTypeCode(code);
         return taxSchemeType;
     }
 
-    public static TaxTypeCodeType buildTaxTypeCodeType(String value) {
-        TaxTypeCodeType taxTypeCodeType = new TaxTypeCodeType();
-        taxTypeCodeType.setValue(value);
-        return taxTypeCodeType;
+    public static TaxableAmountType buildTaxableAmountType(BigDecimal value, String currency) {
+        TaxableAmountType taxableAmountType = new TaxableAmountType();
+        taxableAmountType.setValue(value);
+        taxableAmountType.setCurrencyID(currency);
+        return taxableAmountType;
     }
 
 //    public static IssueDateType buildIssueDateType(XMLGregorianCalendar value) {

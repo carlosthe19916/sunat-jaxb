@@ -2,8 +2,8 @@ package io.github.carlosthe19916;
 
 import io.github.carlosthe19916.beans.*;
 import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
-import io.github.carlosthe19916.exceptions.InvalidCodeException;
-import io.github.carlosthe19916.exceptions.InvoiceBeanValidacionException;
+import io.github.carlosthe19916.beans.exceptions.InvalidCodeException;
+import io.github.carlosthe19916.beans.exceptions.Invoice20BeanValidacionException;
 import io.github.carlosthe19916.utils.JaxbUtils;
 import oasis.names.specification.ubl.schema.xsd.SimpleNamespaceContext;
 import oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType;
@@ -138,7 +138,7 @@ public class BeanToTypeTest {
 
         try {
             BeanToType21.toInvoiceType(invoiceBean, timeZone);
-        } catch (InvoiceBeanValidacionException e) {
+        } catch (Invoice20BeanValidacionException e) {
             Set<String> paths = e.getViolations().stream().map(f -> f.getPropertyPath().toString()).collect(Collectors.toSet());
             Assert.assertTrue(paths.contains("serie"));
             Assert.assertTrue(paths.contains("numero"));

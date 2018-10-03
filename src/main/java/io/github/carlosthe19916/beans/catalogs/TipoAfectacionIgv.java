@@ -1,4 +1,4 @@
-package io.github.carlosthe19916.sunat;
+package io.github.carlosthe19916.beans.catalogs;
 
 import java.util.Optional;
 import java.util.stream.Stream;

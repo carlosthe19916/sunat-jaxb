@@ -1,13 +1,14 @@
-package io.github.carlosthe19916.sunat;
+package io.github.carlosthe19916.beans.catalogs;
 
 public enum TipoTributo {
 
-    IGV("1000", "VAT", "IGV", "IMPUESTO GENERAL A LAS VENTAS"),
-    ISC("2000", "EXC", "ISC", "IMPUESTO SELECTIVO AL CONSUMO"),
-    OTROS("9999", "OTH", "OTROS", "OTROS CONCEPTOS DE PAGO");
+    IGV("1000", "VAT", "S", "IGV", "IMPUESTO GENERAL A LAS VENTAS"),
+    ISC("2000", "EXC", "S", "ISC", "IMPUESTO SELECTIVO AL CONSUMO"),
+    OTROS("9999", "OTH", "S", "OTROS", "OTROS CONCEPTOS DE PAGO");
 
     private final String id;
     private final String codigo;
+    private final String categoria;
     private final String abreviatura;
     private final String denominacion;
 
@@ -27,11 +28,15 @@ public enum TipoTributo {
         return denominacion;
     }
 
-    TipoTributo(String id, String codigo, String abreviatura, String denominacion) {
+    TipoTributo(String id, String codigo, String categoria, String abreviatura, String denominacion) {
         this.id = id;
         this.abreviatura = abreviatura;
+        this.categoria = categoria;
         this.codigo = codigo;
         this.denominacion = denominacion;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
 }

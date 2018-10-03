@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class Impuestos21Bean extends ImpuestosBean {
-
+    
     private BigDecimal igvAfecto;
     private BigDecimal iscAfecto;
     private BigDecimal otrosAfecto;

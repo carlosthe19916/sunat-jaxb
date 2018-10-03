@@ -3,6 +3,7 @@ package io.github.carlosthe19916.utils;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.*;
 import un.unece.uncefact.codelist.specification._54217._2001.CurrencyCodeContentType;
+import un.unece.uncefact.codelist.specification._66411._2001.UnitCodeContentType;
 import un.unece.uncefact.data.specification.unqualifieddatatypesschemamodule._2.IdentifierType;
 import un.unece.uncefact.data.specification.unqualifieddatatypesschemamodule._2.TextType;
 
@@ -13,6 +14,14 @@ public class UBL20Utils {
 
     private UBL20Utils() {
         // Just static methods
+    }
+
+    // Observaciones
+
+    public static NoteType buildNoteType(String value) {
+        NoteType noteType = new NoteType();
+        noteType.setValue(value);
+        return noteType;
     }
 
     // Version
@@ -155,15 +164,91 @@ public class UBL20Utils {
     public static TaxSchemeType buildTaxSchemeType(String ID, String name, String code) {
         TaxSchemeType taxSchemeType = new TaxSchemeType();
         taxSchemeType.setID(buildIDType(ID));
-        taxSchemeType.setName(buildNameType(name));
-        taxSchemeType.setTaxTypeCode(buildTaxTypeCodeType(code));
+        taxSchemeType.setName(name);
+        taxSchemeType.setTaxTypeCode(code);
         return taxSchemeType;
     }
 
-    public static TaxTypeCodeType buildTaxTypeCodeType(String value) {
-        TaxTypeCodeType taxTypeCodeType = new TaxTypeCodeType();
-        taxTypeCodeType.setValue(value);
-        return taxTypeCodeType;
+
+    // Firma
+
+    public static PartyIdentificationType buildPartyIdentificationType(String ID) {
+        PartyIdentificationType partyIdentificationType = new PartyIdentificationType();
+        partyIdentificationType.setID(buildIDType(ID));
+        return partyIdentificationType;
+    }
+
+    public static ExternalReferenceType buildExternalReferenceType(String value) {
+        ExternalReferenceType externalReferenceType = new ExternalReferenceType();
+        externalReferenceType.setURI(buildURIType(value));
+        return externalReferenceType;
+    }
+
+    public static URIType buildURIType(String value) {
+        URIType uriType = new URIType();
+        uriType.setValue(value);
+        return uriType;
+    }
+
+
+    // Line
+
+    public static InvoicedQuantityType buildInvoicedQuantityType(String unitCode, BigDecimal value) {
+        InvoicedQuantityType invoicedQuantityType = new InvoicedQuantityType();
+        invoicedQuantityType.setValue(value);
+        invoicedQuantityType.setUnitCode(UnitCodeContentType.fromValue(unitCode));
+        return invoicedQuantityType;
+    }
+
+    public static LineExtensionAmountType buildLineExtensionAmountType(String currency, BigDecimal value) {
+        LineExtensionAmountType lineExtensionAmountType = new LineExtensionAmountType();
+        lineExtensionAmountType.setCurrencyID(CurrencyCodeContentType.valueOf(currency));
+        lineExtensionAmountType.setValue(value);
+        return lineExtensionAmountType;
+    }
+
+    public static ItemType buildItemType(String description) {
+        ItemType itemType = new ItemType();
+        itemType.getDescription().add(buildDescriptionType(description));
+        return itemType;
+    }
+
+    public static DescriptionType buildDescriptionType(String value) {
+        DescriptionType descriptionType = new DescriptionType();
+        descriptionType.setValue(value);
+        return descriptionType;
+    }
+
+    public static PriceType buildPriceType(String currency, BigDecimal value) {
+        PriceType priceType = new PriceType();
+        priceType.setPriceAmount(buildPriceAmountType(currency, value));
+        return priceType;
+    }
+
+    public static PriceAmountType buildPriceAmountType(String currency, BigDecimal value) {
+        PriceAmountType priceAmountType = new PriceAmountType();
+        priceAmountType.setCurrencyID(CurrencyCodeContentType.valueOf(currency));
+        priceAmountType.setValue(value);
+        return priceAmountType;
+    }
+
+    public static PriceType buildPriceType(String currency, BigDecimal value, String priceTypeCode) {
+        PriceType priceType = new PriceType();
+        priceType.setPriceAmount(buildPriceAmountType(currency, value));
+        priceType.setPriceTypeCode(buildPriceTypeCodeType(priceTypeCode));
+        return priceType;
+    }
+
+    public static PriceTypeCodeType buildPriceTypeCodeType(String value) {
+        PriceTypeCodeType priceTypeCodeType = new PriceTypeCodeType();
+        priceTypeCodeType.setValue(value);
+        return priceTypeCodeType;
+    }
+
+    public static TaxExemptionReasonCodeType buildTaxExemptionReasonCodeType(String value) {
+        TaxExemptionReasonCodeType taxExemptionReasonCodeType = new TaxExemptionReasonCodeType();
+        taxExemptionReasonCodeType.setValue(value);
+        return taxExemptionReasonCodeType;
     }
 
 //    public static IssueDateType buildIssueDateType(XMLGregorianCalendar value) {
@@ -218,21 +303,9 @@ public class UBL20Utils {
 //
 //
 //
-
-//    public static NoteType buildNoteType(String value) {
-//        NoteType noteType = new NoteType();
-//        noteType.setValue(value);
-//        return noteType;
-//    }
 //
 //
 //
-//    public static InvoicedQuantityType buildInvoicedQuantityType(String unitCode, BigDecimal value) {
-//        InvoicedQuantityType invoicedQuantityType = new InvoicedQuantityType();
-//        invoicedQuantityType.setValue(value);
-//        invoicedQuantityType.setUnitCode(unitCode);
-//        return invoicedQuantityType;
-//    }
 //
 //    public static CreditedQuantityType buildCreditedQuantityType(String unitCode, BigDecimal value) {
 //        CreditedQuantityType creditedQuantityType = new CreditedQuantityType();
@@ -248,43 +321,6 @@ public class UBL20Utils {
 //        return debitedQuantityType;
 //    }
 //
-//    public static LineExtensionAmountType buildLineExtensionAmountType(String currency, BigDecimal value) {
-//        LineExtensionAmountType lineExtensionAmountType = new LineExtensionAmountType();
-//        lineExtensionAmountType.setCurrencyID(CurrencyCodeContentType.valueOf(currency));
-//        lineExtensionAmountType.setValue(value);
-//        return lineExtensionAmountType;
-//    }
-//
-//    public static PriceAmountType buildPriceAmountType(String currency, BigDecimal value) {
-//        PriceAmountType priceAmountType = new PriceAmountType();
-//        priceAmountType.setCurrencyID(CurrencyCodeContentType.valueOf(currency));
-//        priceAmountType.setValue(value);
-//        return priceAmountType;
-//    }
-//
-//    public static PriceTypeCodeType buildPriceTypeCodeType(String value) {
-//        PriceTypeCodeType priceTypeCodeType = new PriceTypeCodeType();
-//        priceTypeCodeType.setValue(value);
-//        return priceTypeCodeType;
-//    }
-//
-//    public static DescriptionType buildDescriptionType(String value) {
-//        DescriptionType descriptionType = new DescriptionType();
-//        descriptionType.setValue(value);
-//        return descriptionType;
-//    }
-//
-//    public static TaxExemptionReasonCodeType buildTaxExemptionReasonCodeType(String value) {
-//        TaxExemptionReasonCodeType taxExemptionReasonCodeType = new TaxExemptionReasonCodeType();
-//        taxExemptionReasonCodeType.setValue(value);
-//        return taxExemptionReasonCodeType;
-//    }
-//
-//    public static ItemType buildItemType(String description) {
-//        ItemType itemType = new ItemType();
-//        itemType.getDescription().add(buildDescriptionType(description));
-//        return itemType;
-//    }
 //
 
 //
@@ -292,18 +328,13 @@ public class UBL20Utils {
 //
 //
 //
-//    public static PriceType buildPriceType(String currency, BigDecimal value, String priceTypeCode) {
-//        PriceType priceType = new PriceType();
-//        priceType.setPriceAmount(buildPriceAmountType(currency, value));
-//        priceType.setPriceTypeCode(buildPriceTypeCodeType(priceTypeCode));
-//        return priceType;
-//    }
+
 //
-//    public static PriceType buildPriceType(String currency, BigDecimal value) {
-//        PriceType priceType = new PriceType();
-//        priceType.setPriceAmount(buildPriceAmountType(currency, value));
-//        return priceType;
-//    }
+//
+//
+//
+//
+//
 //
 //    public static CountryType buildCountryType(String value) {
 //        CountryType countryType = new CountryType();
@@ -311,23 +342,8 @@ public class UBL20Utils {
 //        return countryType;
 //    }
 //
-//    public static URIType buildURIType(String value) {
-//        URIType uriType = new URIType();
-//        uriType.setValue(value);
-//        return uriType;
-//    }
 //
-//    public static ExternalReferenceType buildExternalReferenceType(String value) {
-//        ExternalReferenceType externalReferenceType = new ExternalReferenceType();
-//        externalReferenceType.setURI(UBLUtils.buildURIType(value));
-//        return externalReferenceType;
-//    }
 //
-//    public static PartyIdentificationType buildPartyIdentificationType(String ID) {
-//        PartyIdentificationType partyIdentificationType = new PartyIdentificationType();
-//        partyIdentificationType.setID(buildIDType(ID));
-//        return partyIdentificationType;
-//    }
 //
 //    public static ValueType buildValueType(String value) {
 //        ValueType valueType = new ValueType();

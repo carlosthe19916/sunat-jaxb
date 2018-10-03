@@ -42,7 +42,6 @@ public class Invoice20Bean extends InvoiceBean {
         this.total = total;
     }
 
-    @Override
     public Impuestos20Bean getImpuestos() {
         return impuestos;
     }

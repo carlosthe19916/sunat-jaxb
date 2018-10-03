@@ -1,48 +1,35 @@
 package io.github.carlosthe19916;
 
-import com.helger.ubl20.UBL20Reader;
-import com.helger.ubl21.UBL21Reader;
 import io.github.carlosthe19916.beans.*;
+import io.github.carlosthe19916.beans.catalogs.TipoAfectacionIgv;
+import io.github.carlosthe19916.beans.catalogs.TipoConceptosTributarios;
+import io.github.carlosthe19916.beans.catalogs.TipoPrecioVentaUnitario;
+import io.github.carlosthe19916.beans.catalogs.TipoTributo;
+import io.github.carlosthe19916.beans.exceptions.Invoice20BeanValidacionException;
 import io.github.carlosthe19916.beans.ubl.ubl20.*;
-import io.github.carlosthe19916.beans.ubl.ubl21.GlobalUBL21Defaults;
-import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
-import io.github.carlosthe19916.beans.ubl.ubl21.UBL21Defaults;
-import io.github.carlosthe19916.exceptions.InvalidCodeException;
-import io.github.carlosthe19916.exceptions.InvoiceBeanValidacionException;
-import io.github.carlosthe19916.exceptions.NoteBeanValidacionException;
-import io.github.carlosthe19916.sunat.TipoAfectacionIgv;
-import io.github.carlosthe19916.sunat.TipoConceptosTributarios;
-import io.github.carlosthe19916.sunat.TipoPrecioVentaUnitario;
-import io.github.carlosthe19916.sunat.TipoTributo;
-import io.github.carlosthe19916.utils.*;
+import io.github.carlosthe19916.utils.BeanUtils;
+import io.github.carlosthe19916.utils.DateUtils;
+import io.github.carlosthe19916.utils.JaxbUtils;
+import io.github.carlosthe19916.utils.UBL20Utils;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.*;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.ProfileIDType;
 import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_2.ExtensionContentType;
 import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_2.UBLExtensionType;
 import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_2.UBLExtensionsType;
-import oasis.names.specification.ubl.schema.xsd.creditnote_2.CreditNoteType;
-import oasis.names.specification.ubl.schema.xsd.debitnote_2.DebitNoteType;
 import oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType;
 import org.w3c.dom.Element;
 import sunat.names.specification.ubl.peru.schema.xsd.sunataggregatecomponents_1.AdditionalInformationType;
 import sunat.names.specification.ubl.peru.schema.xsd.sunataggregatecomponents_1.AdditionalMonetaryTotalType;
 import sunat.names.specification.ubl.peru.schema.xsd.sunataggregatecomponents_1.ObjectFactory;
-import sunat.names.specification.ubl.peru.schema.xsd.sunataggregatecomponents_1.VoidedDocumentsLineType;
-import sunat.names.specification.ubl.peru.schema.xsd.voideddocuments_1.VoidedDocumentsType;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class BeanToType20 {
 
@@ -50,13 +37,13 @@ public class BeanToType20 {
         // Just util class
     }
 
-    public static InvoiceType toInvoice20Type(InvoiceBean invoice) throws InvoiceBeanValidacionException {
+    public static InvoiceType toInvoiceType(InvoiceBean invoice) throws Invoice20BeanValidacionException {
         UBL20Defaults globalUBL20Defaults = GlobalUBL20Defaults.getInstance();
         Invoice20Bean invoice20 = BeanUtils.applyDefaults(invoice, globalUBL20Defaults);
 
-        Set<ConstraintViolation<InvoiceBean>> violations = BeanUtils.validate(invoice20);
+        Set<ConstraintViolation<Invoice20Bean>> violations = BeanUtils.validate(invoice20);
         if (!violations.isEmpty()) {
-            throw new InvoiceBeanValidacionException("Invalid bean", violations);
+            throw new Invoice20BeanValidacionException("Invalid bean", violations);
         }
 
         // Type
@@ -65,6 +52,10 @@ public class BeanToType20 {
 
         invoiceType.setUBLVersionID(UBL20Utils.buildUBLVersionID("2.0"));
         invoiceType.setCustomizationID(UBL20Utils.buildCustomizationIDType("2.0"));
+
+        // Observaciones
+        invoiceType.getNote().add(UBL20Utils.buildNoteType(invoice20.getObservaciones()));
+
 
         // Serie y numero
         String serieNumero = MessageFormat.format("{0}-{1}", invoice20.getSerie(), invoice20.getNumero());
@@ -104,233 +95,22 @@ public class BeanToType20 {
         // Total impuestos IGV/ISC
         Impuestos20Bean impuestos = invoice20.getImpuestos();
         invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice20.getMoneda()));
-
-        return invoiceType;
-    }
-
-    private static void toInvoiceType(InvoiceBean invoice) throws InvoiceBeanValidacionException {
-        Set<ConstraintViolation<InvoiceBean>> violations = validate(invoice);
-        if (!violations.isEmpty()) {
-            throw new InvoiceBeanValidacionException("Invoice bean inválido", violations);
-        }
-
-        oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory();
-        InvoiceType invoiceType = factory.createInvoiceType();
-
-
-        // Firma
-        invoiceType.getSignature().add(buildSignatureType(invoice.getProveedor()));
-
-        // Extensiones
-        TotalInformacionAdicionalBean totalInformacionAdicionalBean = invoice.getTotalInformacionAdicional();
-        invoiceType.setUBLExtensions(buildUBLExtensionsType(monedaBean.getCodigo(), totalInformacionAdicionalBean));
-
-        // Observaciones
-        invoiceType.getNote().add(UBLUtils.buildNoteType(invoice.getObservaciones()));
-
+        
         // Detalle
         int i = 1;
         for (DetalleBean lineBean : invoice.getDetalle()) {
-            invoiceType.getInvoiceLine().add(buildInvoiceLineType(i, monedaBean.getCodigo(), lineBean));
+            invoiceType.getInvoiceLine().add(buildInvoiceLineType(i, moneda.getCodigo(), lineBean));
             i++;
         }
 
+        // Extensiones
+        TotalInformacionAdicionalBean totalInformacionAdicional = invoice.getTotalInformacionAdicional();
+        invoiceType.setUBLExtensions(buildUBLExtensionsType(totalInformacionAdicional, moneda.getCodigo()));
+        
+        // Firma
+        invoiceType.getSignature().add(buildSignatureType(invoice.getProveedor()));
+        
         return invoiceType;
-    }
-
-    public static CreditNoteType toCreditNoteType(NoteBean noteBean, TimeZone timeZone) throws NoteBeanValidacionException {
-        Set<ConstraintViolation<NoteBean>> violations = validate(noteBean);
-        if (!violations.isEmpty()) {
-            throw new NoteBeanValidacionException("CreditNote bean inválido", violations);
-        }
-
-        oasis.names.specification.ubl.schema.xsd.creditnote_2.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.creditnote_2.ObjectFactory();
-        CreditNoteType creditNoteType = factory.createCreditNoteType();
-
-        // General config
-        creditNoteType.setUBLVersionID(UBLUtils.buildUBLVersionID("2.0"));
-        creditNoteType.setCustomizationID(UBLUtils.buildCustomizationIDType("1.0"));
-
-        // documentId
-        String serieNumero = concatenarSerieNumero(noteBean.getSerie(), noteBean.getNumero());
-        creditNoteType.setID(UBLUtils.buildIDType(serieNumero));
-
-        // Fechas
-        FechaBean fechaBean = noteBean.getFecha();
-
-        XMLGregorianCalendar issueDate = toGregorianCalendar(fechaBean.getFechaEmision(), timeZone);
-        creditNoteType.setIssueDate(UBLUtils.buildIssueDateType(issueDate));
-
-        // Proveedor
-        ProveedorBean proveedorBean = noteBean.getProveedor();
-        creditNoteType.setAccountingSupplierParty(buildSupplierPartyType(proveedorBean));
-
-        // Cliente
-        ClienteBean clienteBean = noteBean.getCliente();
-        creditNoteType.setAccountingCustomerParty(buildCustomerPartyType(clienteBean));
-
-        // Moneda
-        MonedaBean monedaBean = noteBean.getMoneda();
-        creditNoteType.setDocumentCurrencyCode(UBLUtils.buildDocumentCurrencyCodeType(monedaBean.getCodigo()));
-
-        // Totales pagar/descuentos/otros cargos
-        TotalBean totalBean = noteBean.getTotal();
-        creditNoteType.setLegalMonetaryTotal(buildMonetaryTotalType(monedaBean.getCodigo(), totalBean));
-
-        // Total impuestos IGV/ISC
-        ImpuestosBean impuestosBean = noteBean.getImpuestos();
-        creditNoteType.getTaxTotal().addAll(buildTaxTotalType(monedaBean.getCodigo(), impuestosBean));
-
-        // Firma
-        creditNoteType.getSignature().add(buildSignatureType(noteBean.getProveedor()));
-
-        // Extensions
-        TotalInformacionAdicionalBean totalInformacionAdicionalBean = noteBean.getTotalInformacionAdicional();
-        creditNoteType.setUBLExtensions(buildUBLExtensionsType(monedaBean.getCodigo(), totalInformacionAdicionalBean));
-
-        // Observaciones
-        creditNoteType.getNote().add(UBLUtils.buildNoteType(noteBean.getObservaciones()));
-
-        // Invoice asociado
-        InvoiceAfectadoBean invoiceAfectado = noteBean.getInvoiceAfectado();
-        String referenceID = invoiceAfectado.getSerie() + "-" + invoiceAfectado.getNumero();
-        String descripcion = noteBean.getObservaciones() != null ? noteBean.getObservaciones() : "Sin observación";
-        creditNoteType.getDiscrepancyResponse().add(UBLUtils.buildResponseType(referenceID, noteBean.getCodigoMotivo(), descripcion));
-
-        BillingReferenceType billingReferenceType = new BillingReferenceType();
-        billingReferenceType.setInvoiceDocumentReference(UBLUtils.buildDocumentReferenceType(referenceID, invoiceAfectado.getCodigoTipoComprobante()));
-        creditNoteType.getBillingReference().add(billingReferenceType);
-
-        // Detalle
-        int i = 1;
-        for (DetalleBean lineBean : noteBean.getDetalle()) {
-            creditNoteType.getCreditNoteLine().add(buildCreditNoteLineType(i, monedaBean.getCodigo(), lineBean));
-            i++;
-        }
-
-        return creditNoteType;
-    }
-
-    public static DebitNoteType toDebitNoteType(NoteBean noteBean, TimeZone timeZone) throws NoteBeanValidacionException {
-        Set<ConstraintViolation<NoteBean>> violations = validate(noteBean);
-        if (!violations.isEmpty()) {
-            throw new NoteBeanValidacionException("DebitNote bean inválido", violations);
-        }
-
-        oasis.names.specification.ubl.schema.xsd.debitnote_2.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.debitnote_2.ObjectFactory();
-        DebitNoteType debitNoteType = factory.createDebitNoteType();
-
-        // General config
-        debitNoteType.setUBLVersionID(UBLUtils.buildUBLVersionID("2.0"));
-        debitNoteType.setCustomizationID(UBLUtils.buildCustomizationIDType("1.0"));
-
-        // documentId
-        debitNoteType.setID(UBLUtils.buildIDType(concatenarSerieNumero(noteBean.getSerie(), noteBean.getNumero())));
-
-        // Fechas
-        FechaBean fechaBean = noteBean.getFecha();
-
-        XMLGregorianCalendar issueDate = toGregorianCalendar(fechaBean.getFechaEmision(), timeZone);
-        debitNoteType.setIssueDate(UBLUtils.buildIssueDateType(issueDate));
-
-        // Proveedor
-        ProveedorBean proveedorBean = noteBean.getProveedor();
-        debitNoteType.setAccountingSupplierParty(buildSupplierPartyType(proveedorBean));
-
-        // Cliente
-        ClienteBean clienteBean = noteBean.getCliente();
-        debitNoteType.setAccountingCustomerParty(buildCustomerPartyType(clienteBean));
-
-        // Moneda
-        MonedaBean monedaBean = noteBean.getMoneda();
-        debitNoteType.setDocumentCurrencyCode(UBLUtils.buildDocumentCurrencyCodeType(monedaBean.getCodigo()));
-
-        // Totales pagar/descuentos/otros cargos
-        TotalBean totalBean = noteBean.getTotal();
-        debitNoteType.setRequestedMonetaryTotal(buildMonetaryTotalType(monedaBean.getCodigo(), totalBean));
-
-        // Total impuestos IGV/ISC
-        ImpuestosBean impuestosBean = noteBean.getImpuestos();
-        debitNoteType.getTaxTotal().addAll(buildTaxTotalType(monedaBean.getCodigo(), impuestosBean));
-
-        // Firma
-        debitNoteType.getSignature().add(buildSignatureType(noteBean.getProveedor()));
-
-        // Extensions
-        TotalInformacionAdicionalBean totalInformacionAdicionalBean = noteBean.getTotalInformacionAdicional();
-        debitNoteType.setUBLExtensions(buildUBLExtensionsType(monedaBean.getCodigo(), totalInformacionAdicionalBean));
-
-        // Observaciones
-        debitNoteType.getNote().add(UBLUtils.buildNoteType(noteBean.getObservaciones()));
-
-        // Invoice asociado
-        InvoiceAfectadoBean invoiceAfectado = noteBean.getInvoiceAfectado();
-        String referenceID = invoiceAfectado.getSerie() + "-" + invoiceAfectado.getNumero();
-        String descripcion = noteBean.getObservaciones() != null ? noteBean.getObservaciones() : "Sin observación";
-        debitNoteType.getDiscrepancyResponse().add(UBLUtils.buildResponseType(referenceID, noteBean.getCodigoMotivo(), descripcion));
-
-
-        BillingReferenceType billingReferenceType = new BillingReferenceType();
-        billingReferenceType.setInvoiceDocumentReference(UBLUtils.buildDocumentReferenceType(referenceID, invoiceAfectado.getCodigoTipoComprobante()));
-        debitNoteType.getBillingReference().add(billingReferenceType);
-
-        // Detalle
-        int i = 1;
-        for (DetalleBean lineBean : noteBean.getDetalle()) {
-            debitNoteType.getDebitNoteLine().add(buildDebitNoteLineType(i, monedaBean.getCodigo(), lineBean));
-            i++;
-        }
-
-        return debitNoteType;
-    }
-
-    public static VoidedDocumentsType toVoidedDocumentsType(BajaBean bajaBean, TimeZone timeZone) {
-        sunat.names.specification.ubl.peru.schema.xsd.voideddocuments_1.ObjectFactory factory = new sunat.names.specification.ubl.peru.schema.xsd.voideddocuments_1.ObjectFactory();
-        VoidedDocumentsType voidedDocumentsType = factory.createVoidedDocumentsType();
-
-        // General config
-        voidedDocumentsType.setUBLVersionID(UBLUtils.buildUBLVersionID("2.0"));
-        voidedDocumentsType.setCustomizationID(UBLUtils.buildCustomizationIDType("1.0"));
-
-        // documentId
-        String serieNumero = concatenarSerieNumero(bajaBean.getSerie(), bajaBean.getNumero());
-        voidedDocumentsType.setID(UBLUtils.buildIDType(serieNumero));
-
-        // Fechas
-        XMLGregorianCalendar issueDate = toGregorianCalendar(bajaBean.getFechaEmision(), timeZone);
-        voidedDocumentsType.setIssueDate(UBLUtils.buildIssueDateType(issueDate));
-
-        // Fecha de emisión del documento relacionado
-        InvoiceAfectadoBean invoiceAfectadoBean = bajaBean.getInvoiceAfectado();
-
-        XMLGregorianCalendar referenceDate = toGregorianCalendar(invoiceAfectadoBean.getFechaEmision(), timeZone);
-        voidedDocumentsType.setReferenceDate(UBLUtils.buildReferenceDateType(referenceDate));
-
-        // Proveedor
-        voidedDocumentsType.setAccountingSupplierParty(buildSupplierPartyType(bajaBean.getSupplier()));
-
-        // Detalle
-        VoidedDocumentsLineType voidedDocumentsLineType = new VoidedDocumentsLineType();
-
-        voidedDocumentsLineType.setLineID(UBLUtils.buildLineIDType("1"));
-        voidedDocumentsLineType.setDocumentTypeCode(UBLUtils.buildDocumentTypeCodeType(bajaBean.getInvoiceAfectado().getCodigoTipoComprobante()));
-        voidedDocumentsLineType.setDocumentSerialID(UBLUtils.buildIdentifierType(bajaBean.getInvoiceAfectado().getSerie()));
-        voidedDocumentsLineType.setDocumentNumberID(UBLUtils.buildIdentifierType(String.valueOf(bajaBean.getInvoiceAfectado().getNumero())));
-        voidedDocumentsLineType.setVoidReasonDescription(UBLUtils.buildTextType(bajaBean.getMotivoBaja()));
-
-        return voidedDocumentsType;
-    }
-
-    private static XMLGregorianCalendar toGregorianCalendar(Date date, TimeZone zone) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            sdf.setTimeZone(zone);
-            String locale = sdf.format(date);
-
-            return DatatypeFactory.newInstance().newXMLGregorianCalendar(locale);
-        } catch (DatatypeConfigurationException e) {
-            throw new IllegalStateException(e);
-        }
     }
 
 
@@ -367,6 +147,9 @@ public class BeanToType20 {
         return supplierPartyType;
     }
 
+    
+    // Cliente
+    
     private static CustomerPartyType buildCustomerPartyType(ClienteBean cliente) {
         CustomerPartyType customerPartyType = new CustomerPartyType();
 
@@ -387,6 +170,9 @@ public class BeanToType20 {
         return customerPartyType;
     }
 
+    
+    // Total a pagar
+    
     private static MonetaryTotalType buildMonetaryTotalType(Total20Bean total, MonedaBean moneda) {
         MonetaryTotalType monetaryTotalType = new MonetaryTotalType();
         monetaryTotalType.setAllowanceTotalAmount(UBL20Utils.buildAllowanceTotalAmountType(total.getDescuentoGlobal(), moneda.getCodigo()));
@@ -395,6 +181,9 @@ public class BeanToType20 {
         return monetaryTotalType;
     }
 
+    
+    // Impuestos
+    
     private static List<TaxTotalType> buildTaxTotalType(Impuestos20Bean impuestosBean, MonedaBean moneda) {
         List<TaxTotalType> result = new ArrayList<>();
 
@@ -434,13 +223,10 @@ public class BeanToType20 {
         return new ExtensionContentType();
     }
 
-    private static UBLExtensionType buildUBLExtensionType() {
-        UBLExtensionType ublExtensionType = new UBLExtensionType();
-        ublExtensionType.setExtensionContent(buildExtensionContentType());
-        return ublExtensionType;
-    }
-
-    private static UBLExtensionsType buildUBLExtensionsType(String codigoMoneda, TotalInformacionAdicionalBean totalInformacionAdicionalBean) {
+    
+    // Extensiones
+    
+    private static UBLExtensionsType buildUBLExtensionsType(TotalInformacionAdicionalBean totalInformacionAdicional, String codigoMoneda) {
         UBLExtensionsType ublExtensionsType = new UBLExtensionsType();
 
         // Totales
@@ -449,7 +235,7 @@ public class BeanToType20 {
         ublExtensionType1.setExtensionContent(extensionContentType1);
         ublExtensionsType.getUBLExtension().add(ublExtensionType1);
 
-        AdditionalInformationType additionalInformationType = buildAdditionalInformationType(codigoMoneda, totalInformacionAdicionalBean);
+        AdditionalInformationType additionalInformationType = buildAdditionalInformationType(codigoMoneda, totalInformacionAdicional);
 
         ObjectFactory factory = new ObjectFactory();
         JAXBElement<AdditionalInformationType> jaxbElement = factory.createAdditionalInformation(additionalInformationType);
@@ -469,35 +255,35 @@ public class BeanToType20 {
 
         return ublExtensionsType;
     }
-
+    
     private static AdditionalInformationType buildAdditionalInformationType(String codigoMoneda, TotalInformacionAdicionalBean totalInformacionAdicionalBean) {
         AdditionalInformationType additionalInformationType = new AdditionalInformationType();
 
         if (totalInformacionAdicionalBean.getGravado() != null) {
             AdditionalMonetaryTotalType additionalMonetaryTotalType = new AdditionalMonetaryTotalType();
-            additionalMonetaryTotalType.setID(UBLUtils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_GRAVADAS.getCodigo()));
-            additionalMonetaryTotalType.setPayableAmount(UBLUtils.buildPayableAmountType(codigoMoneda, totalInformacionAdicionalBean.getGravado()));
+            additionalMonetaryTotalType.setID(UBL20Utils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_GRAVADAS.getCodigo()));
+            additionalMonetaryTotalType.setPayableAmount(UBL20Utils.buildPayableAmountType(totalInformacionAdicionalBean.getGravado(), codigoMoneda));
 
             additionalInformationType.getAdditionalMonetaryTotal().add(additionalMonetaryTotalType);
         }
         if (totalInformacionAdicionalBean.getInafecto() != null) {
             AdditionalMonetaryTotalType additionalMonetaryTotalType = new AdditionalMonetaryTotalType();
-            additionalMonetaryTotalType.setID(UBLUtils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_INAFECTAS.getCodigo()));
-            additionalMonetaryTotalType.setPayableAmount(UBLUtils.buildPayableAmountType(codigoMoneda, totalInformacionAdicionalBean.getInafecto()));
+            additionalMonetaryTotalType.setID(UBL20Utils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_INAFECTAS.getCodigo()));
+            additionalMonetaryTotalType.setPayableAmount(UBL20Utils.buildPayableAmountType(totalInformacionAdicionalBean.getInafecto(), codigoMoneda));
 
             additionalInformationType.getAdditionalMonetaryTotal().add(additionalMonetaryTotalType);
         }
         if (totalInformacionAdicionalBean.getExonerado() != null) {
             AdditionalMonetaryTotalType additionalMonetaryTotalType = new AdditionalMonetaryTotalType();
-            additionalMonetaryTotalType.setID(UBLUtils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_EXONERADAS.getCodigo()));
-            additionalMonetaryTotalType.setPayableAmount(UBLUtils.buildPayableAmountType(codigoMoneda, totalInformacionAdicionalBean.getExonerado()));
+            additionalMonetaryTotalType.setID(UBL20Utils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_EXONERADAS.getCodigo()));
+            additionalMonetaryTotalType.setPayableAmount(UBL20Utils.buildPayableAmountType(totalInformacionAdicionalBean.getExonerado(), codigoMoneda));
 
             additionalInformationType.getAdditionalMonetaryTotal().add(additionalMonetaryTotalType);
         }
         if (totalInformacionAdicionalBean.getGratuito() != null) {
             AdditionalMonetaryTotalType additionalMonetaryTotalType = new AdditionalMonetaryTotalType();
-            additionalMonetaryTotalType.setID(UBLUtils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_GRATUITAS.getCodigo()));
-            additionalMonetaryTotalType.setPayableAmount(UBLUtils.buildPayableAmountType(codigoMoneda, totalInformacionAdicionalBean.getGratuito()));
+            additionalMonetaryTotalType.setID(UBL20Utils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_GRATUITAS.getCodigo()));
+            additionalMonetaryTotalType.setPayableAmount(UBL20Utils.buildPayableAmountType(totalInformacionAdicionalBean.getGratuito(), codigoMoneda));
 
             additionalInformationType.getAdditionalMonetaryTotal().add(additionalMonetaryTotalType);
         }
@@ -505,39 +291,43 @@ public class BeanToType20 {
         return additionalInformationType;
     }
 
+    // Firma
+    
     private static SignatureType buildSignatureType(ProveedorBean proveedorBean) {
         SignatureType signatureType = new SignatureType();
 
         String signID = "IDSign" + proveedorBean.getNombreComercial().replaceAll("\\s", "");
-        signatureType.setID(UBLUtils.buildIDType(signID));
+        signatureType.setID(UBL20Utils.buildIDType(signID));
 
 
         PartyType partyType = new PartyType();
-        partyType.getPartyName().add(UBLUtils.buildPartyNameType(proveedorBean.getNombreComercial()));
-        partyType.getPartyIdentification().add(UBLUtils.buildPartyIdentificationType(proveedorBean.getNumeroDocumento()));
+        partyType.getPartyName().add(UBL20Utils.buildPartyNameType(proveedorBean.getNombreComercial()));
+        partyType.getPartyIdentification().add(UBL20Utils.buildPartyIdentificationType(proveedorBean.getNumeroDocumento()));
 
         signatureType.setSignatoryParty(partyType);
 
         String URI = "#signature" + proveedorBean.getNombreComercial().replaceAll("\\s", "");
         AttachmentType attachmentType = new AttachmentType();
-        attachmentType.setExternalReference(UBLUtils.buildExternalReferenceType(URI));
+        attachmentType.setExternalReference(UBL20Utils.buildExternalReferenceType(URI));
         signatureType.setDigitalSignatureAttachment(attachmentType);
 
         return signatureType;
     }
 
+
+    // Line
     private static InvoiceLineType buildInvoiceLineType(int index, String moneda, DetalleBean lineBean) {
         InvoiceLineType invoiceLineType = new InvoiceLineType();
 
-        invoiceLineType.setID(UBLUtils.buildIDType(String.valueOf(index)));
-        invoiceLineType.setInvoicedQuantity(UBLUtils.buildInvoicedQuantityType(lineBean.getUnidadMedida(), lineBean.getCantidad()));
-        invoiceLineType.setLineExtensionAmount(UBLUtils.buildLineExtensionAmountType(moneda, lineBean.getSubtotal()));
-        invoiceLineType.setItem(UBLUtils.buildItemType(lineBean.getDescripcion()));
+        invoiceLineType.setID(UBL20Utils.buildIDType(String.valueOf(index)));
+        invoiceLineType.setInvoicedQuantity(UBL20Utils.buildInvoicedQuantityType(lineBean.getUnidadMedida(), lineBean.getCantidad()));
+        invoiceLineType.setLineExtensionAmount(UBL20Utils.buildLineExtensionAmountType(moneda, lineBean.getSubtotal()));
+        invoiceLineType.setItem(UBL20Utils.buildItemType(lineBean.getDescripcion()));
         invoiceLineType.setPricingReference(buildPricingReferenceType(moneda, lineBean));
-        invoiceLineType.setPrice(UBLUtils.buildPriceType(moneda, lineBean.getValorUnitario()));
+        invoiceLineType.setPrice(UBL20Utils.buildPriceType(moneda, lineBean.getValorUnitario()));
 
         if (lineBean.getTotalIgv() != null) {
-            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIgv(), lineBean.getCodigoTipoIgv(), TipoTributo.IGV));
+            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIgv(), lineBean.getTipoAfectacionIgv().getCodigo(), TipoTributo.IGV));
         }
         if (lineBean.getTotalIsc() != null) {
             invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIsc(), lineBean.getCodigoTipoIsc(), TipoTributo.ISC));
@@ -546,60 +336,19 @@ public class BeanToType20 {
         return invoiceLineType;
     }
 
-    private static CreditNoteLineType buildCreditNoteLineType(int index, String moneda, DetalleBean datosVentaModel) {
-        CreditNoteLineType creditNoteLineType = new CreditNoteLineType();
-
-        creditNoteLineType.setID(UBLUtils.buildIDType(String.valueOf(index)));
-        creditNoteLineType.setCreditedQuantity(UBLUtils.buildCreditedQuantityType((datosVentaModel.getUnidadMedida()), datosVentaModel.getCantidad()));
-        creditNoteLineType.setLineExtensionAmount(UBLUtils.buildLineExtensionAmountType(moneda, datosVentaModel.getSubtotal()));
-        creditNoteLineType.setItem(UBLUtils.buildItemType(datosVentaModel.getDescripcion()));
-        creditNoteLineType.setPricingReference(buildPricingReferenceType(moneda, datosVentaModel));
-        creditNoteLineType.setPrice(UBLUtils.buildPriceType(moneda, datosVentaModel.getValorUnitario()));
-
-        if (datosVentaModel.getTotalIgv() != null) {
-            creditNoteLineType.getTaxTotal().add(buildTaxTotalType(moneda, datosVentaModel.getTotalIgv(), datosVentaModel.getCodigoTipoIgv(), TipoTributo.IGV));
-        }
-        if (datosVentaModel.getTotalIsc() != null) {
-            creditNoteLineType.getTaxTotal().add(buildTaxTotalType(moneda, datosVentaModel.getTotalIsc(), datosVentaModel.getCodigoTipoIsc(), TipoTributo.ISC));
-        }
-
-        return creditNoteLineType;
-    }
-
-    private static DebitNoteLineType buildDebitNoteLineType(int index, String moneda, DetalleBean lineBean) {
-        DebitNoteLineType debitNoteLineType = new DebitNoteLineType();
-
-        debitNoteLineType.setID(UBLUtils.buildIDType(String.valueOf(index)));
-        debitNoteLineType.setDebitedQuantity(UBLUtils.buildDebitedQuantityType((lineBean.getUnidadMedida()), lineBean.getCantidad()));
-        debitNoteLineType.setLineExtensionAmount(UBLUtils.buildLineExtensionAmountType(moneda, lineBean.getSubtotal()));
-        debitNoteLineType.setItem(UBLUtils.buildItemType(lineBean.getDescripcion()));
-        debitNoteLineType.setPricingReference(buildPricingReferenceType(moneda, lineBean));
-        debitNoteLineType.setPrice(UBLUtils.buildPriceType(moneda, lineBean.getValorUnitario()));
-
-        if (lineBean.getTotalIgv() != null) {
-            debitNoteLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIgv(), lineBean.getCodigoTipoIgv(), TipoTributo.IGV));
-        }
-        if (lineBean.getTotalIsc() != null) {
-            debitNoteLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIsc(), lineBean.getCodigoTipoIsc(), TipoTributo.ISC));
-        }
-
-        return debitNoteLineType;
-    }
-
     private static PricingReferenceType buildPricingReferenceType(String moneda, DetalleBean lineBean) {
         PricingReferenceType pricingReferenceType = new PricingReferenceType();
 
-        TipoAfectacionIgv tipoAfectacionIgv = TipoAfectacionIgv.searchFromCodigo(lineBean.getCodigoTipoIgv()).orElseThrow(() -> new InvalidCodeException("Codigo de tipo de IGV invalido"));
-        if (tipoAfectacionIgv.isOperacionNoOnerosa()) {
+        if (lineBean.getTipoAfectacionIgv().isOperacionNoOnerosa()) {
             pricingReferenceType.getAlternativeConditionPrice().add(
-                    UBLUtils.buildPriceType(moneda, BigDecimal.ZERO, TipoPrecioVentaUnitario.PRECIO_UNITARIO.getCodigo())
+                    UBL20Utils.buildPriceType(moneda, BigDecimal.ZERO, TipoPrecioVentaUnitario.PRECIO_UNITARIO.getCodigo())
             );
             pricingReferenceType.getAlternativeConditionPrice().add(
-                    UBLUtils.buildPriceType(moneda, lineBean.getPrecioUnitario(), TipoPrecioVentaUnitario.VALOR_REF_UNIT_EN_OPER_NO_ORENOSAS.getCodigo())
+                    UBL20Utils.buildPriceType(moneda, lineBean.getPrecioUnitario(), TipoPrecioVentaUnitario.VALOR_REF_UNIT_EN_OPER_NO_ORENOSAS.getCodigo())
             );
         } else {
             pricingReferenceType.getAlternativeConditionPrice().add(
-                    UBLUtils.buildPriceType(moneda, lineBean.getPrecioUnitario(), TipoPrecioVentaUnitario.PRECIO_UNITARIO.getCodigo())
+                    UBL20Utils.buildPriceType(moneda, lineBean.getPrecioUnitario(), TipoPrecioVentaUnitario.PRECIO_UNITARIO.getCodigo())
             );
         }
 
@@ -608,22 +357,22 @@ public class BeanToType20 {
 
     private static TaxTotalType buildTaxTotalType(String currency, BigDecimal value, String tipoIGV, TipoTributo tipoTributo) {
         TaxTotalType taxTotalType = new TaxTotalType();
-        taxTotalType.setTaxAmount(UBLUtils.buildTaxAmountType(currency, value));
+        taxTotalType.setTaxAmount(UBL20Utils.buildTaxAmountType(value, currency));
         taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(currency, value, tipoIGV, tipoTributo));
         return taxTotalType;
     }
 
     private static TaxSubtotalType buildTaxSubtotalType(String currency, BigDecimal value, String tipoIGV, TipoTributo tipoTributo) {
         TaxSubtotalType taxSubtotalType = new TaxSubtotalType();
-        taxSubtotalType.setTaxAmount(UBLUtils.buildTaxAmountType(currency, value));
+        taxSubtotalType.setTaxAmount(UBL20Utils.buildTaxAmountType(value, currency));
         taxSubtotalType.setTaxCategory(buildTaxCategoryType(tipoIGV, tipoTributo));
         return taxSubtotalType;
     }
 
     private static TaxCategoryType buildTaxCategoryType(String tipoIGV, TipoTributo tipoTributo) {
         TaxCategoryType taxCategoryType = new TaxCategoryType();
-        taxCategoryType.setTaxScheme(UBLUtils.buildTaxSchemeType(tipoTributo.getId(), tipoTributo.getAbreviatura(), tipoTributo.getCodigo()));
-        taxCategoryType.setTaxExemptionReasonCode(UBLUtils.buildTaxExemptionReasonCodeType(tipoIGV));
+        taxCategoryType.setTaxScheme(UBL20Utils.buildTaxSchemeType(tipoTributo.getId(), tipoTributo.getAbreviatura(), tipoTributo.getCodigo()));
+        taxCategoryType.setTaxExemptionReasonCode(UBL20Utils.buildTaxExemptionReasonCodeType(tipoIGV));
         return taxCategoryType;
     }
 
