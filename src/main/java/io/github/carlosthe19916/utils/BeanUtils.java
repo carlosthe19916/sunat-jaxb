@@ -5,6 +5,7 @@ import io.github.carlosthe19916.beans.InvoiceBean;
 import io.github.carlosthe19916.beans.ubl.UBLDefaults;
 import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
 import io.github.carlosthe19916.beans.ubl.ubl20.UBL20Defaults;
+import io.github.carlosthe19916.beans.ubl.ubl21.Impuestos21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.Total21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.UBL21Defaults;
@@ -59,6 +60,8 @@ public class BeanUtils {
         for (UBL21Defaults ubl21Defaults : defaults) {
             // totales
             if (ubl21Defaults.calculoAutomatico()) {
+               
+               
                 if (result.getTotal() == null) {
                     result.setTotal(new Total21Bean());
                 }
@@ -77,7 +80,12 @@ public class BeanUtils {
                     total.setExtensionAmount(extensionAmount);
                     total.setInclusiveAmount(inclusiveAmount);
                 }
-                // total.setAnticipos(xxx);
+
+                Impuestos21Bean a = result.getImpuestos();
+                BigDecimal igv = a.getIgv();
+                BigDecimal taxableAmount = igv.divide(ubl21Defaults.getIgv()); //: [Total valor de venta operaciones gravadas] + [Sumatoria ISC].
+                a.setIgvAfecto(taxableAmount);
+                    
             }
         }
 
