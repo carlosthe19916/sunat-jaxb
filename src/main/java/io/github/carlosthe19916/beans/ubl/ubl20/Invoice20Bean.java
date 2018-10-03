@@ -1,11 +1,9 @@
 package io.github.carlosthe19916.beans.ubl.ubl20;
 
-import io.github.carlosthe19916.beans.*;
+import io.github.carlosthe19916.beans.InvoiceBean;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.List;
 
 public class Invoice20Bean extends InvoiceBean {
 

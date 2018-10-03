@@ -1,8 +1,10 @@
-package io.github.carlosthe19916.beans.ubl.ubl20;
+package io.github.carlosthe19916.beans.config.ubl20;
 
-public class GlobalUBL20Defaults extends AbstractUBL20Defaults {
+import io.github.carlosthe19916.beans.config.AbstractUBLDefaults;
 
-    private static GlobalUBL20Defaults instance = new GlobalUBL20Defaults();
+public class GlobalUBL20Defaults extends AbstractUBLDefaults implements UBL20Defaults {
+
+    private volatile static GlobalUBL20Defaults instance = new GlobalUBL20Defaults();
 
     private GlobalUBL20Defaults() {
         // Singleton

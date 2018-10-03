@@ -1,10 +1,14 @@
-package io.github.carlosthe19916;
+package io.github.carlosthe19916.types;
 
 import io.github.carlosthe19916.beans.*;
 import io.github.carlosthe19916.beans.catalogs.TipoTributo;
+import io.github.carlosthe19916.beans.config.ubl21.GlobalUBL21Defaults;
+import io.github.carlosthe19916.beans.config.ubl21.UBL21Defaults;
 import io.github.carlosthe19916.beans.exceptions.Invoice20BeanValidacionException;
 import io.github.carlosthe19916.beans.exceptions.Invoice21BeanValidacionException;
-import io.github.carlosthe19916.beans.ubl.ubl21.*;
+import io.github.carlosthe19916.beans.ubl.ubl21.Impuestos21Bean;
+import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
+import io.github.carlosthe19916.beans.ubl.ubl21.Total21Bean;
 import io.github.carlosthe19916.utils.BeanUtils;
 import io.github.carlosthe19916.utils.DateUtils;
 import io.github.carlosthe19916.utils.UBL21Utils;
@@ -27,11 +31,8 @@ public class BeanToType21 {
         // Just util class
     }
 
-    public static InvoiceType toInvoiceType(InvoiceBean invoice) throws Invoice20BeanValidacionException {
-        UBL21Defaults globalUBL21Defaults = GlobalUBL21Defaults.getInstance();
-        Invoice21Bean invoice21 = BeanUtils.applyDefaults(invoice, globalUBL21Defaults);
-
-        Set<ConstraintViolation<Invoice21Bean>> violations = BeanUtils.validate(invoice21);
+    public static InvoiceType toInvoiceType(Invoice21Bean invoice) throws Invoice21BeanValidacionException {
+        Set<ConstraintViolation<Invoice21Bean>> violations = BeanUtils.validate(invoice);
         if (!violations.isEmpty()) {
             throw new Invoice21BeanValidacionException("Invalid bean", violations);
         }
@@ -44,48 +45,48 @@ public class BeanToType21 {
         invoiceType.setCustomizationID(UBL21Utils.buildCustomizationIDType("1.0"));
 
         // Profile
-        ProfileIDType profileIDType = UBL21Utils.toProfileIDType(invoice21.getTipoOperacion());
+        ProfileIDType profileIDType = UBL21Utils.toProfileIDType(invoice.getTipoOperacion());
         invoiceType.setProfileID(profileIDType);
 
 
         // Serie y numero
-        String serieNumero = MessageFormat.format("{0}-{1}", invoice21.getSerie(), invoice21.getNumero());
+        String serieNumero = MessageFormat.format("{0}-{1}", invoice.getSerie(), invoice.getNumero());
         invoiceType.setID(UBL21Utils.buildIDType(serieNumero));
 
         // Fecha y hora de emision
-        FechaBean fecha = invoice21.getFecha();
+        FechaBean fecha = invoice.getFecha();
         invoiceType.setIssueDate(DateUtils.toGregorianCalendar(fecha.getFechaEmision(), fecha.getTimeZone()));
         invoiceType.setIssueTime(DateUtils.toGregorianCalendarTime(fecha.getFechaEmision(), fecha.getTimeZone()));
 
         // Fecha vencimiento
-        if (invoice21.getFecha().getFechaVencimiento() != null) {
+        if (invoice.getFecha().getFechaVencimiento() != null) {
             XMLGregorianCalendar paymentDate = DateUtils.toGregorianCalendar(fecha.getFechaVencimiento(), fecha.getTimeZone());
             invoiceType.setDueDate(paymentDate);
         }
 
         // Tipo comprobante
-        String codigoTipoComprobante = invoice21.getCodigoTipoComprobante();
+        String codigoTipoComprobante = invoice.getCodigoTipoComprobante();
         invoiceType.setInvoiceTypeCode(UBL21Utils.buildInvoiceTypeCodeType(codigoTipoComprobante));
 
         // Moneda
-        MonedaBean moneda = invoice21.getMoneda();
+        MonedaBean moneda = invoice.getMoneda();
         invoiceType.setDocumentCurrencyCode(UBL21Utils.buildDocumentCurrencyCodeType(moneda.getCodigo()));
 
         // Proveedor
-        ProveedorBean proveedor = invoice21.getProveedor();
+        ProveedorBean proveedor = invoice.getProveedor();
         invoiceType.setAccountingSupplierParty(buildSupplierPartyType(proveedor));
 
         // Cliente
-        ClienteBean cliente = invoice21.getCliente();
+        ClienteBean cliente = invoice.getCliente();
         invoiceType.setAccountingCustomerParty(buildCustomerPartyType(cliente));
 
         // Totales pagar/descuentos/otros cargos
-        Total21Bean total = invoice21.getTotal();
-        invoiceType.setLegalMonetaryTotal(buildMonetaryTotalType(total, invoice21.getMoneda()));
+        Total21Bean total = invoice.getTotal();
+        invoiceType.setLegalMonetaryTotal(buildMonetaryTotalType(total, invoice.getMoneda()));
 
         // Total impuestos IGV/ISC
-        Impuestos21Bean impuestos = invoice21.getImpuestos();
-        invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice21.getTotalInformacionAdicional(), invoice21.getMoneda()));
+        Impuestos21Bean impuestos = invoice.getImpuestos();
+        invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice.getTotalInformacionAdicional(), invoice.getMoneda()));
 
         return invoiceType;
     }

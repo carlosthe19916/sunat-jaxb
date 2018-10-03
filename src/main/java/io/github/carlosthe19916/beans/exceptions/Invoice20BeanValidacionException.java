@@ -1,6 +1,5 @@
 package io.github.carlosthe19916.beans.exceptions;
 
-import io.github.carlosthe19916.beans.InvoiceBean;
 import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
 
 import javax.validation.ConstraintViolation;

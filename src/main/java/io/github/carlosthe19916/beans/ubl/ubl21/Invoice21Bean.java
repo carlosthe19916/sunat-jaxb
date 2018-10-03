@@ -1,10 +1,6 @@
 package io.github.carlosthe19916.beans.ubl.ubl21;
 
-import io.github.carlosthe19916.beans.ImpuestosBean;
 import io.github.carlosthe19916.beans.InvoiceBean;
-import io.github.carlosthe19916.beans.MonedaBean;
-import io.github.carlosthe19916.beans.TotalBean;
-import io.github.carlosthe19916.beans.ubl.ubl20.Total20Bean;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

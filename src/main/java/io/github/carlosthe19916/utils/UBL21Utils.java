@@ -1,10 +1,10 @@
 package io.github.carlosthe19916.utils;
 
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.*;
-import un.unece.uncefact.codelist.specification._54217._2001.CurrencyCodeContentType;
 
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigDecimal;
 
 public class UBL21Utils {

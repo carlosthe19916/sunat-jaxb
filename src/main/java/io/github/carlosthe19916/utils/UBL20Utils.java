@@ -4,8 +4,6 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.*;
 import un.unece.uncefact.codelist.specification._54217._2001.CurrencyCodeContentType;
 import un.unece.uncefact.codelist.specification._66411._2001.UnitCodeContentType;
-import un.unece.uncefact.data.specification.unqualifieddatatypesschemamodule._2.IdentifierType;
-import un.unece.uncefact.data.specification.unqualifieddatatypesschemamodule._2.TextType;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigDecimal;

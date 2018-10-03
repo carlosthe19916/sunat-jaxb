@@ -1,24 +1,39 @@
 package io.github.carlosthe19916.utils;
 
-import io.github.carlosthe19916.beans.FechaBean;
-import io.github.carlosthe19916.beans.InvoiceBean;
-import io.github.carlosthe19916.beans.ubl.UBLDefaults;
+import io.github.carlosthe19916.beans.config.ubl20.GlobalUBL20Defaults;
+import io.github.carlosthe19916.beans.config.ubl21.GlobalUBL21Defaults;
+import io.github.carlosthe19916.beans.mappers.Invoice20FillOut;
+import io.github.carlosthe19916.beans.mappers.Invoice21FillOut;
 import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
-import io.github.carlosthe19916.beans.ubl.ubl20.UBL20Defaults;
-import io.github.carlosthe19916.beans.ubl.ubl21.Impuestos21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
-import io.github.carlosthe19916.beans.ubl.ubl21.Total21Bean;
-import io.github.carlosthe19916.beans.ubl.ubl21.UBL21Defaults;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ServiceLoader;
 import java.util.Set;
 
 public class BeanUtils {
+
+    private static final List<Invoice20FillOut> invoice20FillOut;
+    private static final List<Invoice21FillOut> invoice21FillOut;
+
+    static {
+        invoice20FillOut = new ArrayList<>();
+        for (Invoice20FillOut fillOut : ServiceLoader.load(Invoice20FillOut.class)) {
+            invoice20FillOut.add(fillOut);
+        }
+        invoice20FillOut.sort((t1, t2) -> t2.order() - t1.order());
+
+        invoice21FillOut = new ArrayList<>();
+        for (Invoice21FillOut fillOut : ServiceLoader.load(Invoice21FillOut.class)) {
+            invoice21FillOut.add(fillOut);
+        }
+        invoice21FillOut.sort((t1, t2) -> t2.order() - t1.order());
+    }
 
     private BeanUtils() {
         // Just static methods
@@ -30,83 +45,37 @@ public class BeanUtils {
         return validator.validate(t);
     }
 
-    public static Invoice20Bean applyDefaults(InvoiceBean invoice, UBL20Defaults... defaults) {
-        Invoice20Bean result;
-        if (invoice instanceof Invoice20Bean) {
-            result = (Invoice20Bean) invoice;
-        } else {
-            result = new Invoice20Bean(invoice);
+    public static Invoice20Bean fillOut(Invoice20Bean invoice, Invoice20FillOut... fillOuts) {
+        GlobalUBL20Defaults defaults = GlobalUBL20Defaults.getInstance();
+
+        for (Invoice20FillOut fillOut : fillOuts) {
+            invoice = fillOut.fillIn(invoice);
         }
 
-        applyDefaults(result, defaults);
-
-        for (UBL20Defaults ubl20Defaults : defaults) {
-
-        }
-
-        return result;
-    }
-
-    public static Invoice21Bean applyDefaults(InvoiceBean invoice, UBL21Defaults... defaults) {
-        Invoice21Bean result;
-        if (invoice instanceof Invoice21Bean) {
-            result = (Invoice21Bean) invoice;
-        } else {
-            result = new Invoice21Bean(invoice);
-        }
-
-        applyDefaults(result, defaults);
-
-        for (UBL21Defaults ubl21Defaults : defaults) {
-            // totales
-            if (ubl21Defaults.calculoAutomatico()) {
-               
-               
-                if (result.getTotal() == null) {
-                    result.setTotal(new Total21Bean());
-                }
-
-                Total21Bean total = result.getTotal();
-                if (total.getExtensionAmount() == null && total.getInclusiveAmount() == null) {
-                    BigDecimal totalAPAgar = total.getPagar();
-                    BigDecimal otrosCarl = total.getOtrosCargos();
-                    BigDecimal descuentosr = total.getDescuentoGlobal();
-                    BigDecimal anticipo = total.getAnticipos() != null ? total.getAnticipos() : BigDecimal.ZERO;
-
-                    BigDecimal extensionAmount = (totalAPAgar.subtract(otrosCarl).subtract(descuentosr)
-                            .subtract(anticipo)).divide(ubl21Defaults.getIgv().add(BigDecimal.ONE));
-                    BigDecimal inclusiveAmount = extensionAmount.multiply(ubl21Defaults.getIgv().add(BigDecimal.ONE));
-
-                    total.setExtensionAmount(extensionAmount);
-                    total.setInclusiveAmount(inclusiveAmount);
-                }
-
-                Impuestos21Bean a = result.getImpuestos();
-                BigDecimal igv = a.getIgv();
-                BigDecimal taxableAmount = igv.divide(ubl21Defaults.getIgv()); //: [Total valor de venta operaciones gravadas] + [Sumatoria ISC].
-                a.setIgvAfecto(taxableAmount);
-                    
-            }
-        }
-
-        return result;
-    }
-
-    private static InvoiceBean applyDefaults(InvoiceBean invoice, UBLDefaults... defaults) {
-        for (UBLDefaults ublDefaults : defaults) {
-            // Time Zone
-            if (invoice.getFecha() == null) {
-                invoice.setFecha(new FechaBean());
-            }
-
-            if (ublDefaults.getTimeZone() != null) {
-                if (invoice.getFecha().getTimeZone() == null) {
-                    invoice.getFecha().setTimeZone(ublDefaults.getTimeZone());
-                }
+        if (defaults.getAplicarCalculosInternosAutomaticos()) {
+            for (Invoice20FillOut fillOut : invoice20FillOut) {
+                invoice = fillOut.fillIn(invoice);
             }
         }
 
         return invoice;
     }
+
+    public static Invoice21Bean fillOut(Invoice21Bean invoice, Invoice21FillOut... fillOuts) {
+        GlobalUBL21Defaults defaults = GlobalUBL21Defaults.getInstance();
+
+        for (Invoice21FillOut fillOut : fillOuts) {
+            invoice = fillOut.fillIn(invoice);
+        }
+
+        if (defaults.getAplicarCalculosInternosAutomaticos()) {
+            for (Invoice21FillOut fillOut : invoice21FillOut) {
+                invoice = fillOut.fillIn(invoice);
+            }
+        }
+
+        return invoice;
+    }
+
 
 }
