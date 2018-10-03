@@ -1,8 +1,10 @@
 package io.github.carlosthe19916.beans;
 
 import io.github.carlosthe19916.beans.catalogs.Catalog1;
+import io.github.carlosthe19916.beans.ubl.ubl20.Impuestos20Bean;
 import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
 import io.github.carlosthe19916.beans.ubl.ubl20.Total20Bean;
+import io.github.carlosthe19916.beans.ubl.ubl21.Impuestos21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.Total21Bean;
 
@@ -80,11 +82,6 @@ public class InvoiceBeanBuilder {
         return this;
     }
 
-    public InvoiceBeanBuilder impuestos(ImpuestosBean impuestos) {
-        invoice.setImpuestos(impuestos);
-        return this;
-    }
-
     public InvoiceBeanBuilder totalInformacionAdicional(TotalInformacionAdicionalBean totalInformacionAdicional) {
         invoice.setTotalInformacionAdicional(totalInformacionAdicional);
         return this;
@@ -133,6 +130,11 @@ public class InvoiceBeanBuilder {
             invoice20.setTotal(total);
             return this;
         }
+
+        public Invoice20BeanBuilder impuestos(Impuestos20Bean impuestos) {
+            invoice20.setImpuestos(impuestos);
+            return this;
+        }
     }
 
 
@@ -152,6 +154,11 @@ public class InvoiceBeanBuilder {
 
         public Invoice21BeanBuilder total(Total21Bean total) {
             invoice21.setTotal(total);
+            return this;
+        }
+
+        public Invoice21BeanBuilder impuestos(Impuestos21Bean impuestos) {
+            invoice21.setImpuestos(impuestos);
             return this;
         }
 

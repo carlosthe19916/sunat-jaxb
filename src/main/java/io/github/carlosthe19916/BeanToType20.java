@@ -3,10 +3,7 @@ package io.github.carlosthe19916;
 import com.helger.ubl20.UBL20Reader;
 import com.helger.ubl21.UBL21Reader;
 import io.github.carlosthe19916.beans.*;
-import io.github.carlosthe19916.beans.ubl.ubl20.GlobalUBL20Defaults;
-import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
-import io.github.carlosthe19916.beans.ubl.ubl20.Total20Bean;
-import io.github.carlosthe19916.beans.ubl.ubl20.UBL20Defaults;
+import io.github.carlosthe19916.beans.ubl.ubl20.*;
 import io.github.carlosthe19916.beans.ubl.ubl21.GlobalUBL21Defaults;
 import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.UBL21Defaults;
@@ -105,7 +102,7 @@ public class BeanToType20 {
         invoiceType.setLegalMonetaryTotal(buildMonetaryTotalType(total, invoice20.getMoneda()));
 
         // Total impuestos IGV/ISC
-        ImpuestosBean impuestos = invoice.getImpuestos();
+        Impuestos20Bean impuestos = invoice20.getImpuestos();
         invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice20.getMoneda()));
 
         return invoiceType;
@@ -398,7 +395,7 @@ public class BeanToType20 {
         return monetaryTotalType;
     }
 
-    private static List<TaxTotalType> buildTaxTotalType(ImpuestosBean impuestosBean, MonedaBean moneda) {
+    private static List<TaxTotalType> buildTaxTotalType(Impuestos20Bean impuestosBean, MonedaBean moneda) {
         List<TaxTotalType> result = new ArrayList<>();
 
         if (impuestosBean.getIgv() != null) {

@@ -7,10 +7,7 @@ import io.github.carlosthe19916.beans.*;
 import io.github.carlosthe19916.beans.ubl.ubl20.GlobalUBL20Defaults;
 import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
 import io.github.carlosthe19916.beans.ubl.ubl20.UBL20Defaults;
-import io.github.carlosthe19916.beans.ubl.ubl21.GlobalUBL21Defaults;
-import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
-import io.github.carlosthe19916.beans.ubl.ubl21.Total21Bean;
-import io.github.carlosthe19916.beans.ubl.ubl21.UBL21Defaults;
+import io.github.carlosthe19916.beans.ubl.ubl21.*;
 import io.github.carlosthe19916.exceptions.InvalidCodeException;
 import io.github.carlosthe19916.exceptions.InvoiceBeanValidacionException;
 import io.github.carlosthe19916.exceptions.NoteBeanValidacionException;
@@ -116,8 +113,8 @@ public class BeanToType21 {
         invoiceType.setLegalMonetaryTotal(buildMonetaryTotalType(total, invoice21.getMoneda()));
 
         // Total impuestos IGV/ISC
-        ImpuestosBean impuestos = invoice.getImpuestos();
-        invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice21.getMoneda()));
+        Impuestos21Bean impuestos = invoice21.getImpuestos();
+        invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice21.getTotalInformacionAdicional(), invoice21.getMoneda()));
 
         return invoiceType;
     }
@@ -424,7 +421,7 @@ public class BeanToType21 {
         return monetaryTotalType;
     }
 
-    private static List<TaxTotalType> buildTaxTotalType(ImpuestosBean impuestosBean, MonedaBean moneda) {
+    private static List<TaxTotalType> buildTaxTotalType(Impuestos21Bean impuestosBean, TotalInformacionAdicionalBean totalInformacionAdicional, MonedaBean moneda) {
         List<TaxTotalType> result = new ArrayList<>();
 
         if (impuestosBean.getIgv() != null) {
@@ -436,8 +433,8 @@ public class BeanToType21 {
         }
         if (impuestosBean.getIsc() != null) {
             TaxTotalType taxTotalType = new TaxTotalType();
-            taxTotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(codigoMoneda, impuestosBean.getIsc()));
-            taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(codigoMoneda, impuestosBean.getIsc(), TipoTributo.ISC));
+            taxTotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(impuestosBean.getIsc(), moneda.getCodigo()));
+            taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(impuestosBean.getIsc(),  moneda.getCodigo(), TipoTributo.ISC));
 
             result.add(taxTotalType);
         }

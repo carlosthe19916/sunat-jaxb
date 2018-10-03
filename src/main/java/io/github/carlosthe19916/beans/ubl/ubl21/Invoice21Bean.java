@@ -1,5 +1,6 @@
 package io.github.carlosthe19916.beans.ubl.ubl21;
 
+import io.github.carlosthe19916.beans.ImpuestosBean;
 import io.github.carlosthe19916.beans.InvoiceBean;
 import io.github.carlosthe19916.beans.MonedaBean;
 import io.github.carlosthe19916.beans.TotalBean;
@@ -16,6 +17,10 @@ public class Invoice21Bean extends InvoiceBean {
     @Valid
     @NotNull
     private Total21Bean total;
+
+    @Valid
+    @NotNull
+    private Impuestos21Bean impuestos;
 
     public Invoice21Bean(InvoiceBean invoice) {
         super(invoice);
@@ -37,5 +42,13 @@ public class Invoice21Bean extends InvoiceBean {
 
     public void setTotal(Total21Bean total) {
         this.total = total;
+    }
+
+    public Impuestos21Bean getImpuestos() {
+        return impuestos;
+    }
+
+    public void setImpuestos(Impuestos21Bean impuestos) {
+        this.impuestos = impuestos;
     }
 }

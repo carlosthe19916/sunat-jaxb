@@ -15,6 +15,10 @@ public class Invoice20Bean extends InvoiceBean {
     @NotNull
     private Total20Bean total;
 
+    @Valid
+    @NotNull
+    private Impuestos20Bean impuestos;
+
     public Invoice20Bean() {
     }
 
@@ -38,4 +42,12 @@ public class Invoice20Bean extends InvoiceBean {
         this.total = total;
     }
 
+    @Override
+    public Impuestos20Bean getImpuestos() {
+        return impuestos;
+    }
+
+    public void setImpuestos(Impuestos20Bean impuestos) {
+        this.impuestos = impuestos;
+    }
 }

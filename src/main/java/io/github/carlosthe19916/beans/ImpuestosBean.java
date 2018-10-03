@@ -10,6 +10,15 @@ public class ImpuestosBean {
     private BigDecimal isc;
     private BigDecimal otros;
 
+    public ImpuestosBean() {
+    }
+
+    public ImpuestosBean(ImpuestosBean impuestos) {
+        igv = impuestos.igv;
+        isc = impuestos.isc;
+        otros = impuestos.otros;
+    }
+
     public BigDecimal getIgv() {
         return igv;
     }

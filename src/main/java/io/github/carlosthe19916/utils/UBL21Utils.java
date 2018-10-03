@@ -144,11 +144,39 @@ public class UBL21Utils {
 
     // Impuestos
 
-        public static TaxAmountType buildTaxAmountType(BigDecimal value, String currency) {
+    public static TaxAmountType buildTaxAmountType(BigDecimal value, String currency) {
         TaxAmountType taxAmountType = new TaxAmountType();
         taxAmountType.setCurrencyID(currency);
         taxAmountType.setValue(value);
         return taxAmountType;
+    }
+
+    public static TaxCategoryType buildTaxCategoryType(String ID, String name, String code) {
+        TaxCategoryType taxCategoryType = new TaxCategoryType();
+        taxCategoryType.setTaxScheme(buildTaxSchemeType(ID, name, code));
+        return taxCategoryType;
+    }
+
+    public static TaxSchemeType buildTaxSchemeType(String ID, String name, String code) {
+        TaxSchemeType taxSchemeType = new TaxSchemeType();
+
+        IDType idType = new IDType();
+        taxSchemeType.setID(idType);
+
+
+        idType.setValue(ID);
+        idType.setSchemeID("UN/ECE 5305");
+        idType.setSchemeName("United Nations Economic Commission for Europe");
+
+        taxSchemeType.setName(buildNameType(name));
+        taxSchemeType.setTaxTypeCode(buildTaxTypeCodeType(code));
+        return taxSchemeType;
+    }
+
+    public static TaxTypeCodeType buildTaxTypeCodeType(String value) {
+        TaxTypeCodeType taxTypeCodeType = new TaxTypeCodeType();
+        taxTypeCodeType.setValue(value);
+        return taxTypeCodeType;
     }
 
 //    public static IssueDateType buildIssueDateType(XMLGregorianCalendar value) {
@@ -225,11 +253,6 @@ public class UBL21Utils {
 //    }
 //
 //
-//    public static TaxTypeCodeType buildTaxTypeCodeType(String value) {
-//        TaxTypeCodeType taxTypeCodeType = new TaxTypeCodeType();
-//        taxTypeCodeType.setValue(value);
-//        return taxTypeCodeType;
-//    }
 //
 //    public static InvoicedQuantityType buildInvoicedQuantityType(String unitCode, BigDecimal value) {
 //        InvoicedQuantityType invoicedQuantityType = new InvoicedQuantityType();
@@ -298,19 +321,6 @@ public class UBL21Utils {
 //    }
 //
 //
-//    public static TaxSchemeType buildTaxSchemeType(String ID, String name, String code) {
-//        TaxSchemeType taxSchemeType = new TaxSchemeType();
-//        taxSchemeType.setID(buildIDType(ID));
-//        taxSchemeType.setName(buildNameType(name));
-//        taxSchemeType.setTaxTypeCode(buildTaxTypeCodeType(code));
-//        return taxSchemeType;
-//    }
-//
-//    public static TaxCategoryType buildTaxCategoryType(String ID, String name, String code) {
-//        TaxCategoryType taxCategoryType = new TaxCategoryType();
-//        taxCategoryType.setTaxScheme(buildTaxSchemeType(ID, name, code));
-//        return taxCategoryType;
-//    }
 //
 //    public static PriceType buildPriceType(String currency, BigDecimal value, String priceTypeCode) {
 //        PriceType priceType = new PriceType();

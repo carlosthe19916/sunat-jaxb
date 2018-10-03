@@ -27,10 +27,6 @@ public class InvoiceBean {
 
     @Valid
     @NotNull
-    private ImpuestosBean impuestos;
-
-    @Valid
-    @NotNull
     private TotalInformacionAdicionalBean totalInformacionAdicional;
 
     @Valid
@@ -54,7 +50,6 @@ public class InvoiceBean {
         codigoTipoComprobante = invoice.codigoTipoComprobante;
         fecha = invoice.fecha;
         moneda = invoice.moneda;
-        impuestos = invoice.impuestos;
         totalInformacionAdicional = invoice.totalInformacionAdicional;
         cliente = invoice.cliente;
         proveedor = invoice.proveedor;
@@ -99,14 +94,6 @@ public class InvoiceBean {
 
     public void setMoneda(MonedaBean moneda) {
         this.moneda = moneda;
-    }
-
-    public ImpuestosBean getImpuestos() {
-        return impuestos;
-    }
-
-    public void setImpuestos(ImpuestosBean impuestos) {
-        this.impuestos = impuestos;
     }
 
     public TotalInformacionAdicionalBean getTotalInformacionAdicional() {
