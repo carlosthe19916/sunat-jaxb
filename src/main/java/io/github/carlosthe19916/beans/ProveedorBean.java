@@ -1,17 +1,34 @@
 package io.github.carlosthe19916.beans;
 
+import javax.validation.constraints.NotNull;
+
 public class ProveedorBean {
 
-    private String codigoTipoDocumento;
-    private String numeroDocumento;
-    private String nombreComercial;
-    private String razonSocial;
-    private String codigoPostal;
-    private String direccion;
-    private String provincia;
-    private String distrito;
-    private String region;
-    private String codigoPais;
+    @NotNull
+    protected String codigoTipoDocumento;
+
+    @NotNull
+    protected String numeroDocumento;
+
+    @NotNull
+    protected String nombreComercial;
+
+    @NotNull
+    protected String razonSocial;
+
+    @NotNull
+    protected String codigoPostal;
+
+    public ProveedorBean() {
+    }
+
+    public ProveedorBean(ProveedorBean proveedor) {
+        codigoTipoDocumento = proveedor.getCodigoTipoDocumento();
+        numeroDocumento = proveedor.getNumeroDocumento();
+        nombreComercial = proveedor.getNombreComercial();
+        razonSocial = proveedor.getRazonSocial();
+        codigoPostal = proveedor.getCodigoPostal();
+    }
 
     public String getCodigoTipoDocumento() {
         return codigoTipoDocumento;
@@ -53,43 +70,4 @@ public class ProveedorBean {
         this.codigoPostal = codigoPostal;
     }
 
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getProvincia() {
-        return provincia;
-    }
-
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
-    }
-
-    public String getDistrito() {
-        return distrito;
-    }
-
-    public void setDistrito(String distrito) {
-        this.distrito = distrito;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getCodigoPais() {
-        return codigoPais;
-    }
-
-    public void setCodigoPais(String codigoPais) {
-        this.codigoPais = codigoPais;
-    }
 }

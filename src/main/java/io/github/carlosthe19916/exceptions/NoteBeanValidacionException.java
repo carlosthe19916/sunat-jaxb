@@ -1,7 +1,6 @@
 package io.github.carlosthe19916.exceptions;
 
 import io.github.carlosthe19916.beans.NoteBean;
-import io.github.carlosthe19916.beans.NoteBean;
 
 import javax.validation.ConstraintViolation;
 import java.util.Collections;

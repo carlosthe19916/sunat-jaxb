@@ -1,5 +1,6 @@
 package io.github.carlosthe19916.beans;
 
+import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,7 +11,7 @@ public class InvoiceBeanBuilderTest {
 
     @Test
     public void testBuilder() {
-        InvoiceBean invoiceBean = InvoiceBeanBuilder.InvoiceBean()
+        Invoice20Bean invoiceBean = InvoiceBeanBuilder.InvoiceBean()
                 .serie("F001")
                 .numero(1)
                 .codigoTipoComprobante("01")

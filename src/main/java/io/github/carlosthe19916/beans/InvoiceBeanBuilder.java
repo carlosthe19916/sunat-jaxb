@@ -1,5 +1,11 @@
 package io.github.carlosthe19916.beans;
 
+import io.github.carlosthe19916.beans.catalogs.Catalog1;
+import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
+import io.github.carlosthe19916.beans.ubl.ubl20.Total20Bean;
+import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
+import io.github.carlosthe19916.beans.ubl.ubl21.Total21Bean;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,13 +13,42 @@ public class InvoiceBeanBuilder {
 
     private final InvoiceBean invoice;
 
-    public InvoiceBeanBuilder() {
-        this.invoice = new InvoiceBean();
-    }
-
+    /*
+     * Get a new instance
+     */
     public static InvoiceBeanBuilder InvoiceBean() {
         return new InvoiceBeanBuilder();
     }
+
+
+    /**
+     * Constructor
+     */
+    private InvoiceBeanBuilder() {
+        this.invoice = new InvoiceBean();
+    }
+
+
+    /**
+     * Build
+     */
+    public InvoiceBean build() {
+        return invoice;
+    }
+
+
+    // Specializations
+
+    public Invoice20BeanBuilder ubl20() {
+        return new Invoice20BeanBuilder();
+    }
+
+    public Invoice21BeanBuilder ubl21() {
+        return new Invoice21BeanBuilder();
+    }
+
+
+    // Build process
 
     public InvoiceBeanBuilder serie(String serie) {
         invoice.setSerie(serie);
@@ -27,6 +62,11 @@ public class InvoiceBeanBuilder {
 
     public InvoiceBeanBuilder codigoTipoComprobante(String codigoTipoComprobante) {
         invoice.setCodigoTipoComprobante(codigoTipoComprobante);
+        return this;
+    }
+
+    public InvoiceBeanBuilder codigoTipoComprobante(Catalog1 catalog1) {
+        invoice.setCodigoTipoComprobante(catalog1.getCode());
         return this;
     }
 
@@ -45,18 +85,8 @@ public class InvoiceBeanBuilder {
         return this;
     }
 
-    public InvoiceBeanBuilder total(TotalBean total) {
-        invoice.setTotal(total);
-        return this;
-    }
-
     public InvoiceBeanBuilder totalInformacionAdicional(TotalInformacionAdicionalBean totalInformacionAdicional) {
         invoice.setTotalInformacionAdicional(totalInformacionAdicional);
-        return this;
-    }
-
-    public InvoiceBeanBuilder observaciones(String observaciones) {
-        invoice.setObservaciones(observaciones);
         return this;
     }
 
@@ -80,8 +110,50 @@ public class InvoiceBeanBuilder {
         return this;
     }
 
-    public InvoiceBean build() {
-        return invoice;
+
+    // UBL20
+
+    public class Invoice20BeanBuilder {
+        private final Invoice20Bean invoice20;
+
+        private Invoice20BeanBuilder() {
+            invoice20 = new Invoice20Bean(invoice);
+        }
+
+        public Invoice20Bean build() {
+            return invoice20;
+        }
+
+        public Invoice20BeanBuilder observaciones(String observaciones) {
+            invoice20.setObservaciones(observaciones);
+            return this;
+        }
+
+        public Invoice20BeanBuilder total(Total20Bean total) {
+            invoice20.setTotal(total);
+            return this;
+        }
     }
 
+
+    // UBL21
+
+    public class Invoice21BeanBuilder {
+
+        private final Invoice21Bean invoice21;
+
+        private Invoice21BeanBuilder() {
+            invoice21 = new Invoice21Bean(invoice);
+        }
+
+        public Invoice21Bean build() {
+            return invoice21;
+        }
+
+        public Invoice21BeanBuilder total(Total21Bean total) {
+            invoice21.setTotal(total);
+            return this;
+        }
+
+    }
 }

@@ -3,7 +3,6 @@ package io.github.carlosthe19916.beans;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceBean {
@@ -21,10 +20,6 @@ public class InvoiceBean {
     @Valid
     @NotNull
     private FechaBean fecha;
-
-    @Valid
-    @NotNull
-    private TotalBean total;
 
     @Valid
     @NotNull
@@ -50,7 +45,21 @@ public class InvoiceBean {
     @NotNull
     private List<@Valid DetalleBean> detalle;
 
-    private String observaciones;
+    public InvoiceBean() {
+    }
+
+    public InvoiceBean(InvoiceBean invoice) {
+        serie = invoice.serie;
+        numero = invoice.numero;
+        codigoTipoComprobante = invoice.codigoTipoComprobante;
+        fecha = invoice.fecha;
+        moneda = invoice.moneda;
+        impuestos = invoice.impuestos;
+        totalInformacionAdicional = invoice.totalInformacionAdicional;
+        cliente = invoice.cliente;
+        proveedor = invoice.proveedor;
+        detalle = invoice.detalle;
+    }
 
     public String getSerie() {
         return serie;
@@ -82,14 +91,6 @@ public class InvoiceBean {
 
     public void setFecha(FechaBean fecha) {
         this.fecha = fecha;
-    }
-
-    public TotalBean getTotal() {
-        return total;
-    }
-
-    public void setTotal(TotalBean total) {
-        this.total = total;
     }
 
     public MonedaBean getMoneda() {
@@ -140,11 +141,4 @@ public class InvoiceBean {
         this.detalle = detalle;
     }
 
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
-    }
 }

@@ -8,6 +8,16 @@ public class TotalBean {
     private BigDecimal otrosCargos;
     private BigDecimal descuentoGlobal;
 
+    public TotalBean() {
+
+    }
+
+    public TotalBean(TotalBean total) {
+        pagar = total.pagar;
+        otrosCargos = total.otrosCargos;
+        descuentoGlobal = total.descuentoGlobal;
+    }
+
     public BigDecimal getPagar() {
         return pagar;
     }
