@@ -6,6 +6,9 @@ public class GlobalUBL20Defaults extends AbstractUBLDefaults implements UBL20Def
 
     private volatile static GlobalUBL20Defaults instance = new GlobalUBL20Defaults();
 
+    private String ublVersion = "2.0";
+    private String customizationId = "2.0";
+
     private GlobalUBL20Defaults() {
         // Singleton
     }
@@ -19,6 +22,24 @@ public class GlobalUBL20Defaults extends AbstractUBLDefaults implements UBL20Def
             }
         }
         return instance;
+    }
+
+    @Override
+    public String getUblVersion() {
+        return ublVersion;
+    }
+
+    public void setUblVersion(String ublVersion) {
+        this.ublVersion = ublVersion;
+    }
+
+    @Override
+    public String getCustomizationId() {
+        return customizationId;
+    }
+
+    public void setCustomizationId(String customizationId) {
+        this.customizationId = customizationId;
     }
 
 }

@@ -1,7 +1,9 @@
 package io.github.carlosthe19916.types;
 
 import io.github.carlosthe19916.beans.*;
+import io.github.carlosthe19916.beans.catalogs.TipoPrecioVentaUnitario;
 import io.github.carlosthe19916.beans.catalogs.TipoTributo;
+import io.github.carlosthe19916.beans.config.ubl21.GlobalUBL21Defaults;
 import io.github.carlosthe19916.beans.exceptions.Invoice21BeanValidacionException;
 import io.github.carlosthe19916.beans.ubl.ubl21.Impuestos21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
@@ -34,17 +36,24 @@ public class BeanToType21 {
             throw new Invoice21BeanValidacionException("Invalid bean", violations);
         }
 
+        GlobalUBL21Defaults defaults = GlobalUBL21Defaults.getInstance();
+
         // Type
         oasis.names.specification.ubl.schema.xsd.invoice_21.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.invoice_21.ObjectFactory();
         oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType invoiceType = factory.createInvoiceType();
 
-        invoiceType.setUBLVersionID(UBL21Utils.buildUBLVersionID("2.0"));
-        invoiceType.setCustomizationID(UBL21Utils.buildCustomizationIDType("1.0"));
+        invoiceType.setUBLVersionID(UBL21Utils.buildUBLVersionID(defaults.getUblVersion()));
+        invoiceType.setCustomizationID(UBL21Utils.buildCustomizationIDType(defaults.getCustomizationId()));
 
         // Profile
-        ProfileIDType profileIDType = UBL21Utils.toProfileIDType(invoice.getTipoOperacion());
+        ProfileIDType profileIDType = UBL21Utils.toProfileIDType(invoice.getTipoOperacion().getCode());
         invoiceType.setProfileID(profileIDType);
 
+        // 10 Leyendas
+        // 12 Guia de remision relacionada
+        // 13 otro documento relacionado
+        // 20 direccion donde se entrega el bien
+        // 21 descuentos globales
 
         // Serie y numero
         String serieNumero = MessageFormat.format("{0}-{1}", invoice.getSerie(), invoice.getNumero());
@@ -62,15 +71,15 @@ public class BeanToType21 {
         }
 
         // Tipo comprobante
-        String codigoTipoComprobante = invoice.getTipoComprobante().getCodigo();
+        String codigoTipoComprobante = invoice.getTipoDocumento().getCodigo();
         invoiceType.setInvoiceTypeCode(UBL21Utils.buildInvoiceTypeCodeType(codigoTipoComprobante));
 
-        // Moneda
+        // builder
         MonedaBean moneda = invoice.getMoneda();
         invoiceType.setDocumentCurrencyCode(UBL21Utils.buildDocumentCurrencyCodeType(moneda.getCodigo()));
 
         // Proveedor
-        ProveedorBean proveedor = invoice.getProveedor();
+        AbstractProveedorBean proveedor = invoice.getProveedor();
         invoiceType.setAccountingSupplierParty(buildSupplierPartyType(proveedor));
 
         // Cliente
@@ -81,9 +90,16 @@ public class BeanToType21 {
         Total21Bean total = invoice.getTotal();
         invoiceType.setLegalMonetaryTotal(buildMonetaryTotalType(total, invoice.getMoneda()));
 
-        // Total impuestos IGV/ISC
+        // Total bean IGV/ISC
         Impuestos21Bean impuestos = invoice.getImpuestos();
         invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice.getTotalInformacionAdicional(), invoice.getMoneda()));
+
+        // Detalle
+        int i = 1;
+        for (DetalleBean detalle : invoice.getDetalle()) {
+            invoiceType.getInvoiceLine().add(buildInvoiceLineType(i, moneda.getCodigo(), detalle));
+            i++;
+        }
 
         return invoiceType;
     }
@@ -91,7 +107,7 @@ public class BeanToType21 {
 
     // Proveedor
 
-    private static SupplierPartyType buildSupplierPartyType(ProveedorBean proveedor) {
+    private static SupplierPartyType buildSupplierPartyType(AbstractProveedorBean proveedor) {
         SupplierPartyType supplierPartyType = new SupplierPartyType();
 
         PartyType partyType = new PartyType();
@@ -211,202 +227,67 @@ public class BeanToType21 {
     }
 
 
-//    private static ExtensionContentType buildExtensionContentType() {
-//        return new ExtensionContentType();
-//    }
-//
-//    private static UBLExtensionType buildUBLExtensionType() {
-//        UBLExtensionType ublExtensionType = new UBLExtensionType();
-//        ublExtensionType.setExtensionContent(buildExtensionContentType());
-//        return ublExtensionType;
-//    }
-//
-//    private static UBLExtensionsType buildUBLExtensionsType(String codigoMoneda, TotalInformacionAdicionalBean totalInformacionAdicionalBean) {
-//        UBLExtensionsType ublExtensionsType = new UBLExtensionsType();
-//
-//        // Totales
-//        UBLExtensionType ublExtensionType1 = new UBLExtensionType();
-//        ExtensionContentType extensionContentType1 = new ExtensionContentType();
-//        ublExtensionType1.setExtensionContent(extensionContentType1);
-//        ublExtensionsType.getUBLExtension().add(ublExtensionType1);
-//
-//        AdditionalInformationType additionalInformationType = buildAdditionalInformationType(codigoMoneda, totalInformacionAdicionalBean);
-//
-//        sunat.names.specification.ubl.peru.schema.xsd.sunataggregatecomponents_1.ObjectFactory factory = new sunat.names.specification.ubl.peru.schema.xsd.sunataggregatecomponents_1.ObjectFactory();
-//        JAXBElement<AdditionalInformationType> jaxbElement = factory.createAdditionalInformation(additionalInformationType);
-//
-//        try {
-//            Element element = JaxbUtils.marshalToElement(ObjectFactory.class, jaxbElement);
-//            extensionContentType1.setAny(element);
-//        } catch (JAXBException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        // Firma Digital
-//        UBLExtensionType ublExtensionType2 = new UBLExtensionType();
-//        ExtensionContentType extensionContentType2 = new ExtensionContentType();
-//        ublExtensionType2.setExtensionContent(extensionContentType2);
-//        ublExtensionsType.getUBLExtension().add(ublExtensionType2);
-//
-//        return ublExtensionsType;
-//    }
-//
-//    private static sunat.names.specification.ubl.peru.schema.xsd.sunataggregatecomponents_1.AdditionalInformationType buildAdditionalInformationType(String codigoMoneda, TotalInformacionAdicionalBean totalInformacionAdicionalBean) {
-//        sunat.names.specification.ubl.peru.schema.xsd.sunataggregatecomponents_1.AdditionalInformationType additionalInformationType = new sunat.names.specification.ubl.peru.schema.xsd.sunataggregatecomponents_1.AdditionalInformationType();
-//
-//        if (totalInformacionAdicionalBean.getGravado() != null) {
-//            AdditionalMonetaryTotalType additionalMonetaryTotalType = new AdditionalMonetaryTotalType();
-//            additionalMonetaryTotalType.setID(UBLUtils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_GRAVADAS.getCodigo()));
-//            additionalMonetaryTotalType.setPayableAmount(UBLUtils.buildPayableAmountType(codigoMoneda, totalInformacionAdicionalBean.getGravado()));
-//
-//            additionalInformationType.getAdditionalMonetaryTotal().add(additionalMonetaryTotalType);
-//        }
-//        if (totalInformacionAdicionalBean.getInafecto() != null) {
-//            AdditionalMonetaryTotalType additionalMonetaryTotalType = new AdditionalMonetaryTotalType();
-//            additionalMonetaryTotalType.setID(UBLUtils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_INAFECTAS.getCodigo()));
-//            additionalMonetaryTotalType.setPayableAmount(UBLUtils.buildPayableAmountType(codigoMoneda, totalInformacionAdicionalBean.getInafecto()));
-//
-//            additionalInformationType.getAdditionalMonetaryTotal().add(additionalMonetaryTotalType);
-//        }
-//        if (totalInformacionAdicionalBean.getExonerado() != null) {
-//            AdditionalMonetaryTotalType additionalMonetaryTotalType = new AdditionalMonetaryTotalType();
-//            additionalMonetaryTotalType.setID(UBLUtils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_EXONERADAS.getCodigo()));
-//            additionalMonetaryTotalType.setPayableAmount(UBLUtils.buildPayableAmountType(codigoMoneda, totalInformacionAdicionalBean.getExonerado()));
-//
-//            additionalInformationType.getAdditionalMonetaryTotal().add(additionalMonetaryTotalType);
-//        }
-//        if (totalInformacionAdicionalBean.getGratuito() != null) {
-//            AdditionalMonetaryTotalType additionalMonetaryTotalType = new AdditionalMonetaryTotalType();
-//            additionalMonetaryTotalType.setID(UBLUtils.buildIDType(TipoConceptosTributarios.TOTAL_VALOR_VENTA_OPERACIONES_GRATUITAS.getCodigo()));
-//            additionalMonetaryTotalType.setPayableAmount(UBLUtils.buildPayableAmountType(codigoMoneda, totalInformacionAdicionalBean.getGratuito()));
-//
-//            additionalInformationType.getAdditionalMonetaryTotal().add(additionalMonetaryTotalType);
-//        }
-//
-//        return additionalInformationType;
-//    }
-//
-//    private static SignatureType buildSignatureType(ProveedorBean proveedorBean) {
-//        SignatureType signatureType = new SignatureType();
-//
-//        String signID = "IDSign" + proveedorBean.getNombreComercial().replaceAll("\\s", "");
-//        signatureType.setID(UBLUtils.buildIDType(signID));
-//
-//
-//        PartyType partyType = new PartyType();
-//        partyType.getPartyName().add(UBLUtils.buildPartyNameType(proveedorBean.getNombreComercial()));
-//        partyType.getPartyIdentification().add(UBLUtils.buildPartyIdentificationType(proveedorBean.getNumeroDocumento()));
-//
-//        signatureType.setSignatoryParty(partyType);
-//
-//        String URI = "#signature" + proveedorBean.getNombreComercial().replaceAll("\\s", "");
-//        AttachmentType attachmentType = new AttachmentType();
-//        attachmentType.setExternalReference(UBLUtils.buildExternalReferenceType(URI));
-//        signatureType.setDigitalSignatureAttachment(attachmentType);
-//
-//        return signatureType;
-//    }
-//
-//    private static InvoiceLineType buildInvoiceLineType(int index, String moneda, DetalleBean lineBean) {
-//        InvoiceLineType invoiceLineType = new InvoiceLineType();
-//
-//        invoiceLineType.setID(UBLUtils.buildIDType(String.valueOf(index)));
-//        invoiceLineType.setInvoicedQuantity(UBLUtils.buildInvoicedQuantityType(lineBean.getUnidadMedida(), lineBean.getCantidad()));
-//        invoiceLineType.setLineExtensionAmount(UBLUtils.buildLineExtensionAmountType(moneda, lineBean.getSubtotal()));
-//        invoiceLineType.setItem(UBLUtils.buildItemType(lineBean.getDescripcion()));
-//        invoiceLineType.setPricingReference(buildPricingReferenceType(moneda, lineBean));
-//        invoiceLineType.setPrice(UBLUtils.buildPriceType(moneda, lineBean.getValorUnitario()));
-//
-//        if (lineBean.getTotalIgv() != null) {
-//            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIgv(), lineBean.getCodigoTipoIgv(), TipoTributo.IGV));
-//        }
-//        if (lineBean.getTotalIsc() != null) {
-//            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIsc(), lineBean.getCodigoTipoIsc(), TipoTributo.ISC));
-//        }
-//
-//        return invoiceLineType;
-//    }
-//
-//    private static CreditNoteLineType buildCreditNoteLineType(int index, String moneda, DetalleBean datosVentaModel) {
-//        CreditNoteLineType creditNoteLineType = new CreditNoteLineType();
-//
-//        creditNoteLineType.setID(UBLUtils.buildIDType(String.valueOf(index)));
-//        creditNoteLineType.setCreditedQuantity(UBLUtils.buildCreditedQuantityType((datosVentaModel.getUnidadMedida()), datosVentaModel.getCantidad()));
-//        creditNoteLineType.setLineExtensionAmount(UBLUtils.buildLineExtensionAmountType(moneda, datosVentaModel.getSubtotal()));
-//        creditNoteLineType.setItem(UBLUtils.buildItemType(datosVentaModel.getDescripcion()));
-//        creditNoteLineType.setPricingReference(buildPricingReferenceType(moneda, datosVentaModel));
-//        creditNoteLineType.setPrice(UBLUtils.buildPriceType(moneda, datosVentaModel.getValorUnitario()));
-//
-//        if (datosVentaModel.getTotalIgv() != null) {
-//            creditNoteLineType.getTaxTotal().add(buildTaxTotalType(moneda, datosVentaModel.getTotalIgv(), datosVentaModel.getCodigoTipoIgv(), TipoTributo.IGV));
-//        }
-//        if (datosVentaModel.getTotalIsc() != null) {
-//            creditNoteLineType.getTaxTotal().add(buildTaxTotalType(moneda, datosVentaModel.getTotalIsc(), datosVentaModel.getCodigoTipoIsc(), TipoTributo.ISC));
-//        }
-//
-//        return creditNoteLineType;
-//    }
-//
-//    private static DebitNoteLineType buildDebitNoteLineType(int index, String moneda, DetalleBean lineBean) {
-//        DebitNoteLineType debitNoteLineType = new DebitNoteLineType();
-//
-//        debitNoteLineType.setID(UBLUtils.buildIDType(String.valueOf(index)));
-//        debitNoteLineType.setDebitedQuantity(UBLUtils.buildDebitedQuantityType((lineBean.getUnidadMedida()), lineBean.getCantidad()));
-//        debitNoteLineType.setLineExtensionAmount(UBLUtils.buildLineExtensionAmountType(moneda, lineBean.getSubtotal()));
-//        debitNoteLineType.setItem(UBLUtils.buildItemType(lineBean.getDescripcion()));
-//        debitNoteLineType.setPricingReference(buildPricingReferenceType(moneda, lineBean));
-//        debitNoteLineType.setPrice(UBLUtils.buildPriceType(moneda, lineBean.getValorUnitario()));
-//
-//        if (lineBean.getTotalIgv() != null) {
-//            debitNoteLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIgv(), lineBean.getCodigoTipoIgv(), TipoTributo.IGV));
-//        }
-//        if (lineBean.getTotalIsc() != null) {
-//            debitNoteLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIsc(), lineBean.getCodigoTipoIsc(), TipoTributo.ISC));
-//        }
-//
-//        return debitNoteLineType;
-//    }
-//
-//    private static PricingReferenceType buildPricingReferenceType(String moneda, DetalleBean lineBean) {
-//        PricingReferenceType pricingReferenceType = new PricingReferenceType();
-//
-//        TipoAfectacionIgv tipoAfectacionIgv = TipoAfectacionIgv.searchFromCodigo(lineBean.getCodigoTipoIgv()).orElseThrow(() -> new InvalidCodeException("Codigo de tipo de IGV invalido"));
-//        if (tipoAfectacionIgv.isOperacionNoOnerosa()) {
-//            pricingReferenceType.getAlternativeConditionPrice().add(
-//                    UBLUtils.buildPriceType(moneda, BigDecimal.ZERO, TipoPrecioVentaUnitario.PRECIO_UNITARIO.getCodigo())
-//            );
-//            pricingReferenceType.getAlternativeConditionPrice().add(
-//                    UBLUtils.buildPriceType(moneda, lineBean.getPrecioUnitario(), TipoPrecioVentaUnitario.VALOR_REF_UNIT_EN_OPER_NO_ORENOSAS.getCodigo())
-//            );
-//        } else {
-//            pricingReferenceType.getAlternativeConditionPrice().add(
-//                    UBLUtils.buildPriceType(moneda, lineBean.getPrecioUnitario(), TipoPrecioVentaUnitario.PRECIO_UNITARIO.getCodigo())
-//            );
-//        }
-//
-//        return pricingReferenceType;
-//    }
-//
-//    private static TaxTotalType buildTaxTotalType(String currency, BigDecimal value, String tipoIGV, TipoTributo tipoTributo) {
-//        TaxTotalType taxTotalType = new TaxTotalType();
-//        taxTotalType.setTaxAmount(UBLUtils.buildTaxAmountType(currency, value));
-//        taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(currency, value, tipoIGV, tipoTributo));
-//        return taxTotalType;
-//    }
-//
-//    private static TaxSubtotalType buildTaxSubtotalType(String currency, BigDecimal value, String tipoIGV, TipoTributo tipoTributo) {
-//        TaxSubtotalType taxSubtotalType = new TaxSubtotalType();
-//        taxSubtotalType.setTaxAmount(UBLUtils.buildTaxAmountType(currency, value));
-//        taxSubtotalType.setTaxCategory(buildTaxCategoryType(tipoIGV, tipoTributo));
-//        return taxSubtotalType;
-//    }
-//
-//    private static TaxCategoryType buildTaxCategoryType(String tipoIGV, TipoTributo tipoTributo) {
-//        TaxCategoryType taxCategoryType = new TaxCategoryType();
-//        taxCategoryType.setTaxScheme(UBLUtils.buildTaxSchemeType(tipoTributo.getId(), tipoTributo.getAbreviatura(), tipoTributo.getCodigo()));
-//        taxCategoryType.setTaxExemptionReasonCode(UBLUtils.buildTaxExemptionReasonCodeType(tipoIGV));
-//        return taxCategoryType;
-//    }
+    // Line
+
+    private static InvoiceLineType buildInvoiceLineType(int index, String moneda, DetalleBean lineBean) {
+        InvoiceLineType invoiceLineType = new InvoiceLineType();
+
+        invoiceLineType.setID(UBL21Utils.buildIDType(String.valueOf(index)));
+        invoiceLineType.setInvoicedQuantity(UBL21Utils.buildInvoicedQuantityType(lineBean.getUnidadMedida(), lineBean.getCantidad()));
+        invoiceLineType.setLineExtensionAmount(UBL21Utils.buildLineExtensionAmountType(lineBean.getSubtotal(), moneda));
+        invoiceLineType.setItem(UBL21Utils.buildItemType(lineBean.getDescripcion()));
+        invoiceLineType.setPricingReference(buildPricingReferenceType(moneda, lineBean));
+        invoiceLineType.setPrice(UBL21Utils.buildPriceType(moneda, lineBean.getValorUnitario()));
+
+        if (lineBean.getTotalIgv() != null) {
+            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIgv(), lineBean.getTipoAfectacionIgv().getCodigo(), TipoTributo.IGV));
+        }
+        if (lineBean.getTotalIsc() != null) {
+            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIsc(), lineBean.getCodigoTipoIsc(), TipoTributo.ISC));
+        }
+
+        return invoiceLineType;
+    }
+
+    private static PricingReferenceType buildPricingReferenceType(String moneda, DetalleBean lineBean) {
+        PricingReferenceType pricingReferenceType = new PricingReferenceType();
+
+        if (lineBean.getTipoAfectacionIgv().isOperacionNoOnerosa()) {
+            pricingReferenceType.getAlternativeConditionPrice().add(
+                    UBL21Utils.buildPriceType(moneda, BigDecimal.ZERO, TipoPrecioVentaUnitario.PRECIO_UNITARIO.getCodigo())
+            );
+            pricingReferenceType.getAlternativeConditionPrice().add(
+                    UBL21Utils.buildPriceType(moneda, lineBean.getPrecioUnitario(), TipoPrecioVentaUnitario.VALOR_REF_UNIT_EN_OPER_NO_ORENOSAS.getCodigo())
+            );
+        } else {
+            pricingReferenceType.getAlternativeConditionPrice().add(
+                    UBL21Utils.buildPriceType(moneda, lineBean.getPrecioUnitario(), TipoPrecioVentaUnitario.PRECIO_UNITARIO.getCodigo())
+            );
+        }
+
+        return pricingReferenceType;
+    }
+
+    private static TaxTotalType buildTaxTotalType(String currency, BigDecimal value, String tipoIGV, TipoTributo tipoTributo) {
+        TaxTotalType taxTotalType = new TaxTotalType();
+        taxTotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(value, currency));
+        taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(currency, value, tipoIGV, tipoTributo));
+        return taxTotalType;
+    }
+
+    private static TaxSubtotalType buildTaxSubtotalType(String currency, BigDecimal value, String tipoIGV, TipoTributo tipoTributo) {
+        TaxSubtotalType taxSubtotalType = new TaxSubtotalType();
+        taxSubtotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(value, currency));
+        taxSubtotalType.setTaxCategory(buildTaxCategoryType(tipoIGV, tipoTributo));
+        return taxSubtotalType;
+    }
+
+    private static TaxCategoryType buildTaxCategoryType(String tipoIGV, TipoTributo tipoTributo) {
+        TaxCategoryType taxCategoryType = new TaxCategoryType();
+        taxCategoryType.setTaxScheme(UBL21Utils.buildTaxSchemeType(tipoTributo.getId(), tipoTributo.getAbreviatura(), tipoTributo.getCodigo()));
+        taxCategoryType.setTaxExemptionReasonCode(UBL21Utils.buildTaxExemptionReasonCodeType(tipoIGV));
+        return taxCategoryType;
+    }
 
 
 }

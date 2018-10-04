@@ -62,12 +62,12 @@ public class BeanToTypeTest {
 //                                .build()
 //                )
 //                .moneda(
-//                        MonedaBeanBuilder.Moneda()
+//                        MonedaBeanBuilder.builder()
 //                                .codigo("PEN")
 //                                .tipoCambio(new BigDecimal("3.21"))
 //                                .build()
 //                )
-//                .impuestos(
+//                .bean(
 //                        ImpuestosBeanBuilder.Impuestos()
 //                                .igv(new BigDecimal("10"))
 //                                .isc(new BigDecimal("1"))

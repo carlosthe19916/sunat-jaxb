@@ -43,14 +43,14 @@ public class NoteBean {
 
     @Valid
     @NotNull
-    private ProveedorBean proveedor;
+    private AbstractProveedorBean proveedor;
 
     @Size(min = 1)
     @NotNull
     private List<@Valid DetalleBean> detalle;
 
     private String observaciones;
-    
+
     @NotNull
     @Valid
     private InvoiceAfectadoBean invoiceAfectado;
@@ -130,11 +130,11 @@ public class NoteBean {
         this.cliente = cliente;
     }
 
-    public ProveedorBean getProveedor() {
+    public AbstractProveedorBean getProveedor() {
         return proveedor;
     }
 
-    public void setProveedor(ProveedorBean proveedor) {
+    public void setProveedor(AbstractProveedorBean proveedor) {
         this.proveedor = proveedor;
     }
 

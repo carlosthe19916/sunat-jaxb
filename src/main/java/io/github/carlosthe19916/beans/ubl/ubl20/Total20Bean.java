@@ -4,8 +4,4 @@ import io.github.carlosthe19916.beans.TotalBean;
 
 public class Total20Bean extends TotalBean {
 
-    public Total20Bean(TotalBean total) {
-        super(total);
-    }
-
 }

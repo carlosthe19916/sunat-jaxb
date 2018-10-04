@@ -1,14 +1,10 @@
 package io.github.carlosthe19916.beans.ubl.ubl20;
 
-import io.github.carlosthe19916.beans.ProveedorBean;
+import io.github.carlosthe19916.beans.AbstractProveedorBean;
 
 import javax.validation.constraints.NotNull;
 
-public class Proveedor20Bean extends ProveedorBean {
-
-    public Proveedor20Bean(ProveedorBean proveedor) {
-        super(proveedor);
-    }
+public class Proveedor20Bean extends AbstractProveedorBean {
 
     @NotNull
     private String direccion;

@@ -12,5 +12,4 @@ public class Impuestos20Bean extends ImpuestosBean {
     }
 
 
-
 }

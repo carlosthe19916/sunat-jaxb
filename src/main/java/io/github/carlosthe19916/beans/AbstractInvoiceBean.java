@@ -1,12 +1,15 @@
 package io.github.carlosthe19916.beans;
 
+import io.github.carlosthe19916.beans.catalogs.TipoInvoice;
+
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-public class InvoiceBean {
+public abstract class AbstractInvoiceBean {
 
     @NotNull
     @Size(min = 4, max = 4)
@@ -14,10 +17,11 @@ public class InvoiceBean {
 
     @NotNull
     @Min(1)
+    @Max(99_999_999)
     private Integer numero;
 
     @NotNull
-    private InvoiceType tipoComprobante;
+    private TipoInvoice tipoDocumento;
 
     @Valid
     @NotNull
@@ -31,44 +35,20 @@ public class InvoiceBean {
     @NotNull
     private TotalInformacionAdicionalBean totalInformacionAdicional;
 
-    @Valid
-    @NotNull
-    private ClienteBean cliente;
-
-    @Valid
-    @NotNull
-    private ProveedorBean proveedor;
-
     @Size(min = 1)
     @NotNull
     private List<@Valid DetalleBean> detalle;
 
-    public enum InvoiceType {
-        FACTURA("01"), BOLETA("03");
-
-        private final String codigo;
-
-        InvoiceType(String codigo) {
-            this.codigo = codigo;
-        }
-
-        public String getCodigo() {
-            return codigo;
-        }
+    public AbstractInvoiceBean() {
     }
 
-    public InvoiceBean() {
-    }
-
-    public InvoiceBean(InvoiceBean invoice) {
+    public AbstractInvoiceBean(AbstractInvoiceBean invoice) {
         serie = invoice.serie;
         numero = invoice.numero;
-        tipoComprobante = invoice.tipoComprobante;
+        tipoDocumento = invoice.tipoDocumento;
         fecha = invoice.fecha;
         moneda = invoice.moneda;
         totalInformacionAdicional = invoice.totalInformacionAdicional;
-        cliente = invoice.cliente;
-        proveedor = invoice.proveedor;
         detalle = invoice.detalle;
     }
 
@@ -88,12 +68,12 @@ public class InvoiceBean {
         this.numero = numero;
     }
 
-    public InvoiceType getTipoComprobante() {
-        return tipoComprobante;
+    public TipoInvoice getTipoDocumento() {
+        return tipoDocumento;
     }
 
-    public void setTipoComprobante(InvoiceType tipoComprobante) {
-        this.tipoComprobante = tipoComprobante;
+    public void setTipoDocumento(TipoInvoice tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
 
     public FechaBean getFecha() {
@@ -118,22 +98,6 @@ public class InvoiceBean {
 
     public void setTotalInformacionAdicional(TotalInformacionAdicionalBean totalInformacionAdicional) {
         this.totalInformacionAdicional = totalInformacionAdicional;
-    }
-
-    public ClienteBean getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(ClienteBean cliente) {
-        this.cliente = cliente;
-    }
-
-    public ProveedorBean getProveedor() {
-        return proveedor;
-    }
-
-    public void setProveedor(ProveedorBean proveedor) {
-        this.proveedor = proveedor;
     }
 
     public List<DetalleBean> getDetalle() {

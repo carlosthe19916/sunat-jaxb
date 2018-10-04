@@ -72,7 +72,7 @@ public class UBL20Utils {
     }
 
 
-    // Moneda
+    // builder
 
     public static DocumentCurrencyCodeType buildDocumentCurrencyCodeType(String value) {
         DocumentCurrencyCodeType documentCurrencyCodeType = new DocumentCurrencyCodeType();

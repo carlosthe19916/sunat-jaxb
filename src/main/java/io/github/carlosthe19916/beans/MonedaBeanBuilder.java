@@ -10,7 +10,7 @@ public class MonedaBeanBuilder {
         moneda = new MonedaBean();
     }
 
-    public static MonedaBeanBuilder Moneda() {
+    public static MonedaBeanBuilder builder() {
         return new MonedaBeanBuilder();
     }
 

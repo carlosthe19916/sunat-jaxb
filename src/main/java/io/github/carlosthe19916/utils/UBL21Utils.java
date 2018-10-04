@@ -1,8 +1,6 @@
 package io.github.carlosthe19916.utils;
 
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyNameType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.*;
 
 import java.math.BigDecimal;
@@ -61,7 +59,7 @@ public class UBL21Utils {
     }
 
 
-    // Moneda
+    // builder
 
     public static DocumentCurrencyCodeType buildDocumentCurrencyCodeType(String value) {
         DocumentCurrencyCodeType documentCurrencyCodeType = new DocumentCurrencyCodeType();
@@ -191,6 +189,62 @@ public class UBL21Utils {
         return taxableAmountType;
     }
 
+
+    // Line
+
+    public static InvoicedQuantityType buildInvoicedQuantityType(String unitCode, BigDecimal value) {
+        InvoicedQuantityType invoicedQuantityType = new InvoicedQuantityType();
+        invoicedQuantityType.setValue(value);
+        invoicedQuantityType.setUnitCode(unitCode);
+        invoicedQuantityType.setUnitCodeListID("UN/ECE rec 20");
+        invoicedQuantityType.setUnitCodeListAgencyName("United Nations Economic Commission for Europe");
+        return invoicedQuantityType;
+    }
+
+    public static ItemType buildItemType(String description) {
+        ItemType itemType = new ItemType();
+        itemType.getDescription().add(buildDescriptionType(description));
+        return itemType;
+    }
+
+    public static DescriptionType buildDescriptionType(String value) {
+        DescriptionType descriptionType = new DescriptionType();
+        descriptionType.setValue(value);
+        return descriptionType;
+    }
+
+    public static PriceType buildPriceType(String currency, BigDecimal value) {
+        PriceType priceType = new PriceType();
+        priceType.setPriceAmount(buildPriceAmountType(currency, value));
+        return priceType;
+    }
+
+    public static PriceType buildPriceType(String currency, BigDecimal value, String priceTypeCode) {
+        PriceType priceType = new PriceType();
+        priceType.setPriceAmount(buildPriceAmountType(currency, value));
+        priceType.setPriceTypeCode(buildPriceTypeCodeType(priceTypeCode));
+        return priceType;
+    }
+
+    public static PriceAmountType buildPriceAmountType(String currency, BigDecimal value) {
+        PriceAmountType priceAmountType = new PriceAmountType();
+        priceAmountType.setCurrencyID(currency);
+        priceAmountType.setValue(value);
+        return priceAmountType;
+    }
+
+    public static PriceTypeCodeType buildPriceTypeCodeType(String value) {
+        PriceTypeCodeType priceTypeCodeType = new PriceTypeCodeType();
+        priceTypeCodeType.setValue(value);
+        return priceTypeCodeType;
+    }
+
+    public static TaxExemptionReasonCodeType buildTaxExemptionReasonCodeType(String value) {
+        TaxExemptionReasonCodeType taxExemptionReasonCodeType = new TaxExemptionReasonCodeType();
+        taxExemptionReasonCodeType.setValue(value);
+        return taxExemptionReasonCodeType;
+    }
+
 //    public static IssueDateType buildIssueDateType(XMLGregorianCalendar value) {
 //        IssueDateType issueDateType = new IssueDateType();
 //        issueDateType.setValue(value);
@@ -266,12 +320,6 @@ public class UBL21Utils {
 //
 //
 //
-//    public static InvoicedQuantityType buildInvoicedQuantityType(String unitCode, BigDecimal value) {
-//        InvoicedQuantityType invoicedQuantityType = new InvoicedQuantityType();
-//        invoicedQuantityType.setValue(value);
-//        invoicedQuantityType.setUnitCode(unitCode);
-//        return invoicedQuantityType;
-//    }
 //
 //    public static CreditedQuantityType buildCreditedQuantityType(String unitCode, BigDecimal value) {
 //        CreditedQuantityType creditedQuantityType = new CreditedQuantityType();
@@ -294,36 +342,9 @@ public class UBL21Utils {
 //        return lineExtensionAmountType;
 //    }
 //
-//    public static PriceAmountType buildPriceAmountType(String currency, BigDecimal value) {
-//        PriceAmountType priceAmountType = new PriceAmountType();
-//        priceAmountType.setCurrencyID(CurrencyCodeContentType.valueOf(currency));
-//        priceAmountType.setValue(value);
-//        return priceAmountType;
-//    }
 //
-//    public static PriceTypeCodeType buildPriceTypeCodeType(String value) {
-//        PriceTypeCodeType priceTypeCodeType = new PriceTypeCodeType();
-//        priceTypeCodeType.setValue(value);
-//        return priceTypeCodeType;
-//    }
 //
-//    public static DescriptionType buildDescriptionType(String value) {
-//        DescriptionType descriptionType = new DescriptionType();
-//        descriptionType.setValue(value);
-//        return descriptionType;
-//    }
 //
-//    public static TaxExemptionReasonCodeType buildTaxExemptionReasonCodeType(String value) {
-//        TaxExemptionReasonCodeType taxExemptionReasonCodeType = new TaxExemptionReasonCodeType();
-//        taxExemptionReasonCodeType.setValue(value);
-//        return taxExemptionReasonCodeType;
-//    }
-//
-//    public static ItemType buildItemType(String description) {
-//        ItemType itemType = new ItemType();
-//        itemType.getDescription().add(buildDescriptionType(description));
-//        return itemType;
-//    }
 //
 //
 //    public static PartyLegalEntityType buildPartyLegalEntityType(String value) {
@@ -334,18 +355,7 @@ public class UBL21Utils {
 //
 //
 //
-//    public static PriceType buildPriceType(String currency, BigDecimal value, String priceTypeCode) {
-//        PriceType priceType = new PriceType();
-//        priceType.setPriceAmount(buildPriceAmountType(currency, value));
-//        priceType.setPriceTypeCode(buildPriceTypeCodeType(priceTypeCode));
-//        return priceType;
-//    }
 //
-//    public static PriceType buildPriceType(String currency, BigDecimal value) {
-//        PriceType priceType = new PriceType();
-//        priceType.setPriceAmount(buildPriceAmountType(currency, value));
-//        return priceType;
-//    }
 //
 //    public static CountryType buildCountryType(String value) {
 //        CountryType countryType = new CountryType();

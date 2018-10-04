@@ -71,15 +71,15 @@ public class BeanToType20 {
         }
 
         // Tipo comprobante
-        String codigoTipoComprobante = invoice.getTipoComprobante().getCodigo();
+        String codigoTipoComprobante = invoice.getTipoDocumento().getCodigo();
         invoiceType.setInvoiceTypeCode(UBL20Utils.buildInvoiceTypeCodeType(codigoTipoComprobante));
 
-        // Moneda
+        // builder
         MonedaBean moneda = invoice.getMoneda();
         invoiceType.setDocumentCurrencyCode(UBL20Utils.buildDocumentCurrencyCodeType(moneda.getCodigo()));
 
         // Proveedor
-        ProveedorBean proveedor = invoice.getProveedor();
+        AbstractProveedorBean proveedor = invoice.getProveedor();
         invoiceType.setAccountingSupplierParty(buildSupplierPartyType(proveedor));
 
         // Cliente
@@ -90,10 +90,10 @@ public class BeanToType20 {
         Total20Bean total = invoice.getTotal();
         invoiceType.setLegalMonetaryTotal(buildMonetaryTotalType(total, invoice.getMoneda()));
 
-        // Total impuestos IGV/ISC
+        // Total bean IGV/ISC
         Impuestos20Bean impuestos = invoice.getImpuestos();
         invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice.getMoneda()));
-        
+
         // Detalle
         int i = 1;
         for (DetalleBean lineBean : invoice.getDetalle()) {
@@ -104,17 +104,17 @@ public class BeanToType20 {
         // Extensiones
         TotalInformacionAdicionalBean totalInformacionAdicional = invoice.getTotalInformacionAdicional();
         invoiceType.setUBLExtensions(buildUBLExtensionsType(totalInformacionAdicional, moneda.getCodigo()));
-        
+
         // Firma
         invoiceType.getSignature().add(buildSignatureType(invoice.getProveedor()));
-        
+
         return invoiceType;
     }
 
 
     // Proveedor
 
-    private static SupplierPartyType buildSupplierPartyType(ProveedorBean proveedor) {
+    private static SupplierPartyType buildSupplierPartyType(AbstractProveedorBean proveedor) {
         SupplierPartyType supplierPartyType = new SupplierPartyType();
 
         PartyType partyType = new PartyType();
@@ -145,9 +145,9 @@ public class BeanToType20 {
         return supplierPartyType;
     }
 
-    
+
     // Cliente
-    
+
     private static CustomerPartyType buildCustomerPartyType(ClienteBean cliente) {
         CustomerPartyType customerPartyType = new CustomerPartyType();
 
@@ -168,9 +168,9 @@ public class BeanToType20 {
         return customerPartyType;
     }
 
-    
+
     // Total a pagar
-    
+
     private static MonetaryTotalType buildMonetaryTotalType(Total20Bean total, MonedaBean moneda) {
         MonetaryTotalType monetaryTotalType = new MonetaryTotalType();
         monetaryTotalType.setAllowanceTotalAmount(UBL20Utils.buildAllowanceTotalAmountType(total.getDescuentoGlobal(), moneda.getCodigo()));
@@ -179,9 +179,9 @@ public class BeanToType20 {
         return monetaryTotalType;
     }
 
-    
+
     // Impuestos
-    
+
     private static List<TaxTotalType> buildTaxTotalType(Impuestos20Bean impuestosBean, MonedaBean moneda) {
         List<TaxTotalType> result = new ArrayList<>();
 
@@ -221,9 +221,9 @@ public class BeanToType20 {
         return new ExtensionContentType();
     }
 
-    
+
     // Extensiones
-    
+
     private static UBLExtensionsType buildUBLExtensionsType(TotalInformacionAdicionalBean totalInformacionAdicional, String codigoMoneda) {
         UBLExtensionsType ublExtensionsType = new UBLExtensionsType();
 
@@ -253,7 +253,7 @@ public class BeanToType20 {
 
         return ublExtensionsType;
     }
-    
+
     private static AdditionalInformationType buildAdditionalInformationType(String codigoMoneda, TotalInformacionAdicionalBean totalInformacionAdicionalBean) {
         AdditionalInformationType additionalInformationType = new AdditionalInformationType();
 
@@ -290,8 +290,8 @@ public class BeanToType20 {
     }
 
     // Firma
-    
-    private static SignatureType buildSignatureType(ProveedorBean proveedorBean) {
+
+    private static SignatureType buildSignatureType(AbstractProveedorBean proveedorBean) {
         SignatureType signatureType = new SignatureType();
 
         String signID = "IDSign" + proveedorBean.getNombreComercial().replaceAll("\\s", "");
@@ -314,6 +314,7 @@ public class BeanToType20 {
 
 
     // Line
+
     private static InvoiceLineType buildInvoiceLineType(int index, String moneda, DetalleBean lineBean) {
         InvoiceLineType invoiceLineType = new InvoiceLineType();
 

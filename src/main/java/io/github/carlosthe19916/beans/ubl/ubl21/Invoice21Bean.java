@@ -1,14 +1,16 @@
 package io.github.carlosthe19916.beans.ubl.ubl21;
 
-import io.github.carlosthe19916.beans.InvoiceBean;
+import io.github.carlosthe19916.beans.AbstractInvoiceBean;
+import io.github.carlosthe19916.beans.ClienteBean;
+import io.github.carlosthe19916.beans.catalogs.Catalogo17;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-public class Invoice21Bean extends InvoiceBean {
+public class Invoice21Bean extends AbstractInvoiceBean {
 
     @NotNull
-    private String tipoOperacion;
+    private Catalogo17 tipoOperacion;
 
     @Valid
     @NotNull
@@ -18,17 +20,19 @@ public class Invoice21Bean extends InvoiceBean {
     @NotNull
     private Impuestos21Bean impuestos;
 
-    public Invoice21Bean(InvoiceBean invoice) {
-        super(invoice);
-    }
+    @Valid
+    @NotNull
+    private ClienteBean cliente;
 
-    // Overrides
+    @Valid
+    @NotNull
+    private Proveedor21Bean proveedor;
 
-    public String getTipoOperacion() {
+    public Catalogo17 getTipoOperacion() {
         return tipoOperacion;
     }
 
-    public void setTipoOperacion(String tipoOperacion) {
+    public void setTipoOperacion(Catalogo17 tipoOperacion) {
         this.tipoOperacion = tipoOperacion;
     }
 
@@ -46,5 +50,21 @@ public class Invoice21Bean extends InvoiceBean {
 
     public void setImpuestos(Impuestos21Bean impuestos) {
         this.impuestos = impuestos;
+    }
+
+    public ClienteBean getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(ClienteBean cliente) {
+        this.cliente = cliente;
+    }
+
+    public Proveedor21Bean getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor21Bean proveedor) {
+        this.proveedor = proveedor;
     }
 }

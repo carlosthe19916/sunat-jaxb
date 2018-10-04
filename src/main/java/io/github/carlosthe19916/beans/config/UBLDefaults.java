@@ -5,6 +5,10 @@ import java.util.TimeZone;
 
 public interface UBLDefaults {
 
+    String getUblVersion();
+
+    String getCustomizationId();
+
     boolean getAplicarCalculosInternosAutomaticos();
 
     TimeZone getTimeZone();

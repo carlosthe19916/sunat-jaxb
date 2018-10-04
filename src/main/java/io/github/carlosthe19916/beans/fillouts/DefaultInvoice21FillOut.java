@@ -1,5 +1,6 @@
 package io.github.carlosthe19916.beans.fillouts;
 
+import io.github.carlosthe19916.beans.catalogs.Catalogo17;
 import io.github.carlosthe19916.beans.ubl.ubl21.Impuestos21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.Total21Bean;
@@ -14,10 +15,10 @@ public class DefaultInvoice21FillOut extends AbstractInvoiceFillOut implements I
     @Override
     public Invoice21Bean fillIn(Invoice21Bean invoice21Bean) {
         if (invoice21Bean.getTipoOperacion() == null) {
-            invoice21Bean.setTipoOperacion(defaults.getTipoOperacion().getCode());
+            invoice21Bean.setTipoOperacion(Catalogo17.VENTA_INTERNA);
         }
 
-        setTimeZoneDefaults(invoice21Bean);
+        setFechaDefaults(invoice21Bean);
 
         setTotalDefaults(invoice21Bean);
         setImpuestosDefaults(invoice21Bean);

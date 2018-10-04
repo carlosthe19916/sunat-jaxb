@@ -6,7 +6,8 @@ import java.util.TimeZone;
 public abstract class AbstractUBLDefaults implements UBLDefaults {
 
     private boolean aplicarCalculosInternosAutomaticos = false;
-    private TimeZone timeZone = TimeZone.getTimeZone("America/Lima");;
+    private TimeZone timeZone = TimeZone.getTimeZone("America/Lima");
+
     private BigDecimal igvValue = new BigDecimal("0.18");
 
     @Override

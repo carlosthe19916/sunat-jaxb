@@ -2,7 +2,7 @@ package io.github.carlosthe19916.beans;
 
 import javax.validation.constraints.NotNull;
 
-public class ProveedorBean {
+public class AbstractProveedorBean {
 
     @NotNull
     protected String codigoTipoDocumento;
@@ -18,17 +18,6 @@ public class ProveedorBean {
 
     @NotNull
     protected String codigoPostal;
-
-    public ProveedorBean() {
-    }
-
-    public ProveedorBean(ProveedorBean proveedor) {
-        codigoTipoDocumento = proveedor.getCodigoTipoDocumento();
-        numeroDocumento = proveedor.getNumeroDocumento();
-        nombreComercial = proveedor.getNombreComercial();
-        razonSocial = proveedor.getRazonSocial();
-        codigoPostal = proveedor.getCodigoPostal();
-    }
 
     public String getCodigoTipoDocumento() {
         return codigoTipoDocumento;

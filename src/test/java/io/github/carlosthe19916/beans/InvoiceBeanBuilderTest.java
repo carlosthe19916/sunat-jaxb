@@ -23,12 +23,12 @@ public class InvoiceBeanBuilderTest {
 //                                .build()
 //                )
 //                .moneda(
-//                        MonedaBeanBuilder.Moneda()
+//                        MonedaBeanBuilder.builder()
 //                                .codigo("PEN")
 //                                .tipoCambio(new BigDecimal("3.21"))
 //                                .build()
 //                )
-//                .impuestos(
+//                .bean(
 //                        ImpuestosBeanBuilder.Impuestos()
 //                                .igv(new BigDecimal("10"))
 //                                .isc(new BigDecimal("1"))
@@ -77,7 +77,7 @@ public class InvoiceBeanBuilderTest {
 //        Assert.assertNotNull(invoiceBean);
 //        Assert.assertEquals(invoiceBean.getSerie(), "F001");
 //        Assert.assertEquals(invoiceBean.getNumero(), Integer.valueOf(1));
-//        Assert.assertEquals(invoiceBean.getTipoComprobante(), "01");
+//        Assert.assertEquals(invoiceBean.getTipoDocumento(), "01");
 //        Assert.assertEquals(invoiceBean.getObservaciones(), "Sin observaciones");
 //        Assert.assertNotNull(invoiceBean.getFecha());
 //        Assert.assertNotNull(invoiceBean.getMoneda());

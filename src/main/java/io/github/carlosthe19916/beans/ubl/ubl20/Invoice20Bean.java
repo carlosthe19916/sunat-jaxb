@@ -1,11 +1,12 @@
 package io.github.carlosthe19916.beans.ubl.ubl20;
 
-import io.github.carlosthe19916.beans.InvoiceBean;
+import io.github.carlosthe19916.beans.AbstractInvoiceBean;
+import io.github.carlosthe19916.beans.ClienteBean;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-public class Invoice20Bean extends InvoiceBean {
+public class Invoice20Bean extends AbstractInvoiceBean {
 
     private String observaciones;
 
@@ -17,12 +18,13 @@ public class Invoice20Bean extends InvoiceBean {
     @NotNull
     private Impuestos20Bean impuestos;
 
-    public Invoice20Bean() {
-    }
+    @Valid
+    @NotNull
+    private ClienteBean cliente;
 
-    public Invoice20Bean(InvoiceBean invoice) {
-        super(invoice);
-    }
+    @Valid
+    @NotNull
+    private Proveedor20Bean proveedor;
 
     public String getObservaciones() {
         return observaciones;
@@ -46,5 +48,21 @@ public class Invoice20Bean extends InvoiceBean {
 
     public void setImpuestos(Impuestos20Bean impuestos) {
         this.impuestos = impuestos;
+    }
+
+    public ClienteBean getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(ClienteBean cliente) {
+        this.cliente = cliente;
+    }
+
+    public Proveedor20Bean getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor20Bean proveedor) {
+        this.proveedor = proveedor;
     }
 }
