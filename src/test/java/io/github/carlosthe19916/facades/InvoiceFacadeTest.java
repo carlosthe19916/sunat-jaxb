@@ -11,22 +11,15 @@ import io.github.carlosthe19916.beans.catalogs.TipoAfectacionIgv;
 import io.github.carlosthe19916.beans.catalogs.TipoInvoice;
 import io.github.carlosthe19916.beans.config.ubl21.GlobalUBL21Defaults;
 import io.github.carlosthe19916.beans.ubl.ubl21.*;
-import io.github.carlosthe19916.factories.InvoiceFactory;
 import io.github.carlosthe19916.utils.JaxbUtils;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayOutputStream;
@@ -156,15 +149,7 @@ public class InvoiceFacadeTest {
             InvoiceType invoiceType = InvoiceFacade.toInvoiceType(invoice2);
 
 
-
-            Document document = toDocument(invoiceType);
-
-            DOMSource source = new DOMSource(document);
-            FileWriter writer = new FileWriter(new File("d:/miarchivo.xml"));
-            StreamResult result = new StreamResult(writer);
-
-
-            /*MapBasedNamespaceContext mapBasedNamespace = getBasedNamespaceContext("urn:oasis:names:specification:ubl21:schema:xsd:Invoice-2");
+            MapBasedNamespaceContext mapBasedNamespace = getBasedNamespaceContext("urn:oasis:names:specification:ubl21:schema:xsd:Invoice-2");
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
             IMicroDocument asMicroDocument = UBL21Writer.invoice().getAsMicroDocument(invoiceType);
@@ -173,12 +158,9 @@ public class InvoiceFacadeTest {
 
             Document document = JaxbUtils.toDocument(out.toByteArray());
 
-             DOMSource source = new DOMSource(document);
-            FileWriter writer = new FileWriter(new File("/home/admin/git/sunat-jaxb/miarchivo.xml"));
+            DOMSource source = new DOMSource(document);
+            FileWriter writer = new FileWriter(new File("d:/miarchivott.xml"));
             StreamResult result = new StreamResult(writer);
-            */
-
-
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -203,25 +185,5 @@ public class InvoiceFacadeTest {
         mapBasedNamespace.addMappings(namespace);
         mapBasedNamespace.setDefaultNamespaceURI(defaultNamespace);
         return mapBasedNamespace;
-    }
-
-    public static Document toDocument(InvoiceType type) throws JAXBException {
-        InvoiceFactory factory = new InvoiceFactory();
-        JAXBContext context = JAXBContext.newInstance(InvoiceFactory.class);
-
-        Marshaller marshallerElement = context.createMarshaller();
-        marshallerElement.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshallerElement.setProperty(Marshaller.JAXB_ENCODING, "ISO-8859-1");
-
-
-
-
-        JAXBElement<InvoiceType> jaxbElement = factory.createInvoice(type);
-        DOMResult res = new DOMResult();
-        marshallerElement.marshal(jaxbElement, res);
-        Element element = ((Document) res.getNode()).getDocumentElement();
-
-        Document document = element.getOwnerDocument();
-        return document;
     }
 }
