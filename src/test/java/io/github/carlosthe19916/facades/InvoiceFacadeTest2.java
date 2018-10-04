@@ -161,7 +161,7 @@ public class InvoiceFacadeTest2 {
             Document document = JaxbUtils.toDocument(out.toByteArray());
 
             DOMSource source = new DOMSource(document);
-            FileWriter writer = new FileWriter(new File("/home/admin/git/sunat-jaxb/miarchivo.xml"));
+            FileWriter writer = new FileWriter(new File("D:/miarchivo.xml"));
             StreamResult result = new StreamResult(writer);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
