@@ -9,10 +9,8 @@ public class Total21Bean extends TotalBean {
 
     private BigDecimal anticipos;
 
-    @NotNull
     private BigDecimal extensionAmount;
 
-    @NotNull
     private BigDecimal inclusiveAmount;
 
     public BigDecimal getAnticipos() {

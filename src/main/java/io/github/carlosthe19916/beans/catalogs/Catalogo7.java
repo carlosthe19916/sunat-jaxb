@@ -1,5 +1,7 @@
 package io.github.carlosthe19916.beans.catalogs;
 
+import java.util.stream.Stream;
+
 public enum Catalogo7 implements Catalogo {
 
     GRAVADO_OPERACION_ONEROSA("10", "Gravado - Operación Onerosa", true, Catalogo11.GRAVADO, false),
@@ -56,5 +58,12 @@ public enum Catalogo7 implements Catalogo {
         this.grupo = grupo;
 
         this.operacionNoOnerosa = hasAlternativeConditionPrice;
+    }
+
+    public static Catalogo7 valueOfCode(String code) {
+        return Stream.of(Catalogo7.values())
+                .filter(p -> p.code.equals(code))
+                .findFirst()
+                .orElse(null);
     }
 }

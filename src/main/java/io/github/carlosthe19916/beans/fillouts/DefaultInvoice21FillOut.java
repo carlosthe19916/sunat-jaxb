@@ -43,31 +43,31 @@ public class DefaultInvoice21FillOut extends AbstractInvoiceFillOut implements I
 
         Total21Bean total = invoice.getTotal();
 
-        if ((
-                total.getPagar() != null && total.getOtrosCargos() != null && total.getDescuentoGlobal() != null
-        ) && (
-                total.getExtensionAmount() == null && total.getInclusiveAmount() == null
-        )) {
-            BigDecimal anticipos = total.getAnticipos() != null ? total.getAnticipos() : BigDecimal.ZERO;
-            BigDecimal totalPagar = total.getPagar();
-            BigDecimal descuentos = total.getDescuentoGlobal();
-            BigDecimal otrosCargos = total.getOtrosCargos();
-
-            BigDecimal igv = defaults.getIgvValue().add(BigDecimal.ONE);
-
-            BigDecimal extensionAmount =
-                    (
-                            totalPagar
-                                    .subtract(otrosCargos)
-                                    .subtract(descuentos)
-                                    .subtract(anticipos)
-                    ).divide(igv, METODO_REDONDEO);
-
-            BigDecimal inclusiveAmount = extensionAmount.multiply(igv);
-
-            total.setExtensionAmount(extensionAmount);
-            total.setInclusiveAmount(inclusiveAmount);
-        }
+//        if ((
+//                total.getPagar() != null && total.getOtrosCargos() != null && total.getDescuentoGlobal() != null
+//        ) && (
+//                total.getExtensionAmount() == null && total.getInclusiveAmount() == null
+//        )) {
+//            BigDecimal anticipos = total.getAnticipos() != null ? total.getAnticipos() : BigDecimal.ZERO;
+//            BigDecimal totalPagar = total.getPagar();
+//            BigDecimal descuentos = total.getDescuentoGlobal();
+//            BigDecimal otrosCargos = total.getOtrosCargos();
+//
+//            BigDecimal igv = defaults.getIgvValue().add(BigDecimal.ONE);
+//
+//            BigDecimal extensionAmount =
+//                    (
+//                            totalPagar
+//                                    .subtract(otrosCargos)
+//                                    .subtract(descuentos)
+//                                    .subtract(anticipos)
+//                    ).divide(igv, METODO_REDONDEO);
+//
+//            BigDecimal inclusiveAmount = extensionAmount.multiply(igv);
+//
+//            total.setExtensionAmount(extensionAmount);
+//            total.setInclusiveAmount(inclusiveAmount);
+//        }
     }
 
     private void setImpuestosDefaults(Invoice21Bean invoice) {
