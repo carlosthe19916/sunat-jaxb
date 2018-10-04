@@ -10,4 +10,7 @@ public class Impuestos20Bean extends ImpuestosBean {
     public Impuestos20Bean(ImpuestosBean impuestos) {
         super(impuestos);
     }
+
+
+
 }

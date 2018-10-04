@@ -1,6 +1,5 @@
 package io.github.carlosthe19916.beans;
 
-import io.github.carlosthe19916.beans.catalogs.Catalog1;
 import io.github.carlosthe19916.beans.ubl.ubl20.Impuestos20Bean;
 import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
 import io.github.carlosthe19916.beans.ubl.ubl20.Total20Bean;
@@ -31,14 +30,6 @@ public class InvoiceBeanBuilder {
     }
 
 
-    /**
-     * Build
-     */
-    public InvoiceBean build() {
-        return invoice;
-    }
-
-
     // Specializations
 
     public Invoice20BeanBuilder ubl20() {
@@ -62,13 +53,8 @@ public class InvoiceBeanBuilder {
         return this;
     }
 
-    public InvoiceBeanBuilder codigoTipoComprobante(String codigoTipoComprobante) {
-        invoice.setCodigoTipoComprobante(codigoTipoComprobante);
-        return this;
-    }
-
-    public InvoiceBeanBuilder codigoTipoComprobante(Catalog1 catalog1) {
-        invoice.setCodigoTipoComprobante(catalog1.getCode());
+    public InvoiceBeanBuilder tipoComprobante(InvoiceBean.InvoiceType tipoComprobante) {
+        invoice.setTipoComprobante(tipoComprobante);
         return this;
     }
 

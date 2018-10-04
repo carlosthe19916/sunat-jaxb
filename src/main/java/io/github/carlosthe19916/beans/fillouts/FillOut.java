@@ -1,4 +1,4 @@
-package io.github.carlosthe19916.beans.mappers;
+package io.github.carlosthe19916.beans.fillouts;
 
 public interface FillOut<T> {
 

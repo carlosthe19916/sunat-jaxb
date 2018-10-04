@@ -4,8 +4,6 @@ import io.github.carlosthe19916.beans.*;
 import io.github.carlosthe19916.beans.catalogs.TipoConceptosTributarios;
 import io.github.carlosthe19916.beans.catalogs.TipoPrecioVentaUnitario;
 import io.github.carlosthe19916.beans.catalogs.TipoTributo;
-import io.github.carlosthe19916.beans.config.ubl20.GlobalUBL20Defaults;
-import io.github.carlosthe19916.beans.config.ubl20.UBL20Defaults;
 import io.github.carlosthe19916.beans.exceptions.Invoice20BeanValidacionException;
 import io.github.carlosthe19916.beans.ubl.ubl20.Impuestos20Bean;
 import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
@@ -73,7 +71,7 @@ public class BeanToType20 {
         }
 
         // Tipo comprobante
-        String codigoTipoComprobante = invoice.getCodigoTipoComprobante();
+        String codigoTipoComprobante = invoice.getTipoComprobante().getCodigo();
         invoiceType.setInvoiceTypeCode(UBL20Utils.buildInvoiceTypeCodeType(codigoTipoComprobante));
 
         // Moneda

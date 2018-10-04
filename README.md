@@ -11,7 +11,7 @@ Libreria que permite la creación de comprobantes de pago electrónicos de acuer
 InvoiceBean invoiceBean = InvoiceBeanBuilder.InvoiceBean()
                 .serie("F001")
                 .numero(1)
-                .codigoTipoComprobante("01")
+                .tipoComprobante("01")
                 .observaciones("Sin observaciones")
                 .fecha(
                         FechaBeanBuilder.FechaBean()

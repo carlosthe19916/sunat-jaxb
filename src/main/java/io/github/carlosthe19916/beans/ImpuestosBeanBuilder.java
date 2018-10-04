@@ -2,29 +2,29 @@ package io.github.carlosthe19916.beans;
 
 import java.math.BigDecimal;
 
-public class ImpuestosBeanBuilder {
+public abstract class ImpuestosBeanBuilder<T> {
 
-    private final ImpuestosBean impuestos;
+    protected final ImpuestosBean impuestos;
 
-    public ImpuestosBeanBuilder() {
-        impuestos = new ImpuestosBean();
+    public ImpuestosBeanBuilder(ImpuestosBean impuestos) {
+        this.impuestos = impuestos;
     }
 
-    public static ImpuestosBeanBuilder Impuestos() {
-        return new ImpuestosBeanBuilder();
-    }
-
-    public ImpuestosBeanBuilder igv(BigDecimal igv) {
+    public T igv(BigDecimal igv) {
         impuestos.setIgv(igv);
-        return this;
+        return getThis();
     }
 
-    public ImpuestosBeanBuilder isc(BigDecimal isc) {
+    public T isc(BigDecimal isc) {
         impuestos.setIsc(isc);
-        return this;
+        return getThis();
     }
 
-    public ImpuestosBean build() {
-        return impuestos;
+    public T otros(BigDecimal otros) {
+        impuestos.setOtros(otros);
+        return getThis();
     }
+
+    public abstract T getThis();
+
 }

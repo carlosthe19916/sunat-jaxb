@@ -77,7 +77,7 @@ public class InvoiceBeanBuilderTest {
 //        Assert.assertNotNull(invoiceBean);
 //        Assert.assertEquals(invoiceBean.getSerie(), "F001");
 //        Assert.assertEquals(invoiceBean.getNumero(), Integer.valueOf(1));
-//        Assert.assertEquals(invoiceBean.getCodigoTipoComprobante(), "01");
+//        Assert.assertEquals(invoiceBean.getTipoComprobante(), "01");
 //        Assert.assertEquals(invoiceBean.getObservaciones(), "Sin observaciones");
 //        Assert.assertNotNull(invoiceBean.getFecha());
 //        Assert.assertNotNull(invoiceBean.getMoneda());

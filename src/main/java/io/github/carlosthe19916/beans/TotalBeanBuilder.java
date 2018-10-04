@@ -2,34 +2,28 @@ package io.github.carlosthe19916.beans;
 
 import java.math.BigDecimal;
 
-public class TotalBeanBuilder {
+public abstract class TotalBeanBuilder<T extends TotalBeanBuilder> {
 
-    private final TotalBean total;
+    protected final TotalBean total;
 
-    public TotalBeanBuilder() {
-        total = new TotalBean();
+    protected TotalBeanBuilder(TotalBean total) {
+        this.total = total;
     }
 
-    public static TotalBeanBuilder Total() {
-        return new TotalBeanBuilder();
-    }
-
-    public TotalBeanBuilder pagar(BigDecimal pagar) {
+    public T pagar(BigDecimal pagar) {
         total.setPagar(pagar);
-        return this;
+        return getThis();
     }
 
-    public TotalBeanBuilder otrosCargos(BigDecimal otrosCargos) {
+    public T otrosCargos(BigDecimal otrosCargos) {
         total.setOtrosCargos(otrosCargos);
-        return this;
+        return getThis();
     }
 
-    public TotalBeanBuilder descuentoGlobal(BigDecimal descuento) {
+    public T descuentoGlobal(BigDecimal descuento) {
         total.setDescuentoGlobal(descuento);
-        return this;
+        return getThis();
     }
 
-    public TotalBean build() {
-        return total;
-    }
+    public abstract T getThis();
 }

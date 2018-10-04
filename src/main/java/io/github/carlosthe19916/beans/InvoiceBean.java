@@ -1,6 +1,7 @@
 package io.github.carlosthe19916.beans;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -12,10 +13,11 @@ public class InvoiceBean {
     private String serie;
 
     @NotNull
+    @Min(1)
     private Integer numero;
 
     @NotNull
-    private String codigoTipoComprobante;
+    private InvoiceType tipoComprobante;
 
     @Valid
     @NotNull
@@ -41,13 +43,27 @@ public class InvoiceBean {
     @NotNull
     private List<@Valid DetalleBean> detalle;
 
+    public enum InvoiceType {
+        FACTURA("01"), BOLETA("03");
+
+        private final String codigo;
+
+        InvoiceType(String codigo) {
+            this.codigo = codigo;
+        }
+
+        public String getCodigo() {
+            return codigo;
+        }
+    }
+
     public InvoiceBean() {
     }
 
     public InvoiceBean(InvoiceBean invoice) {
         serie = invoice.serie;
         numero = invoice.numero;
-        codigoTipoComprobante = invoice.codigoTipoComprobante;
+        tipoComprobante = invoice.tipoComprobante;
         fecha = invoice.fecha;
         moneda = invoice.moneda;
         totalInformacionAdicional = invoice.totalInformacionAdicional;
@@ -72,12 +88,12 @@ public class InvoiceBean {
         this.numero = numero;
     }
 
-    public String getCodigoTipoComprobante() {
-        return codigoTipoComprobante;
+    public InvoiceType getTipoComprobante() {
+        return tipoComprobante;
     }
 
-    public void setCodigoTipoComprobante(String codigoTipoComprobante) {
-        this.codigoTipoComprobante = codigoTipoComprobante;
+    public void setTipoComprobante(InvoiceType tipoComprobante) {
+        this.tipoComprobante = tipoComprobante;
     }
 
     public FechaBean getFecha() {

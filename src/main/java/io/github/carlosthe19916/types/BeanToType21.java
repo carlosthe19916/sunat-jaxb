@@ -2,9 +2,6 @@ package io.github.carlosthe19916.types;
 
 import io.github.carlosthe19916.beans.*;
 import io.github.carlosthe19916.beans.catalogs.TipoTributo;
-import io.github.carlosthe19916.beans.config.ubl21.GlobalUBL21Defaults;
-import io.github.carlosthe19916.beans.config.ubl21.UBL21Defaults;
-import io.github.carlosthe19916.beans.exceptions.Invoice20BeanValidacionException;
 import io.github.carlosthe19916.beans.exceptions.Invoice21BeanValidacionException;
 import io.github.carlosthe19916.beans.ubl.ubl21.Impuestos21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
@@ -65,7 +62,7 @@ public class BeanToType21 {
         }
 
         // Tipo comprobante
-        String codigoTipoComprobante = invoice.getCodigoTipoComprobante();
+        String codigoTipoComprobante = invoice.getTipoComprobante().getCodigo();
         invoiceType.setInvoiceTypeCode(UBL21Utils.buildInvoiceTypeCodeType(codigoTipoComprobante));
 
         // Moneda

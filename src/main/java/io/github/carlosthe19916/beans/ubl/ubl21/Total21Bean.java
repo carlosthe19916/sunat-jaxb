@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 
 public class Total21Bean extends TotalBean {
 
-    @NotNull
     private BigDecimal anticipos;
 
     @NotNull
