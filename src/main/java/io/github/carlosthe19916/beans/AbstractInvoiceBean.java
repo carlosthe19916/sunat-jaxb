@@ -39,6 +39,8 @@ public abstract class AbstractInvoiceBean {
     @NotNull
     private List<@Valid DetalleBean> detalle;
 
+    private String codigoGeneradoPorSoftware;
+
     public AbstractInvoiceBean() {
     }
 
@@ -108,4 +110,11 @@ public abstract class AbstractInvoiceBean {
         this.detalle = detalle;
     }
 
+    public String getCodigoGeneradoPorSoftware() {
+        return codigoGeneradoPorSoftware;
+    }
+
+    public void setCodigoGeneradoPorSoftware(String codigoGeneradoPorSoftware) {
+        this.codigoGeneradoPorSoftware = codigoGeneradoPorSoftware;
+    }
 }

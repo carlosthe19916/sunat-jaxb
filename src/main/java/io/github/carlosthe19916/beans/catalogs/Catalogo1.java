@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.beans.catalogs;
 
-public enum Catalog1 {
+public enum Catalogo1 {
 
     FACTURA("01"),
     BOLETA("03"),
@@ -22,7 +22,7 @@ public enum Catalog1 {
 
     private final String code;
 
-    Catalog1(String code) {
+    Catalogo1(String code) {
         this.code = code;
     }
 

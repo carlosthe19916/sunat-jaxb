@@ -245,6 +245,16 @@ public class UBL21Utils {
         return taxExemptionReasonCodeType;
     }
 
+
+    // Leyendas
+
+    public static NoteType buildNoteType(String value, String languageLocaleID) {
+        NoteType noteType = new NoteType();
+        noteType.setValue(value);
+        noteType.setLanguageLocaleID(languageLocaleID);
+        return noteType;
+    }
+
 //    public static IssueDateType buildIssueDateType(XMLGregorianCalendar value) {
 //        IssueDateType issueDateType = new IssueDateType();
 //        issueDateType.setValue(value);

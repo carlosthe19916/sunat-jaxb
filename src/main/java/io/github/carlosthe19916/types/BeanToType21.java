@@ -1,19 +1,20 @@
 package io.github.carlosthe19916.types;
 
 import io.github.carlosthe19916.beans.*;
+import io.github.carlosthe19916.beans.catalogs.Catalogo52;
 import io.github.carlosthe19916.beans.catalogs.TipoPrecioVentaUnitario;
 import io.github.carlosthe19916.beans.catalogs.TipoTributo;
 import io.github.carlosthe19916.beans.config.ubl21.GlobalUBL21Defaults;
 import io.github.carlosthe19916.beans.exceptions.Invoice21BeanValidacionException;
 import io.github.carlosthe19916.beans.ubl.ubl21.Impuestos21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21Bean;
+import io.github.carlosthe19916.beans.ubl.ubl21.Proveedor21Bean;
 import io.github.carlosthe19916.beans.ubl.ubl21.Total21Bean;
 import io.github.carlosthe19916.utils.BeanUtils;
 import io.github.carlosthe19916.utils.DateUtils;
 import io.github.carlosthe19916.utils.UBL21Utils;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CompanyIDType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 import javax.validation.ConstraintViolation;
@@ -50,14 +51,21 @@ public class BeanToType21 {
         invoiceType.setProfileID(profileIDType);
 
         // 10 Leyendas
+        if (invoice.getTotal().getPagarLetras() != null) {
+            invoiceType.addNote(UBL21Utils.buildNoteType(invoice.getTotal().getPagarLetras(), Catalogo52.MONTO_EXPRESADO_EN_LETRAS.getCodigo()));
+        }
+        if (invoice.getCodigoGeneradoPorSoftware() != null) {
+            invoiceType.addNote(UBL21Utils.buildNoteType(invoice.getCodigoGeneradoPorSoftware(), Catalogo52.CODIGO_INTERNO_GENERADO_POR_EL_SOFTWARE_DE_FACTURACION.getCodigo()));
+        }
+
         // 12 Guia de remision relacionada
         // 13 otro documento relacionado
         // 20 direccion donde se entrega el bien
         // 21 descuentos globales
 
         // Serie y numero
-        String serieNumero = MessageFormat.format("{0}-{1}", invoice.getSerie(), invoice.getNumero());
-        invoiceType.setID(UBL21Utils.buildIDType(serieNumero));
+        IDType idType = UBL21Utils.buildIDType(MessageFormat.format("{0}-{1}", invoice.getSerie(), invoice.getNumero()));
+        invoiceType.setID(idType);
 
         // Fecha y hora de emision
         FechaBean fecha = invoice.getFecha();
@@ -66,20 +74,20 @@ public class BeanToType21 {
 
         // Fecha vencimiento
         if (invoice.getFecha().getFechaVencimiento() != null) {
-            XMLGregorianCalendar paymentDate = DateUtils.toGregorianCalendar(fecha.getFechaVencimiento(), fecha.getTimeZone());
-            invoiceType.setDueDate(paymentDate);
+            invoiceType.setDueDate(DateUtils.toGregorianCalendar(fecha.getFechaVencimiento(), fecha.getTimeZone()));
         }
 
         // Tipo comprobante
         String codigoTipoComprobante = invoice.getTipoDocumento().getCodigo();
-        invoiceType.setInvoiceTypeCode(UBL21Utils.buildInvoiceTypeCodeType(codigoTipoComprobante));
+        InvoiceTypeCodeType invoiceTypeCodeType = UBL21Utils.buildInvoiceTypeCodeType(codigoTipoComprobante);
+        invoiceType.setInvoiceTypeCode(invoiceTypeCodeType);
 
-        // builder
+        // Moneda
         MonedaBean moneda = invoice.getMoneda();
         invoiceType.setDocumentCurrencyCode(UBL21Utils.buildDocumentCurrencyCodeType(moneda.getCodigo()));
 
         // Proveedor
-        AbstractProveedorBean proveedor = invoice.getProveedor();
+        Proveedor21Bean proveedor = invoice.getProveedor();
         invoiceType.setAccountingSupplierParty(buildSupplierPartyType(proveedor));
 
         // Cliente
@@ -107,7 +115,7 @@ public class BeanToType21 {
 
     // Proveedor
 
-    private static SupplierPartyType buildSupplierPartyType(AbstractProveedorBean proveedor) {
+    private static SupplierPartyType buildSupplierPartyType(Proveedor21Bean proveedor) {
         SupplierPartyType supplierPartyType = new SupplierPartyType();
 
         PartyType partyType = new PartyType();
@@ -115,6 +123,10 @@ public class BeanToType21 {
 
         PartyTaxSchemeType partyTaxSchemeType = new PartyTaxSchemeType();
         partyType.addPartyTaxScheme(partyTaxSchemeType);
+
+        TaxSchemeType taxSchemeType = new TaxSchemeType();
+        taxSchemeType.setID("-");
+        partyTaxSchemeType.setTaxScheme(taxSchemeType);
 
         AddressType addressType = new AddressType();
         partyTaxSchemeType.setRegistrationAddress(addressType);
@@ -155,6 +167,10 @@ public class BeanToType21 {
         PartyTaxSchemeType partyTaxSchemeType = new PartyTaxSchemeType();
         partyType.addPartyTaxScheme(partyTaxSchemeType);
 
+        TaxSchemeType taxSchemeType = new TaxSchemeType();
+        taxSchemeType.setID("-");
+        partyTaxSchemeType.setTaxScheme(taxSchemeType);
+
         // Documento identidad
         String numeroDocumento = cliente.getNumeroDocumento();
         String codigoTipoDocumento = cliente.getCodigoTipoDocumento();
@@ -182,7 +198,10 @@ public class BeanToType21 {
 
         monetaryTotalType.setLineExtensionAmount(UBL21Utils.buildLineExtensionAmountType(total.getExtensionAmount(), moneda.getCodigo()));
         monetaryTotalType.setTaxInclusiveAmount(UBL21Utils.buildTaxInclusiveAmountType(total.getInclusiveAmount(), moneda.getCodigo()));
-        monetaryTotalType.setPrepaidAmount(UBL21Utils.buildPrepaidAmountType(total.getAnticipos(), moneda.getCodigo()));
+
+        if (total.getAnticipos() != null) {
+            monetaryTotalType.setPrepaidAmount(UBL21Utils.buildPrepaidAmountType(total.getAnticipos(), moneda.getCodigo()));
+        }
 
         return monetaryTotalType;
     }
