@@ -153,8 +153,8 @@ public class BeanToTypeTest {
 //    public void toInvoiceTypeTest() throws Exception {
 //        InvoiceType invoiceType = BeanToType21.toInvoiceType(invoiceBean, timeZone);
 //
-//        oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory();
-//        JAXBElement<InvoiceType> jaxbElement = factory.createInvoice(invoiceType);
+//        oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory factories = new oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory();
+//        JAXBElement<InvoiceType> jaxbElement = factories.createInvoice(invoiceType);
 //        Document xmlDocument = JaxbUtils.toDocument(InvoiceType.class, jaxbElement);
 //
 //        // Extensions

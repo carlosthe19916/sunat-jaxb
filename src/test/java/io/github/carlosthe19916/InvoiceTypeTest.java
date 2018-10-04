@@ -13,10 +13,10 @@ public class InvoiceTypeTest {
 
 //    @Test
 //    public void test() throws JAXBException {
-//        oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory();
-//        InvoiceType invoiceType = factory.createInvoiceType();
+//        oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory factories = new oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory();
+//        InvoiceType invoiceType = factories.createInvoiceType();
 //
-//        JAXBElement<InvoiceType> jaxbElement = factory.createInvoice(invoiceType);
+//        JAXBElement<InvoiceType> jaxbElement = factories.createInvoice(invoiceType);
 //        Document xmlDocument = JaxbUtils.toDocument(InvoiceType.class, jaxbElement);
 //
 //        Assert.assertTrue(xmlDocument.isDefaultNamespace("urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"));
