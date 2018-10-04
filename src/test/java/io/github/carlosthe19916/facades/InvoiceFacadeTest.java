@@ -121,8 +121,6 @@ public class InvoiceFacadeTest {
                 .impuestos(
                         Impuestos21BeanBuilder.builder()
                                 .igv(new BigDecimal("800"))
-                                .isc(new BigDecimal("900"))
-                                .otros(new BigDecimal("1000"))
                                 .build()
                 )
                 .addDetalle(
