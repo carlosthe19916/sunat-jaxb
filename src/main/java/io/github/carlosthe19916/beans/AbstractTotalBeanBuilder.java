@@ -31,4 +31,9 @@ public abstract class AbstractTotalBeanBuilder<Builder extends AbstractTotalBean
         return getBuilder();
     }
 
+    public Builder pagarLetras(String pagarLetras) {
+        bean.setPagarLetras(pagarLetras);
+        return getBuilder();
+    }
+
 }

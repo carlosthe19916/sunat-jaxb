@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.beans;
 
-import io.github.carlosthe19916.beans.catalogs.TipoAfectacionIgv;
+import io.github.carlosthe19916.beans.catalogs.Catalogo7;
 
 import java.math.BigDecimal;
 
@@ -8,13 +8,15 @@ public class DetalleBean {
 
     private String unidadMedida;
     private String descripcion;
-    private TipoAfectacionIgv tipoAfectacionIgv;
-    private String codigoTipoIsc;
+
     private BigDecimal cantidad;
     private BigDecimal valorUnitario;
     private BigDecimal precioUnitario;
     private BigDecimal subtotal;
     private BigDecimal total;
+
+    private Catalogo7 tipoAfectacionIgv;
+    private String codigoTipoIsc;
     private BigDecimal totalIgv;
     private BigDecimal totalIsc;
 
@@ -98,11 +100,11 @@ public class DetalleBean {
         this.totalIsc = totalIsc;
     }
 
-    public TipoAfectacionIgv getTipoAfectacionIgv() {
+    public Catalogo7 getTipoAfectacionIgv() {
         return tipoAfectacionIgv;
     }
 
-    public void setTipoAfectacionIgv(TipoAfectacionIgv tipoAfectacionIgv) {
+    public void setTipoAfectacionIgv(Catalogo7 tipoAfectacionIgv) {
         this.tipoAfectacionIgv = tipoAfectacionIgv;
     }
 }

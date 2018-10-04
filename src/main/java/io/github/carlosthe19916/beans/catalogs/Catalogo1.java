@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.beans.catalogs;
 
-public enum Catalogo1 {
+public enum Catalogo1 implements Catalogo{
 
     FACTURA("01"),
     BOLETA("03"),
@@ -19,13 +19,13 @@ public enum Catalogo1 {
     PERCEPCION("40"),
     PERCEPCION_VENTA_INTERNA("21");
 
-
     private final String code;
 
     Catalogo1(String code) {
         this.code = code;
     }
 
+    @Override
     public String getCode() {
         return code;
     }

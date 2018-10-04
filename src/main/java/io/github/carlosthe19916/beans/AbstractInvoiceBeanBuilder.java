@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.beans;
 
-import io.github.carlosthe19916.beans.catalogs.TipoInvoice;
+import io.github.carlosthe19916.beans.catalogs.Catalogo1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public abstract class AbstractInvoiceBeanBuilder<Builder extends AbstractInvoice
         return getBuilder();
     }
 
-    public Builder tipoComprobante(TipoInvoice tipoComprobante) {
+    public Builder tipoComprobante(Catalogo1 tipoComprobante) {
         bean.setTipoDocumento(tipoComprobante);
         return getBuilder();
     }
@@ -56,6 +56,21 @@ public abstract class AbstractInvoiceBeanBuilder<Builder extends AbstractInvoice
             bean.setDetalle(list);
         }
         bean.getDetalle().add(detalle);
+        return getBuilder();
+    }
+
+    public Builder codigoGeneradoPorSoftware(String codigoGeneradoPorSoftware) {
+        bean.setCodigoGeneradoPorSoftware(codigoGeneradoPorSoftware);
+        return getBuilder();
+    }
+
+    public Builder guiaRemisionRelacionada(GuiaRemisionRelacionadaBean guiaRemisionRelacionada) {
+        bean.setGuiaRemisionRelacionada(guiaRemisionRelacionada);
+        return getBuilder();
+    }
+
+    public Builder otroDocumentoRelacionado(OtroDocumentoRelacionadoBean otroDocumentoRelacionado) {
+        bean.setOtroDocumentoRelacionado(otroDocumentoRelacionado);
         return getBuilder();
     }
 

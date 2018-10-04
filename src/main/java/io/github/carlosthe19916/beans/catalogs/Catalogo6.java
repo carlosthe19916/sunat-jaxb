@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.beans.catalogs;
 
-public enum Catalogo6 {
+public enum Catalogo6 implements Catalogo {
 
     DOC_TRIB_NO_DOM_SIN_RUC("0"),
     DNI("1"),
@@ -11,7 +11,8 @@ public enum Catalogo6 {
 
     private final String codigo;
 
-    public String getCodigo() {
+    @Override
+    public String getCode() {
         return codigo;
     }
 

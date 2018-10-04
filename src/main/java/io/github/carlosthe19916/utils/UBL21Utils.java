@@ -168,15 +168,7 @@ public class UBL21Utils {
 
     public static TaxSchemeType buildTaxSchemeType(String ID, String name, String code) {
         TaxSchemeType taxSchemeType = new TaxSchemeType();
-
-        IDType idType = new IDType();
-        taxSchemeType.setID(idType);
-
-
-        idType.setValue(ID);
-        idType.setSchemeID("UN/ECE 5153");
-        idType.setSchemeAgencyID("6");
-
+        taxSchemeType.setID(ID);
         taxSchemeType.setName(name);
         taxSchemeType.setTaxTypeCode(code);
         return taxSchemeType;
@@ -236,12 +228,18 @@ public class UBL21Utils {
     public static PriceTypeCodeType buildPriceTypeCodeType(String value) {
         PriceTypeCodeType priceTypeCodeType = new PriceTypeCodeType();
         priceTypeCodeType.setValue(value);
+        priceTypeCodeType.setListName("SUNAT:Indicador de Tipo de Precio");
+        priceTypeCodeType.setListAgencyName("PE:SUNAT");
+        priceTypeCodeType.setListURI("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo16");
         return priceTypeCodeType;
     }
 
     public static TaxExemptionReasonCodeType buildTaxExemptionReasonCodeType(String value) {
         TaxExemptionReasonCodeType taxExemptionReasonCodeType = new TaxExemptionReasonCodeType();
         taxExemptionReasonCodeType.setValue(value);
+        taxExemptionReasonCodeType.setListAgencyName("PE:SUNAT");
+        taxExemptionReasonCodeType.setListName("SUNAT:Codigo de Tipo de Afectación del IGV");
+        taxExemptionReasonCodeType.setListURI("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo07");
         return taxExemptionReasonCodeType;
     }
 
@@ -253,6 +251,44 @@ public class UBL21Utils {
         noteType.setValue(value);
         noteType.setLanguageLocaleID(languageLocaleID);
         return noteType;
+    }
+
+
+    // Guias de remision relacionada
+
+    public static DocumentReferenceType buildDocumentReferenceType1(String ID, String documentTypeCode) {
+        DocumentReferenceType documentReferenceType = new DocumentReferenceType();
+        documentReferenceType.setID(ID);
+        documentReferenceType.setDocumentTypeCode(buildDocumentTypeCodeType1(documentTypeCode));
+        return documentReferenceType;
+    }
+
+    public static DocumentTypeCodeType buildDocumentTypeCodeType1(String value) {
+        DocumentTypeCodeType documentTypeCodeType = new DocumentTypeCodeType();
+        documentTypeCodeType.setValue(value);
+        documentTypeCodeType.setListAgencyName("PE:SUNAT");
+        documentTypeCodeType.setListName("SUNAT:Identificador de guía relacionada");
+        documentTypeCodeType.setListURI("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01");
+        return documentTypeCodeType;
+    }
+
+
+    // Otro documento relacionado
+
+    public static DocumentReferenceType buildDocumentReferenceType2(String ID, String documentTypeCode) {
+        DocumentReferenceType documentReferenceType = new DocumentReferenceType();
+        documentReferenceType.setID(ID);
+        documentReferenceType.setDocumentTypeCode(buildDocumentTypeCodeType2(documentTypeCode));
+        return documentReferenceType;
+    }
+
+    public static DocumentTypeCodeType buildDocumentTypeCodeType2(String value) {
+        DocumentTypeCodeType documentTypeCodeType = new DocumentTypeCodeType();
+        documentTypeCodeType.setValue(value);
+        documentTypeCodeType.setListAgencyName("PE:SUNAT");
+        documentTypeCodeType.setListName("SUNAT: Identificador de documento relacionado");
+        documentTypeCodeType.setListURI("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo12");
+        return documentTypeCodeType;
     }
 
 //    public static IssueDateType buildIssueDateType(XMLGregorianCalendar value) {
@@ -417,11 +453,6 @@ public class UBL21Utils {
 //        return responseType;
 //    }
 //
-//    public static DocumentTypeCodeType buildDocumentTypeCodeType(String value) {
-//        DocumentTypeCodeType documentTypeCodeType = new DocumentTypeCodeType();
-//        documentTypeCodeType.setValue(value);
-//        return documentTypeCodeType;
-//    }
 //
 //    public static DocumentReferenceType buildDocumentReferenceType(String ID, String documentTypeCode) {
 //        DocumentReferenceType documentReferenceType = new DocumentReferenceType();

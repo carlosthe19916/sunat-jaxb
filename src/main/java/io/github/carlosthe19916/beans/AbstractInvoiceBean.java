@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.beans;
 
-import io.github.carlosthe19916.beans.catalogs.TipoInvoice;
+import io.github.carlosthe19916.beans.catalogs.Catalogo1;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -21,7 +21,7 @@ public abstract class AbstractInvoiceBean {
     private Integer numero;
 
     @NotNull
-    private TipoInvoice tipoDocumento;
+    private Catalogo1 tipoDocumento;
 
     @Valid
     @NotNull
@@ -40,6 +40,12 @@ public abstract class AbstractInvoiceBean {
     private List<@Valid DetalleBean> detalle;
 
     private String codigoGeneradoPorSoftware;
+
+    @Valid
+    private GuiaRemisionRelacionadaBean guiaRemisionRelacionada;
+
+    @Valid
+    private OtroDocumentoRelacionadoBean otroDocumentoRelacionado;
 
     public AbstractInvoiceBean() {
     }
@@ -70,11 +76,11 @@ public abstract class AbstractInvoiceBean {
         this.numero = numero;
     }
 
-    public TipoInvoice getTipoDocumento() {
+    public Catalogo1 getTipoDocumento() {
         return tipoDocumento;
     }
 
-    public void setTipoDocumento(TipoInvoice tipoDocumento) {
+    public void setTipoDocumento(Catalogo1 tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
 
@@ -116,5 +122,21 @@ public abstract class AbstractInvoiceBean {
 
     public void setCodigoGeneradoPorSoftware(String codigoGeneradoPorSoftware) {
         this.codigoGeneradoPorSoftware = codigoGeneradoPorSoftware;
+    }
+
+    public GuiaRemisionRelacionadaBean getGuiaRemisionRelacionada() {
+        return guiaRemisionRelacionada;
+    }
+
+    public void setGuiaRemisionRelacionada(GuiaRemisionRelacionadaBean guiaRemisionRelacionada) {
+        this.guiaRemisionRelacionada = guiaRemisionRelacionada;
+    }
+
+    public OtroDocumentoRelacionadoBean getOtroDocumentoRelacionado() {
+        return otroDocumentoRelacionado;
+    }
+
+    public void setOtroDocumentoRelacionado(OtroDocumentoRelacionadoBean otroDocumentoRelacionado) {
+        this.otroDocumentoRelacionado = otroDocumentoRelacionado;
     }
 }

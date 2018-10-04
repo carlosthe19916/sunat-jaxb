@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.beans;
 
-import io.github.carlosthe19916.beans.catalogs.TipoAfectacionIgv;
+import io.github.carlosthe19916.beans.catalogs.Catalogo7;
 
 import java.math.BigDecimal;
 
@@ -26,7 +26,7 @@ public class DetalleBeanBuilder {
         return this;
     }
 
-    public DetalleBeanBuilder codigoTipoIgv(TipoAfectacionIgv tipoAfectacionIgv) {
+    public DetalleBeanBuilder codigoTipoIgv(Catalogo7 tipoAfectacionIgv) {
         detalle.setTipoAfectacionIgv(tipoAfectacionIgv);
         return this;
     }

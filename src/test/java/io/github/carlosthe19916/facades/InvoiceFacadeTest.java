@@ -7,8 +7,8 @@ import com.helger.xml.microdom.serialize.MicroWriter;
 import com.helger.xml.namespace.MapBasedNamespaceContext;
 import com.helger.xml.serialize.write.XMLWriterSettings;
 import io.github.carlosthe19916.beans.*;
-import io.github.carlosthe19916.beans.catalogs.TipoAfectacionIgv;
-import io.github.carlosthe19916.beans.catalogs.TipoInvoice;
+import io.github.carlosthe19916.beans.catalogs.Catalogo1;
+import io.github.carlosthe19916.beans.catalogs.Catalogo7;
 import io.github.carlosthe19916.beans.config.ubl21.GlobalUBL21Defaults;
 import io.github.carlosthe19916.beans.ubl.ubl21.*;
 import io.github.carlosthe19916.utils.JaxbUtils;
@@ -79,7 +79,7 @@ public class InvoiceFacadeTest {
         Invoice21Bean invoice1 = Invoice21BeanBuilder.builder()
                 .serie("F001")
                 .numero(1)
-                .tipoComprobante(TipoInvoice.FACTURA)
+                .tipoComprobante(Catalogo1.FACTURA)
                 .moneda(
                         MonedaBeanBuilder.builder()
                                 .codigo("PEN")
@@ -127,7 +127,7 @@ public class InvoiceFacadeTest {
                         DetalleBeanBuilder.Detalle()
                                 .unidadMedida("NIU")
                                 .descripcion("Bolsa de arroz")
-                                .codigoTipoIgv(TipoAfectacionIgv.GRAVADO_OPERACION_ONEROSA)
+                                .codigoTipoIgv(Catalogo7.GRAVADO_OPERACION_ONEROSA)
                                 .codigoTipoIsc("00")
                                 .cantidad(new BigDecimal("100"))
                                 .valorUnitario(new BigDecimal("10"))

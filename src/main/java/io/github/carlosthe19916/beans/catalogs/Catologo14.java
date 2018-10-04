@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.beans.catalogs;
 
-public enum TipoConceptosTributarios {
+public enum Catologo14 implements Catalogo {
 
     TOTAL_VALOR_VENTA_OPERACIONES_GRAVADAS("1001", "TOTAL VALOR DE VENTA - OPERACIONES GRAVADAS"),
     TOTAL_VALOR_VENTA_OPERACIONES_INAFECTAS("1002", "TOTAL VALOR DE VENTA - OPERACIONES INAFCTAS"),
@@ -14,19 +14,19 @@ public enum TipoConceptosTributarios {
     TOTAL_DESCUENTO("2005", "TOTAL DESCUENTOS"),
     FISE("3001", "FISE (LEY 29852) FONDO INCLUSION SOCIAL ENERGETICO");
 
-    private final String codigo;
+    private final String code;
     private final String denominacion;
 
-    public String getCodigo() {
-        return codigo;
+    public String getCode() {
+        return code;
     }
 
     public String getDenominacion() {
         return denominacion;
     }
 
-    TipoConceptosTributarios(String codigo, String denominacion) {
-        this.codigo = codigo;
+    Catologo14(String code, String denominacion) {
+        this.code = code;
         this.denominacion = denominacion;
     }
 

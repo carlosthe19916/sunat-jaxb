@@ -4,7 +4,7 @@
 
     <groupId>io.github.carlosthe19916</groupId>
     <artifactId>sunat-jaxb</artifactId>
-    <version>1.1.5-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
 
     <name>Sunat Jaxb</name>
     <description>Sunat Perú Jaxb Models</description>

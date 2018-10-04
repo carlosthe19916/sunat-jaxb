@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.beans.catalogs;
 
-public enum TipoElementosAdicionalesComprobante {
+public enum Catalogo15 implements Catalogo {
 
     MONTO_EN_LETRAS("1000", "", "MONTO EN LETRAS"),
     LEYENDA_TRANSFERENCIA_GRATUITA("1002", "LEYENDA", "TRANSFERENCIA GRATUITA DE UN BIEN Y/O SERVICIO PRESTADO GRATUITAMENTE"),
@@ -43,12 +43,13 @@ public enum TipoElementosAdicionalesComprobante {
     COMERCIALIZACION_ORO_NRO_RESOLUCION_AUTORIZA_PLANTA_BENEFICIO("6003", "COMERCIALIZACION DE ORO", "NUMERO RESOLUCION QUE AUTORIZA PLANTA DE BENEFICIO"),
     COMERCIALIZACION_ORO_LEY_MINERAL("6004", "COMERCIALIZACION DE ORO", "LEY MINERAL (% CONCENTRACION ORO)");
 
-    private final String codigo;
+    private final String code;
     private final String grupo;
     private final String denominacion;
 
-    public String getCodigo() {
-        return codigo;
+    @Override
+    public String getCode() {
+        return code;
     }
 
     public String getGrupo() {
@@ -59,8 +60,8 @@ public enum TipoElementosAdicionalesComprobante {
         return denominacion;
     }
 
-    TipoElementosAdicionalesComprobante(String codigo, String grupo, String denominacion) {
-        this.codigo = codigo;
+    Catalogo15(String code, String grupo, String denominacion) {
+        this.code = code;
         this.grupo = grupo;
         this.denominacion = denominacion;
 

@@ -7,12 +7,11 @@ import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroWriter;
 import com.helger.xml.namespace.MapBasedNamespaceContext;
 import com.helger.xml.serialize.write.XMLWriterSettings;
-import io.github.carlosthe19916.beans.ClienteBeanBuilder;
-import io.github.carlosthe19916.beans.DetalleBeanBuilder;
-import io.github.carlosthe19916.beans.MonedaBeanBuilder;
-import io.github.carlosthe19916.beans.TotalInformacionAdicionalBeanBuilder;
-import io.github.carlosthe19916.beans.catalogs.TipoAfectacionIgv;
-import io.github.carlosthe19916.beans.catalogs.TipoInvoice;
+import io.github.carlosthe19916.beans.*;
+import io.github.carlosthe19916.beans.catalogs.Catalogo;
+import io.github.carlosthe19916.beans.catalogs.Catalogo1;
+import io.github.carlosthe19916.beans.catalogs.Catalogo12;
+import io.github.carlosthe19916.beans.catalogs.Catalogo7;
 import io.github.carlosthe19916.beans.config.ubl21.GlobalUBL21Defaults;
 import io.github.carlosthe19916.beans.ubl.ubl21.*;
 import io.github.carlosthe19916.utils.JaxbUtils;
@@ -30,9 +29,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.math.BigDecimal;
+import java.security.cert.X509Certificate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.UUID;
 
 public class InvoiceFacadeTest2 {
 
@@ -81,9 +82,10 @@ public class InvoiceFacadeTest2 {
         fechaVencimiento.setTimeZone(defaultTimeZone);
 
         Invoice21Bean invoice1 = Invoice21BeanBuilder.builder()
+                .codigoGeneradoPorSoftware(UUID.randomUUID().toString())
                 .serie("F001")
                 .numero(1)
-                .tipoComprobante(TipoInvoice.FACTURA)
+                .tipoComprobante(Catalogo1.FACTURA)
                 .moneda(
                         MonedaBeanBuilder.builder()
                                 .codigo("PEN")
@@ -107,11 +109,24 @@ public class InvoiceFacadeTest2 {
                                 .direccion("Jr. carlos 997")
                                 .build()
                 )
+                .guiaRemisionRelacionada(
+                        GuiaRemisionRelacionadaBeanBuilder.builder()
+                                .guiaRemision("031-002201")
+                                .tipoGuiaRemision(Catalogo1.GUIA_REMISION_REMITENTE)
+                                .build()
+                )
+                .otroDocumentoRelacionado(
+                        OtroDocumentoRelacionadoBeanBuilder.builder()
+                                .documentoRelacionado("024099")
+                                .tipoDocumentoRelacionado(Catalogo12.OTROS)
+                                .build()
+                )
                 .total(
                         Total21BeanBuilder.builder()
                                 .pagar(new BigDecimal("100"))
                                 .descuentoGlobal(new BigDecimal("200"))
                                 .otrosCargos(new BigDecimal("300"))
+                                .pagarLetras("CIEN")
                                 .build()
                 )
                 .totalInformacionAdicional(
@@ -131,15 +146,13 @@ public class InvoiceFacadeTest2 {
                         DetalleBeanBuilder.Detalle()
                                 .unidadMedida("NIU")
                                 .descripcion("Bolsa de arroz")
-                                .codigoTipoIgv(TipoAfectacionIgv.GRAVADO_OPERACION_ONEROSA)
-                                .codigoTipoIsc("00")
-                                .cantidad(new BigDecimal("100"))
-                                .valorUnitario(new BigDecimal("10"))
-                                .precioUnitario(new BigDecimal("11.8"))
-                                .subtotal(new BigDecimal("1000"))
-                                .total(new BigDecimal("1180"))
-                                .totalIgv(new BigDecimal("180"))
-                                .totalIsc(new BigDecimal("0"))
+                                .codigoTipoIgv(Catalogo7.GRAVADO_OPERACION_ONEROSA)
+                                .cantidad(BigDecimal.valueOf(2))
+                                .valorUnitario(BigDecimal.valueOf(50))
+                                .precioUnitario(BigDecimal.valueOf(59))
+                                .subtotal(BigDecimal.valueOf(100))
+                                .total(BigDecimal.valueOf(118))
+                                .totalIgv(BigDecimal.valueOf(18))
                                 .build()
                 )
                 .build();
@@ -171,7 +184,7 @@ public class InvoiceFacadeTest2 {
 //            UBL21PEWriter.invoice().write(invoiceType, new File("/home/admin/git/sunat-jaxb/miarchivo.xml"));
             Assert.assertNotNull(invoiceType);
         } catch (Exception e) {
-            System.out.println(e);
+            Assert.assertTrue(false);
         }
     }
 

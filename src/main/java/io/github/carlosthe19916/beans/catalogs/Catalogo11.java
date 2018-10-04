@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.beans.catalogs;
 
-public enum TipoValorVenta {
+public enum Catalogo11 implements Catalogo {
 
     GRAVADO("01", "GRAVADO"),
     EXONERADO("02", "EXONERADO"),
@@ -8,19 +8,21 @@ public enum TipoValorVenta {
     EXPORTACION("04", "EXPORTACION"),
     GRATUITA("05", "GRATUITAS");
 
-    private final String codigo;
+    private final String code;
     private final String denominacion;
 
-    public String getCodigo() {
-        return codigo;
+    @Override
+    public String getCode() {
+        return code;
     }
 
     public String getDenominacion() {
         return denominacion;
     }
 
-    TipoValorVenta(String codigo, String denominacion) {
-        this.codigo = codigo;
+    Catalogo11(String code, String denominacion) {
+        this.code = code;
         this.denominacion = denominacion;
     }
+
 }

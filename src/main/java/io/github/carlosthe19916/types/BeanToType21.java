@@ -1,9 +1,9 @@
 package io.github.carlosthe19916.types;
 
 import io.github.carlosthe19916.beans.*;
+import io.github.carlosthe19916.beans.catalogs.Catalogo16;
 import io.github.carlosthe19916.beans.catalogs.Catalogo52;
-import io.github.carlosthe19916.beans.catalogs.TipoPrecioVentaUnitario;
-import io.github.carlosthe19916.beans.catalogs.TipoTributo;
+import io.github.carlosthe19916.beans.catalogs.Catalogo5;
 import io.github.carlosthe19916.beans.config.ubl21.GlobalUBL21Defaults;
 import io.github.carlosthe19916.beans.exceptions.Invoice21BeanValidacionException;
 import io.github.carlosthe19916.beans.ubl.ubl21.Impuestos21Bean;
@@ -14,11 +14,19 @@ import io.github.carlosthe19916.utils.BeanUtils;
 import io.github.carlosthe19916.utils.DateUtils;
 import io.github.carlosthe19916.utils.UBL21Utils;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.*;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CompanyIDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;
+import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_21.ExtensionContentType;
+import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_21.UBLExtensionType;
+import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_21.UBLExtensionsType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
+import org.w3c.dom.Document;
 
 import javax.validation.ConstraintViolation;
-import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -52,14 +60,26 @@ public class BeanToType21 {
 
         // 10 Leyendas
         if (invoice.getTotal().getPagarLetras() != null) {
-            invoiceType.addNote(UBL21Utils.buildNoteType(invoice.getTotal().getPagarLetras(), Catalogo52.MONTO_EXPRESADO_EN_LETRAS.getCodigo()));
+            invoiceType.addNote(UBL21Utils.buildNoteType(invoice.getTotal().getPagarLetras(), Catalogo52.MONTO_EXPRESADO_EN_LETRAS.getCode()));
         }
         if (invoice.getCodigoGeneradoPorSoftware() != null) {
-            invoiceType.addNote(UBL21Utils.buildNoteType(invoice.getCodigoGeneradoPorSoftware(), Catalogo52.CODIGO_INTERNO_GENERADO_POR_EL_SOFTWARE_DE_FACTURACION.getCodigo()));
+            invoiceType.addNote(UBL21Utils.buildNoteType(invoice.getCodigoGeneradoPorSoftware(), Catalogo52.CODIGO_INTERNO_GENERADO_POR_EL_SOFTWARE_DE_FACTURACION.getCode()));
         }
 
         // 12 Guia de remision relacionada
+        if (invoice.getGuiaRemisionRelacionada() != null) {
+            GuiaRemisionRelacionadaBean guiaRemisionRelacionada = invoice.getGuiaRemisionRelacionada();
+            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceType1(guiaRemisionRelacionada.getGuiaRemision(), guiaRemisionRelacionada.getTipoGuiaRemision().getCode());
+            invoiceType.addDespatchDocumentReference(documentReferenceType);
+        }
+
         // 13 otro documento relacionado
+        if (invoice.getOtroDocumentoRelacionado() != null) {
+            OtroDocumentoRelacionadoBean otroDocumentoRelacionado = invoice.getOtroDocumentoRelacionado();
+            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceType2(otroDocumentoRelacionado.getDocumentoRelacionado(), otroDocumentoRelacionado.getTipoDocumentoRelacionado().getCode());
+            invoiceType.addAdditionalDocumentReference(documentReferenceType);
+        }
+
         // 20 direccion donde se entrega el bien
         // 21 descuentos globales
 
@@ -78,7 +98,7 @@ public class BeanToType21 {
         }
 
         // Tipo comprobante
-        String codigoTipoComprobante = invoice.getTipoDocumento().getCodigo();
+        String codigoTipoComprobante = invoice.getTipoDocumento().getCode();
         InvoiceTypeCodeType invoiceTypeCodeType = UBL21Utils.buildInvoiceTypeCodeType(codigoTipoComprobante);
         invoiceType.setInvoiceTypeCode(invoiceTypeCodeType);
 
@@ -108,6 +128,8 @@ public class BeanToType21 {
             invoiceType.getInvoiceLine().add(buildInvoiceLineType(i, moneda.getCodigo(), detalle));
             i++;
         }
+
+        invoiceType.setLineCountNumeric(BigDecimal.valueOf(invoice.getDetalle().size()));
 
         return invoiceType;
     }
@@ -215,21 +237,21 @@ public class BeanToType21 {
         if (impuestosBean.getIgv() != null) {
             TaxTotalType taxTotalType = new TaxTotalType();
             taxTotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(impuestosBean.getIgv(), moneda.getCodigo()));
-            taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(impuestosBean.getIgv(), impuestosBean.getIgvAfecto(), moneda.getCodigo(), TipoTributo.IGV));
+            taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(impuestosBean.getIgv(), impuestosBean.getIgvAfecto(), moneda.getCodigo(), Catalogo5.IGV));
 
             result.add(taxTotalType);
         }
         if (impuestosBean.getIsc() != null) {
             TaxTotalType taxTotalType = new TaxTotalType();
             taxTotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(impuestosBean.getIsc(), moneda.getCodigo()));
-            taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(impuestosBean.getIsc(), impuestosBean.getIscAfecto(), moneda.getCodigo(), TipoTributo.ISC));
+            taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(impuestosBean.getIsc(), impuestosBean.getIscAfecto(), moneda.getCodigo(), Catalogo5.ISC));
 
             result.add(taxTotalType);
         }
         if (impuestosBean.getOtros() != null) {
             TaxTotalType taxTotalType = new TaxTotalType();
             taxTotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(impuestosBean.getOtros(), moneda.getCodigo()));
-            taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(impuestosBean.getOtros(), impuestosBean.getOtrosAfecto(), moneda.getCodigo(), TipoTributo.OTROS));
+            taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(impuestosBean.getOtros(), impuestosBean.getOtrosAfecto(), moneda.getCodigo(), Catalogo5.OTROS));
 
             result.add(taxTotalType);
         }
@@ -237,10 +259,10 @@ public class BeanToType21 {
         return result;
     }
 
-    private static TaxSubtotalType buildTaxSubtotalType(BigDecimal taxAmount, BigDecimal taxableAmount, String currency, TipoTributo tipoTributo) {
+    private static TaxSubtotalType buildTaxSubtotalType(BigDecimal taxAmount, BigDecimal taxableAmount, String currency, Catalogo5 tipoTributo) {
         TaxSubtotalType taxSubtotalType = new TaxSubtotalType();
         taxSubtotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(taxAmount, currency));
-        taxSubtotalType.setTaxCategory(UBL21Utils.buildTaxCategoryType(tipoTributo.getCategoria(), tipoTributo.getId(), tipoTributo.getAbreviatura(), tipoTributo.getCodigo()));
+        taxSubtotalType.setTaxCategory(UBL21Utils.buildTaxCategoryType(tipoTributo.getCategoria(), tipoTributo.getId(), tipoTributo.getAbreviatura(), tipoTributo.getCode()));
         taxSubtotalType.setTaxableAmount(UBL21Utils.buildTaxableAmountType(taxableAmount, currency));
         return taxSubtotalType;
     }
@@ -259,10 +281,10 @@ public class BeanToType21 {
         invoiceLineType.setPrice(UBL21Utils.buildPriceType(moneda, lineBean.getValorUnitario()));
 
         if (lineBean.getTotalIgv() != null) {
-            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIgv(), lineBean.getTipoAfectacionIgv().getCodigo(), TipoTributo.IGV));
+            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIgv(), lineBean.getTipoAfectacionIgv().getCode(), Catalogo5.IGV));
         }
         if (lineBean.getTotalIsc() != null) {
-            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIsc(), lineBean.getCodigoTipoIsc(), TipoTributo.ISC));
+            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIsc(), lineBean.getCodigoTipoIsc(), Catalogo5.ISC));
         }
 
         return invoiceLineType;
@@ -273,38 +295,48 @@ public class BeanToType21 {
 
         if (lineBean.getTipoAfectacionIgv().isOperacionNoOnerosa()) {
             pricingReferenceType.getAlternativeConditionPrice().add(
-                    UBL21Utils.buildPriceType(moneda, BigDecimal.ZERO, TipoPrecioVentaUnitario.PRECIO_UNITARIO.getCodigo())
+                    UBL21Utils.buildPriceType(moneda, BigDecimal.ZERO, Catalogo16.PRECIO_UNITARIO_INCLUYE_IGV.getCode())
             );
             pricingReferenceType.getAlternativeConditionPrice().add(
-                    UBL21Utils.buildPriceType(moneda, lineBean.getPrecioUnitario(), TipoPrecioVentaUnitario.VALOR_REF_UNIT_EN_OPER_NO_ORENOSAS.getCodigo())
+                    UBL21Utils.buildPriceType(moneda, lineBean.getPrecioUnitario(), Catalogo16.VALOR_FERENCIAL_UNITARIO_EN_OPERACIONES_NO_ONEROSAS.getCode())
             );
         } else {
             pricingReferenceType.getAlternativeConditionPrice().add(
-                    UBL21Utils.buildPriceType(moneda, lineBean.getPrecioUnitario(), TipoPrecioVentaUnitario.PRECIO_UNITARIO.getCodigo())
+                    UBL21Utils.buildPriceType(moneda, lineBean.getPrecioUnitario(), Catalogo16.PRECIO_UNITARIO_INCLUYE_IGV.getCode())
             );
         }
 
         return pricingReferenceType;
     }
 
-    private static TaxTotalType buildTaxTotalType(String currency, BigDecimal value, String tipoIGV, TipoTributo tipoTributo) {
+    private static TaxTotalType buildTaxTotalType(String currency, BigDecimal value, String tipoIGV, Catalogo5 tipoTributo) {
         TaxTotalType taxTotalType = new TaxTotalType();
         taxTotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(value, currency));
         taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(currency, value, tipoIGV, tipoTributo));
         return taxTotalType;
     }
 
-    private static TaxSubtotalType buildTaxSubtotalType(String currency, BigDecimal value, String tipoIGV, TipoTributo tipoTributo) {
+    private static TaxSubtotalType buildTaxSubtotalType(String currency, BigDecimal value, String tipoIGV, Catalogo5 tipoTributo) {
         TaxSubtotalType taxSubtotalType = new TaxSubtotalType();
         taxSubtotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(value, currency));
         taxSubtotalType.setTaxCategory(buildTaxCategoryType(tipoIGV, tipoTributo));
         return taxSubtotalType;
     }
 
-    private static TaxCategoryType buildTaxCategoryType(String tipoIGV, TipoTributo tipoTributo) {
+    private static TaxCategoryType buildTaxCategoryType(String tipoIGV, Catalogo5 tipoTributo) {
         TaxCategoryType taxCategoryType = new TaxCategoryType();
-        taxCategoryType.setTaxScheme(UBL21Utils.buildTaxSchemeType(tipoTributo.getId(), tipoTributo.getAbreviatura(), tipoTributo.getCodigo()));
+        taxCategoryType.setTaxScheme(UBL21Utils.buildTaxSchemeType(tipoTributo.getId(), tipoTributo.getAbreviatura(), tipoTributo.getCode()));
         taxCategoryType.setTaxExemptionReasonCode(UBL21Utils.buildTaxExemptionReasonCodeType(tipoIGV));
+
+
+        IDType idType = new IDType();
+        idType.setValue("S");
+        idType.setSchemeID("UN/ECE 5305");
+        idType.setSchemeName("Tax Category Identifier");
+        idType.setSchemeAgencyName("United Nations Economic Commission for Europe");
+
+        taxCategoryType.setID(idType);
+
         return taxCategoryType;
     }
 

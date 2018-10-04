@@ -1,7 +1,6 @@
 package io.github.carlosthe19916.beans.ubl.ubl21;
 
 import io.github.carlosthe19916.beans.AbstractProveedorBeanBuilder;
-import io.github.carlosthe19916.beans.ubl.ubl20.Proveedor20Bean;
 
 public class Proveedor21BeanBuilder extends AbstractProveedorBeanBuilder<Proveedor21BeanBuilder, Proveedor21Bean> {
 
