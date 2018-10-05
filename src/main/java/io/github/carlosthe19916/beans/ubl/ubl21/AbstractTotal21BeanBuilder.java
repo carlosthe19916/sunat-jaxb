@@ -1,8 +1,6 @@
 package io.github.carlosthe19916.beans.ubl.ubl21;
 
 import io.github.carlosthe19916.beans.AbstractTotalBeanBuilder;
-import io.github.carlosthe19916.beans.ubl.ubl20.AbstractTotal20BeanBuilder;
-import io.github.carlosthe19916.beans.ubl.ubl20.Total20Bean;
 
 import java.math.BigDecimal;
 

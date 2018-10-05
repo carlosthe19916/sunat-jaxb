@@ -2,8 +2,8 @@ package io.github.carlosthe19916.types;
 
 import io.github.carlosthe19916.beans.*;
 import io.github.carlosthe19916.beans.catalogs.Catalogo16;
-import io.github.carlosthe19916.beans.catalogs.Catalogo52;
 import io.github.carlosthe19916.beans.catalogs.Catalogo5;
+import io.github.carlosthe19916.beans.catalogs.Catalogo52;
 import io.github.carlosthe19916.beans.config.ubl21.GlobalUBL21Defaults;
 import io.github.carlosthe19916.beans.exceptions.Invoice21BeanValidacionException;
 import io.github.carlosthe19916.beans.ubl.ubl21.Impuestos21Bean;
@@ -18,15 +18,9 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Company
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;
-import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_21.ExtensionContentType;
-import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_21.UBLExtensionType;
-import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_21.UBLExtensionsType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
-import org.w3c.dom.Document;
 
 import javax.validation.ConstraintViolation;
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
