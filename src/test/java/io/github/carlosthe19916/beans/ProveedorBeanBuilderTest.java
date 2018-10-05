@@ -7,7 +7,7 @@ public class ProveedorBeanBuilderTest {
 
 //    @Test
 //    public void testBuilder() {
-//        AbstractProveedorBean moneda = AbstractProveedorBeanBuilder.ProveedorBean()
+//        AbstractProveedorBean firmante = AbstractProveedorBeanBuilder.ProveedorBean()
 //                .codigoTipoDocumento("06")
 //                .numeroDocumento("10467793549")
 //                .nombreComercial("Wolsnut4")
@@ -15,12 +15,12 @@ public class ProveedorBeanBuilderTest {
 //                .codigoPostal("050101")
 //                .build();
 //
-//        Assert.assertNotNull(moneda);
-//        Assert.assertEquals(moneda.getCodigoTipoDocumento(), "06");
-//        Assert.assertEquals(moneda.getNumeroDocumento(), "10467793549");
-//        Assert.assertEquals(moneda.getNombreComercial(), "Wolsnut4");
-//        Assert.assertEquals(moneda.getRazonSocial(), "Wolsnut4 S.A.");
-//        Assert.assertEquals(moneda.getCodigoPostal(), "050101");
+//        Assert.assertNotNull(firmante);
+//        Assert.assertEquals(firmante.getCodigoTipoDocumento(), "06");
+//        Assert.assertEquals(firmante.getNumeroDocumento(), "10467793549");
+//        Assert.assertEquals(firmante.getNombreComercial(), "Wolsnut4");
+//        Assert.assertEquals(firmante.getRazonSocial(), "Wolsnut4 S.A.");
+//        Assert.assertEquals(firmante.getCodigoPostal(), "050101");
 //    }
 
 

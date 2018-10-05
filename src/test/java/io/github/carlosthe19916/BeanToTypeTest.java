@@ -61,13 +61,13 @@ public class BeanToTypeTest {
 //                                .fechaVencimiento(fechaEmision.getTime())
 //                                .build()
 //                )
-//                .moneda(
+//                .firmante(
 //                        AbstractMonedaBeanBuilder.builder()
 //                                .codigo("PEN")
 //                                .tipoCambio(new BigDecimal("3.21"))
 //                                .build()
 //                )
-//                .moneda(
+//                .firmante(
 //                        ImpuestosBeanBuilder.Impuestos()
 //                                .igv(new BigDecimal("10"))
 //                                .isc(new BigDecimal("1"))

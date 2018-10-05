@@ -175,6 +175,11 @@ public class InvoiceFacadeTest2 {
                     .email("carlosthe19916@gmail.com")
                     .direccion("Jr. carlos 997")
                     .end()
+                .firmante()
+                    .idFirma("mifirma")
+                    .idEmpresa("10467792354")
+                    .nombreEmpresa("carlos firma")
+                    .end()
                 .guiaRemisionRelacionada()
                     .guiaRemision("031-002201")
                     .tipoGuiaRemision(Catalogo1.GUIA_REMISION_REMITENTE)
@@ -239,7 +244,7 @@ public class InvoiceFacadeTest2 {
             Document document = JaxbUtils.toDocument(out.toByteArray());
 
             DOMSource source = new DOMSource(document);
-            FileWriter writer = new FileWriter(new File("D:/miarchivo.xml"));
+            FileWriter writer = new FileWriter(new File("/home/admin/git/sunat-jaxb/miarchivo.xml"));
             StreamResult result = new StreamResult(writer);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();

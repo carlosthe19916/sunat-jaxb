@@ -49,9 +49,10 @@ public class UBL21Utils {
     // Fecha vencimiento
 
 
-    public static InvoiceTypeCodeType buildInvoiceTypeCodeType(String value) {
+    public static InvoiceTypeCodeType buildInvoiceTypeCodeType(String value, String listId) {
         InvoiceTypeCodeType invoiceTypeCodeType = new InvoiceTypeCodeType();
         invoiceTypeCodeType.setValue(value);
+        invoiceTypeCodeType.setListID(listId);
         invoiceTypeCodeType.setListAgencyName("PE:SUNAT");
         invoiceTypeCodeType.setListName("SUNAT:Identificador de Tipo de Documento");
         invoiceTypeCodeType.setListURI("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01");
@@ -85,15 +86,15 @@ public class UBL21Utils {
         return nameType;
     }
 
-    public static CompanyIDType buildCompanyIDType(String value) {
-        CompanyIDType companyIDType = new CompanyIDType();
-        companyIDType.setValue(value);
-        companyIDType.setSchemeName("SUNAT:Identificador de Documento de Identidad");
-        companyIDType.setSchemeAgencyName("PE:SUNAT");
-        companyIDType.setSchemeURI("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06");
-        return companyIDType;
+    public static IDType buildIDTypeCatalogo6(String value, String schemeID) {
+        IDType idType = new IDType();
+        idType.setValue(value);
+        idType.setSchemeID(schemeID);
+        idType.setSchemeName("SUNAT:Identificador de Documento de Identidad");
+        idType.setSchemeAgencyName("PE:SUNAT");
+        idType.setSchemeURI("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06");
+        return idType;
     }
-
 
     // Total a pagar
 
@@ -152,6 +153,7 @@ public class UBL21Utils {
     public static TaxCategoryType buildTaxCategoryType(String ID, String schemeID, String name, String code) {
         TaxCategoryType taxCategoryType = new TaxCategoryType();
 
+
         IDType idType = new IDType();
         taxCategoryType.setID(idType);
 
@@ -168,7 +170,15 @@ public class UBL21Utils {
 
     public static TaxSchemeType buildTaxSchemeType(String ID, String name, String code) {
         TaxSchemeType taxSchemeType = new TaxSchemeType();
-        taxSchemeType.setID(ID);
+
+        IDType idType = new IDType();
+        idType.setValue(ID);
+        idType.setSchemeID("UN/ECE 5153");
+        idType.setSchemeName("Codigo de tributos");
+        idType.setSchemeAgencyName("PE:SUNAT");
+
+        taxSchemeType.setID(idType);
+
         taxSchemeType.setName(name);
         taxSchemeType.setTaxTypeCode(code);
         return taxSchemeType;
@@ -291,6 +301,27 @@ public class UBL21Utils {
         return documentTypeCodeType;
     }
 
+
+    // Firma
+
+    public static PartyIdentificationType buildPartyIdentificationType(String ID) {
+        PartyIdentificationType partyIdentificationType = new PartyIdentificationType();
+        partyIdentificationType.setID(buildIDType(ID));
+        return partyIdentificationType;
+    }
+
+    public static ExternalReferenceType buildExternalReferenceType(String value) {
+        ExternalReferenceType externalReferenceType = new ExternalReferenceType();
+        externalReferenceType.setURI(buildURIType(value));
+        return externalReferenceType;
+    }
+
+    public static URIType buildURIType(String value) {
+        URIType uriType = new URIType();
+        uriType.setValue(value);
+        return uriType;
+    }
+
 //    public static IssueDateType buildIssueDateType(XMLGregorianCalendar value) {
 //        IssueDateType issueDateType = new IssueDateType();
 //        issueDateType.setValue(value);
@@ -409,23 +440,7 @@ public class UBL21Utils {
 //        return countryType;
 //    }
 //
-//    public static URIType buildURIType(String value) {
-//        URIType uriType = new URIType();
-//        uriType.setValue(value);
-//        return uriType;
-//    }
 //
-//    public static ExternalReferenceType buildExternalReferenceType(String value) {
-//        ExternalReferenceType externalReferenceType = new ExternalReferenceType();
-//        externalReferenceType.setURI(UBLUtils.buildURIType(value));
-//        return externalReferenceType;
-//    }
-//
-//    public static PartyIdentificationType buildPartyIdentificationType(String ID) {
-//        PartyIdentificationType partyIdentificationType = new PartyIdentificationType();
-//        partyIdentificationType.setID(buildIDType(ID));
-//        return partyIdentificationType;
-//    }
 //
 //    public static ValueType buildValueType(String value) {
 //        ValueType valueType = new ValueType();

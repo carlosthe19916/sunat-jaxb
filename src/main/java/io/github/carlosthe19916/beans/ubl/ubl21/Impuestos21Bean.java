@@ -42,4 +42,5 @@ public class Impuestos21Bean extends AbstractImpuestosBean {
     public void setOtrosAfecto(BigDecimal otrosAfecto) {
         this.otrosAfecto = otrosAfecto;
     }
+
 }

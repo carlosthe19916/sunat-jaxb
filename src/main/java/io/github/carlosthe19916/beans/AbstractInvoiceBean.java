@@ -47,6 +47,9 @@ public abstract class AbstractInvoiceBean {
     @Valid
     private OtroDocumentoRelacionadoBean otroDocumentoRelacionado;
 
+    @Valid
+    private FirmanteBean firmante;
+
     public AbstractInvoiceBean() {
     }
 
@@ -138,5 +141,13 @@ public abstract class AbstractInvoiceBean {
 
     public void setOtroDocumentoRelacionado(OtroDocumentoRelacionadoBean otroDocumentoRelacionado) {
         this.otroDocumentoRelacionado = otroDocumentoRelacionado;
+    }
+
+    public FirmanteBean getFirmante() {
+        return firmante;
+    }
+
+    public void setFirmante(FirmanteBean firmante) {
+        this.firmante = firmante;
     }
 }

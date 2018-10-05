@@ -16,9 +16,14 @@ public class DetalleBean {
     private BigDecimal total;
 
     private Catalogo7 tipoAfectacionIgv;
-    private String codigoTipoIsc;
     private BigDecimal totalIgv;
+    private BigDecimal totalIgvAfectado;
+    private BigDecimal valorIgv;
+
+    private String tipoAfectacionIsc;
     private BigDecimal totalIsc;
+    private BigDecimal totalIscAfectado;
+    private BigDecimal valorIsc;
 
     public String getUnidadMedida() {
         return unidadMedida;
@@ -36,12 +41,12 @@ public class DetalleBean {
         this.descripcion = descripcion;
     }
 
-    public String getCodigoTipoIsc() {
-        return codigoTipoIsc;
+    public String getTipoAfectacionIsc() {
+        return tipoAfectacionIsc;
     }
 
-    public void setCodigoTipoIsc(String codigoTipoIsc) {
-        this.codigoTipoIsc = codigoTipoIsc;
+    public void setTipoAfectacionIsc(String tipoAfectacionIsc) {
+        this.tipoAfectacionIsc = tipoAfectacionIsc;
     }
 
     public BigDecimal getCantidad() {
@@ -106,5 +111,37 @@ public class DetalleBean {
 
     public void setTipoAfectacionIgv(Catalogo7 tipoAfectacionIgv) {
         this.tipoAfectacionIgv = tipoAfectacionIgv;
+    }
+
+    public BigDecimal getTotalIgvAfectado() {
+        return totalIgvAfectado;
+    }
+
+    public void setTotalIgvAfectado(BigDecimal totalIgvAfectado) {
+        this.totalIgvAfectado = totalIgvAfectado;
+    }
+
+    public BigDecimal getTotalIscAfectado() {
+        return totalIscAfectado;
+    }
+
+    public void setTotalIscAfectado(BigDecimal totalIscAfectado) {
+        this.totalIscAfectado = totalIscAfectado;
+    }
+
+    public BigDecimal getValorIgv() {
+        return valorIgv;
+    }
+
+    public void setValorIgv(BigDecimal valorIgv) {
+        this.valorIgv = valorIgv;
+    }
+
+    public BigDecimal getValorIsc() {
+        return valorIsc;
+    }
+
+    public void setValorIsc(BigDecimal valorIsc) {
+        this.valorIsc = valorIsc;
     }
 }

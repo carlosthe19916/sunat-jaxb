@@ -80,7 +80,7 @@ public class InvoiceFacadeTest {
 //                .serie("F001")
 //                .numero(1)
 //                .tipoComprobante(Catalogo1.FACTURA)
-//                .moneda(
+//                .firmante(
 //                        AbstractMonedaBeanBuilder.builder()
 //                                .codigo("PEN")
 //                                .build()

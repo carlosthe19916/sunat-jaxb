@@ -30,7 +30,7 @@ public abstract class AbstractDetalleBeanBuilder<Builder extends AbstractDetalle
     }
 
     public Builder codigoTipoIsc(String codigoTipoIsc) {
-        detalle.setCodigoTipoIsc(codigoTipoIsc);
+        detalle.setTipoAfectacionIsc(codigoTipoIsc);
         return getDetalleBuilder();
     }
 
@@ -64,9 +64,18 @@ public abstract class AbstractDetalleBeanBuilder<Builder extends AbstractDetalle
         return getDetalleBuilder();
     }
 
+    public Builder valorIgv(BigDecimal valorIgv) {
+        detalle.setValorIgv(valorIgv);
+        return getDetalleBuilder();
+    }
+
     public Builder totalIsc(BigDecimal totalIsc) {
         detalle.setTotalIsc(totalIsc);
         return getDetalleBuilder();
     }
 
+    public Builder valorIsc(BigDecimal valorIsc) {
+        detalle.setValorIsc(valorIsc);
+        return getDetalleBuilder();
+    }
 }

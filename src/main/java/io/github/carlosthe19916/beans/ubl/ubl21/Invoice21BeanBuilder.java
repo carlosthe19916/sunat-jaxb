@@ -1,6 +1,8 @@
 package io.github.carlosthe19916.beans.ubl.ubl21;
 
 import io.github.carlosthe19916.beans.*;
+import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21BeanBuilder;
+import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21BeanBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,10 @@ public class Invoice21BeanBuilder extends AbstractInvoiceBeanBuilder<Invoice21Be
 
     public Detalle21BeanBuilder addDetalle() {
         return new Detalle21BeanBuilder();
+    }
+
+    public Firmante21BeanBuilder firmante() {
+        return new Firmante21BeanBuilder();
     }
 
     public class Total21BeanBuilder extends AbstractTotal21BeanBuilder<Total21BeanBuilder, Total21Bean> {
@@ -227,6 +233,22 @@ public class Invoice21BeanBuilder extends AbstractInvoiceBeanBuilder<Invoice21Be
 
         public Invoice21BeanBuilder end() {
             invoice.setFecha(fecha);
+            return Invoice21BeanBuilder.this;
+        }
+    }
+
+    public class Firmante21BeanBuilder extends AbstractFirmanteBeanBuilder<Firmante21BeanBuilder, FirmanteBean> {
+        private Firmante21BeanBuilder() {
+            super(new FirmanteBean());
+        }
+
+        @Override
+        protected Firmante21BeanBuilder getFirmanteBuilder() {
+            return this;
+        }
+
+        public Invoice21BeanBuilder end() {
+            invoice.setFirmante(firmante);
             return Invoice21BeanBuilder.this;
         }
     }

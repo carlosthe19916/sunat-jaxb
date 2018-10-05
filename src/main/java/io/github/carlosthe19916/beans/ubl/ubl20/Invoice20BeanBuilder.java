@@ -70,6 +70,10 @@ public class Invoice20BeanBuilder extends AbstractInvoiceBeanBuilder<Invoice20Be
         return new Detalle20BeanBuilder();
     }
 
+    public Firmante20BeanBuilder firmante() {
+        return new Firmante20BeanBuilder();
+    }
+
     public class Total20BeanBuilder extends AbstractTotal20BeanBuilder<Total20BeanBuilder, Total20Bean> {
         private Total20BeanBuilder() {
             super(new Total20Bean());
@@ -233,6 +237,22 @@ public class Invoice20BeanBuilder extends AbstractInvoiceBeanBuilder<Invoice20Be
                 invoice.setDetalle(list);
             }
             invoice.getDetalle().add(detalle);
+            return Invoice20BeanBuilder.this;
+        }
+    }
+
+    public class Firmante20BeanBuilder extends AbstractFirmanteBeanBuilder<Firmante20BeanBuilder, FirmanteBean> {
+        private Firmante20BeanBuilder() {
+            super(new FirmanteBean());
+        }
+
+        @Override
+        protected Firmante20BeanBuilder getFirmanteBuilder() {
+            return this;
+        }
+
+        public Invoice20BeanBuilder end() {
+            invoice.setFirmante(firmante);
             return Invoice20BeanBuilder.this;
         }
     }

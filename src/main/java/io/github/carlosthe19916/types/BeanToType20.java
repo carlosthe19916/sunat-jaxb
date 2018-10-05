@@ -41,7 +41,7 @@ public class BeanToType20 {
     public static InvoiceType toInvoiceType(Invoice20Bean invoice) throws Invoice20BeanValidacionException {
         Set<ConstraintViolation<Invoice20Bean>> violations = BeanUtils.validate(invoice);
         if (!violations.isEmpty()) {
-            throw new Invoice20BeanValidacionException("Invalid moneda", violations);
+            throw new Invoice20BeanValidacionException("Invalid firmante", violations);
         }
 
         // Type
@@ -90,7 +90,7 @@ public class BeanToType20 {
         Total20Bean total = invoice.getTotal();
         invoiceType.setLegalMonetaryTotal(buildMonetaryTotalType(total, invoice.getMoneda()));
 
-        // Total moneda IGV/ISC
+        // Total firmante IGV/ISC
         Impuestos20Bean impuestos = invoice.getImpuestos();
         invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice.getMoneda()));
 
@@ -329,7 +329,7 @@ public class BeanToType20 {
             invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIgv(), lineBean.getTipoAfectacionIgv().getCode(), Catalogo5.IGV));
         }
         if (lineBean.getTotalIsc() != null) {
-            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIsc(), lineBean.getCodigoTipoIsc(), Catalogo5.ISC));
+            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIsc(), lineBean.getTipoAfectacionIsc(), Catalogo5.ISC));
         }
 
         return invoiceLineType;

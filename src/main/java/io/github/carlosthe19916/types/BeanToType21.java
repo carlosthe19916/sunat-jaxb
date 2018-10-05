@@ -14,7 +14,6 @@ import io.github.carlosthe19916.utils.BeanUtils;
 import io.github.carlosthe19916.utils.DateUtils;
 import io.github.carlosthe19916.utils.UBL21Utils;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CompanyIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;
@@ -36,7 +35,7 @@ public class BeanToType21 {
     public static InvoiceType toInvoiceType(Invoice21Bean invoice) throws Invoice21BeanValidacionException {
         Set<ConstraintViolation<Invoice21Bean>> violations = BeanUtils.validate(invoice);
         if (!violations.isEmpty()) {
-            throw new Invoice21BeanValidacionException("Invalid moneda", violations);
+            throw new Invoice21BeanValidacionException("Invalid firmante", violations);
         }
 
         GlobalUBL21Defaults defaults = GlobalUBL21Defaults.getInstance();
@@ -48,9 +47,14 @@ public class BeanToType21 {
         invoiceType.setUBLVersionID(UBL21Utils.buildUBLVersionID(defaults.getUblVersion()));
         invoiceType.setCustomizationID(UBL21Utils.buildCustomizationIDType(defaults.getCustomizationId()));
 
+        // Firma
+        if (invoice.getProveedor() != null) {
+            invoiceType.getSignature().add(buildSignatureType(invoice.getProveedor()));
+        }
+
         // Profile
-        ProfileIDType profileIDType = UBL21Utils.toProfileIDType(invoice.getTipoOperacion().getCode());
-        invoiceType.setProfileID(profileIDType);
+//        ProfileIDType profileIDType = UBL21Utils.toProfileIDType(invoice.getTipoOperacion().getCode());
+//        invoiceType.setProfileID(profileIDType);
 
         // 10 Leyendas
         if (invoice.getTotal().getPagarLetras() != null) {
@@ -93,7 +97,7 @@ public class BeanToType21 {
 
         // Tipo comprobante
         String codigoTipoComprobante = invoice.getTipoDocumento().getCode();
-        InvoiceTypeCodeType invoiceTypeCodeType = UBL21Utils.buildInvoiceTypeCodeType(codigoTipoComprobante);
+        InvoiceTypeCodeType invoiceTypeCodeType = UBL21Utils.buildInvoiceTypeCodeType(codigoTipoComprobante, invoice.getTipoOperacion().getCode());
         invoiceType.setInvoiceTypeCode(invoiceTypeCodeType);
 
         // Moneda
@@ -112,7 +116,7 @@ public class BeanToType21 {
         Total21Bean total = invoice.getTotal();
         invoiceType.setLegalMonetaryTotal(buildMonetaryTotalType(total, invoice.getMoneda()));
 
-        // Total moneda IGV/ISC
+        // Total firmante IGV/ISC
         Impuestos21Bean impuestos = invoice.getImpuestos();
         invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice.getTotalInformacionAdicional(), invoice.getMoneda()));
 
@@ -137,24 +141,20 @@ public class BeanToType21 {
         PartyType partyType = new PartyType();
         supplierPartyType.setParty(partyType);
 
-        PartyTaxSchemeType partyTaxSchemeType = new PartyTaxSchemeType();
-        partyType.addPartyTaxScheme(partyTaxSchemeType);
+        PartyIdentificationType partyIdentificationType = new PartyIdentificationType();
+        partyType.addPartyIdentification(partyIdentificationType);
 
-        TaxSchemeType taxSchemeType = new TaxSchemeType();
-        taxSchemeType.setID("-");
-        partyTaxSchemeType.setTaxScheme(taxSchemeType);
+        PartyLegalEntityType partyLegalEntityType = new PartyLegalEntityType();
+        partyType.addPartyLegalEntity(partyLegalEntityType);
 
         AddressType addressType = new AddressType();
-        partyTaxSchemeType.setRegistrationAddress(addressType);
+        partyLegalEntityType.setRegistrationAddress(addressType);
 
         // Documento identidad
         String numeroDocumento = proveedor.getNumeroDocumento();
         String codigoTipoDocumento = proveedor.getCodigoTipoDocumento();
 
-        CompanyIDType companyIDType = UBL21Utils.buildCompanyIDType(numeroDocumento);
-        companyIDType.setSchemeID(codigoTipoDocumento);
-
-        partyTaxSchemeType.setCompanyID(companyIDType);
+        partyIdentificationType.setID(UBL21Utils.buildIDTypeCatalogo6(numeroDocumento, codigoTipoDocumento));
 
         // Nombre comercial
         String nombreComercial = proveedor.getNombreComercial();
@@ -162,7 +162,7 @@ public class BeanToType21 {
 
         // Razon social
         String razonSocial = proveedor.getRazonSocial();
-        partyTaxSchemeType.setRegistrationName(razonSocial);
+        partyLegalEntityType.setRegistrationName(razonSocial);
 
         // Domicilio fiscal del emisor
         String codigoPostal = proveedor.getCodigoPostal();
@@ -180,25 +180,21 @@ public class BeanToType21 {
         PartyType partyType = new PartyType();
         customerPartyType.setParty(partyType);
 
-        PartyTaxSchemeType partyTaxSchemeType = new PartyTaxSchemeType();
-        partyType.addPartyTaxScheme(partyTaxSchemeType);
+        PartyIdentificationType partyIdentificationType = new PartyIdentificationType();
+        partyType.addPartyIdentification(partyIdentificationType);
 
-        TaxSchemeType taxSchemeType = new TaxSchemeType();
-        taxSchemeType.setID("-");
-        partyTaxSchemeType.setTaxScheme(taxSchemeType);
+        PartyLegalEntityType partyLegalEntityType = new PartyLegalEntityType();
+        partyType.addPartyLegalEntity(partyLegalEntityType);
 
         // Documento identidad
         String numeroDocumento = cliente.getNumeroDocumento();
         String codigoTipoDocumento = cliente.getCodigoTipoDocumento();
 
-        CompanyIDType companyIDType = UBL21Utils.buildCompanyIDType(numeroDocumento);
-        companyIDType.setSchemeID(codigoTipoDocumento);
-
-        partyTaxSchemeType.setCompanyID(companyIDType);
+        partyIdentificationType.setID(UBL21Utils.buildIDTypeCatalogo6(numeroDocumento, codigoTipoDocumento));
 
         // Razon social
-        String nombre = cliente.getNombre();
-        partyTaxSchemeType.setRegistrationName(nombre);
+        String razonSocial = cliente.getNombre();
+        partyLegalEntityType.setRegistrationName(razonSocial);
 
         return customerPartyType;
     }
@@ -267,7 +263,9 @@ public class BeanToType21 {
         TaxSubtotalType taxSubtotalType = new TaxSubtotalType();
         taxSubtotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(taxAmount, currency));
         taxSubtotalType.setTaxCategory(UBL21Utils.buildTaxCategoryType(tipoTributo.getCategoria(), tipoTributo.getId(), tipoTributo.getAbreviatura(), tipoTributo.getCode()));
-        taxSubtotalType.setTaxableAmount(UBL21Utils.buildTaxableAmountType(taxableAmount, currency));
+        if (taxableAmount != null) {
+            taxSubtotalType.setTaxableAmount(UBL21Utils.buildTaxableAmountType(taxableAmount, currency));
+        }
         return taxSubtotalType;
     }
 
@@ -285,10 +283,10 @@ public class BeanToType21 {
         invoiceLineType.setPrice(UBL21Utils.buildPriceType(moneda, lineBean.getValorUnitario()));
 
         if (lineBean.getTotalIgv() != null) {
-            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIgv(), lineBean.getTipoAfectacionIgv().getCode(), Catalogo5.IGV));
+            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIgv(), lineBean.getTotalIgvAfectado(), lineBean.getValorIgv(), lineBean.getTipoAfectacionIgv().getCode(), Catalogo5.IGV));
         }
         if (lineBean.getTotalIsc() != null) {
-            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIsc(), lineBean.getCodigoTipoIsc(), Catalogo5.ISC));
+            invoiceLineType.getTaxTotal().add(buildTaxTotalType(moneda, lineBean.getTotalIsc(), lineBean.getTotalIscAfectado(), lineBean.getValorIsc(), lineBean.getTipoAfectacionIsc(), Catalogo5.ISC));
         }
 
         return invoiceLineType;
@@ -313,21 +311,24 @@ public class BeanToType21 {
         return pricingReferenceType;
     }
 
-    private static TaxTotalType buildTaxTotalType(String currency, BigDecimal value, String tipoIGV, Catalogo5 tipoTributo) {
+    private static TaxTotalType buildTaxTotalType(String currency, BigDecimal taxAmount, BigDecimal taxableAmount, BigDecimal percentValue, String tipoIGV, Catalogo5 tipoTributo) {
         TaxTotalType taxTotalType = new TaxTotalType();
-        taxTotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(value, currency));
-        taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(currency, value, tipoIGV, tipoTributo));
+        taxTotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(taxAmount, currency));
+        taxTotalType.getTaxSubtotal().add(buildTaxSubtotalType(currency, taxAmount, taxableAmount, percentValue, tipoIGV, tipoTributo));
         return taxTotalType;
     }
 
-    private static TaxSubtotalType buildTaxSubtotalType(String currency, BigDecimal value, String tipoIGV, Catalogo5 tipoTributo) {
+    private static TaxSubtotalType buildTaxSubtotalType(String currency, BigDecimal taxAmount, BigDecimal taxableAmount, BigDecimal taxPercent, String tipoIGV, Catalogo5 tipoTributo) {
         TaxSubtotalType taxSubtotalType = new TaxSubtotalType();
-        taxSubtotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(value, currency));
-        taxSubtotalType.setTaxCategory(buildTaxCategoryType(tipoIGV, tipoTributo));
+        taxSubtotalType.setTaxAmount(UBL21Utils.buildTaxAmountType(taxAmount, currency));
+        taxSubtotalType.setTaxCategory(buildTaxCategoryType(tipoIGV, tipoTributo, taxPercent));
+        if (taxableAmount != null) {
+            taxSubtotalType.setTaxableAmount(UBL21Utils.buildTaxableAmountType(taxableAmount, currency));
+        }
         return taxSubtotalType;
     }
 
-    private static TaxCategoryType buildTaxCategoryType(String tipoIGV, Catalogo5 tipoTributo) {
+    private static TaxCategoryType buildTaxCategoryType(String tipoIGV, Catalogo5 tipoTributo, BigDecimal percentValue) {
         TaxCategoryType taxCategoryType = new TaxCategoryType();
         taxCategoryType.setTaxScheme(UBL21Utils.buildTaxSchemeType(tipoTributo.getId(), tipoTributo.getAbreviatura(), tipoTributo.getCode()));
         taxCategoryType.setTaxExemptionReasonCode(UBL21Utils.buildTaxExemptionReasonCodeType(tipoIGV));
@@ -339,10 +340,36 @@ public class BeanToType21 {
         idType.setSchemeName("Tax Category Identifier");
         idType.setSchemeAgencyName("United Nations Economic Commission for Europe");
 
+        if (percentValue != null) {
+            taxCategoryType.setPercent(percentValue);
+        }
+
         taxCategoryType.setID(idType);
 
         return taxCategoryType;
     }
 
+    // Firma
+
+    private static SignatureType buildSignatureType(AbstractProveedorBean proveedorBean) {
+        SignatureType signatureType = new SignatureType();
+
+        String signID = "IDSign" + proveedorBean.getNombreComercial().replaceAll("\\s", "");
+        signatureType.setID(UBL21Utils.buildIDType(signID));
+
+
+        PartyType partyType = new PartyType();
+        partyType.getPartyName().add(UBL21Utils.buildPartyNameType(proveedorBean.getNombreComercial()));
+        partyType.getPartyIdentification().add(UBL21Utils.buildPartyIdentificationType(proveedorBean.getNumeroDocumento()));
+
+        signatureType.setSignatoryParty(partyType);
+
+        String URI = "#signature" + proveedorBean.getNombreComercial().replaceAll("\\s", "");
+        AttachmentType attachmentType = new AttachmentType();
+        attachmentType.setExternalReference(UBL21Utils.buildExternalReferenceType(URI));
+        signatureType.setDigitalSignatureAttachment(attachmentType);
+
+        return signatureType;
+    }
 
 }
