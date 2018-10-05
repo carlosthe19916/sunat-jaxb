@@ -9,14 +9,14 @@ public class ImpuestosBeanBuilderTest {
 
 //    @Test
 //    public void testBuilder() {
-//        ImpuestosBean bean = ImpuestosBeanBuilder.Impuestos()
+//        ImpuestosBean moneda = ImpuestosBeanBuilder.Impuestos()
 //                .igv(new BigDecimal("16.25"))
 //                .isc(new BigDecimal("0"))
 //                .build();
 //
-//        Assert.assertNotNull(bean);
-//        Assert.assertEquals(bean.getIgv(), new BigDecimal("16.25"));
-//        Assert.assertEquals(bean.getIsc(), new BigDecimal("0"));
+//        Assert.assertNotNull(moneda);
+//        Assert.assertEquals(moneda.getIgv(), new BigDecimal("16.25"));
+//        Assert.assertEquals(moneda.getIsc(), new BigDecimal("0"));
 //    }
 
 }

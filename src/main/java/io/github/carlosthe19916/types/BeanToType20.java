@@ -41,7 +41,7 @@ public class BeanToType20 {
     public static InvoiceType toInvoiceType(Invoice20Bean invoice) throws Invoice20BeanValidacionException {
         Set<ConstraintViolation<Invoice20Bean>> violations = BeanUtils.validate(invoice);
         if (!violations.isEmpty()) {
-            throw new Invoice20BeanValidacionException("Invalid bean", violations);
+            throw new Invoice20BeanValidacionException("Invalid moneda", violations);
         }
 
         // Type
@@ -90,7 +90,7 @@ public class BeanToType20 {
         Total20Bean total = invoice.getTotal();
         invoiceType.setLegalMonetaryTotal(buildMonetaryTotalType(total, invoice.getMoneda()));
 
-        // Total bean IGV/ISC
+        // Total moneda IGV/ISC
         Impuestos20Bean impuestos = invoice.getImpuestos();
         invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice.getMoneda()));
 

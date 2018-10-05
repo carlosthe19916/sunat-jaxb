@@ -8,7 +8,6 @@ import com.helger.xml.microdom.serialize.MicroWriter;
 import com.helger.xml.namespace.MapBasedNamespaceContext;
 import com.helger.xml.serialize.write.XMLWriterSettings;
 import io.github.carlosthe19916.beans.*;
-import io.github.carlosthe19916.beans.catalogs.Catalogo;
 import io.github.carlosthe19916.beans.catalogs.Catalogo1;
 import io.github.carlosthe19916.beans.catalogs.Catalogo12;
 import io.github.carlosthe19916.beans.catalogs.Catalogo7;
@@ -29,7 +28,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.math.BigDecimal;
-import java.security.cert.X509Certificate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -87,7 +85,7 @@ public class InvoiceFacadeTest2 {
                 .numero(1)
                 .tipoComprobante(Catalogo1.FACTURA)
                 .moneda(
-                        MonedaBeanBuilder.builder()
+                        AbstractMonedaBeanBuilder.builder()
                                 .codigo("PEN")
                                 .build()
                 )

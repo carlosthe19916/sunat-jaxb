@@ -81,7 +81,7 @@ public class InvoiceFacadeTest {
                 .numero(1)
                 .tipoComprobante(Catalogo1.FACTURA)
                 .moneda(
-                        MonedaBeanBuilder.builder()
+                        AbstractMonedaBeanBuilder.builder()
                                 .codigo("PEN")
                                 .build()
                 )

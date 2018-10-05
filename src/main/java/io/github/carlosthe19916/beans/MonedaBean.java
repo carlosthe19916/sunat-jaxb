@@ -27,4 +27,5 @@ public class MonedaBean {
     public void setTipoCambio(BigDecimal tipoCambio) {
         this.tipoCambio = tipoCambio;
     }
+
 }

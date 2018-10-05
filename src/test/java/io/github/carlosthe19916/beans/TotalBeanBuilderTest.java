@@ -9,16 +9,16 @@ public class TotalBeanBuilderTest {
 
 //    @Test
 //    public void testBuilder() {
-//        TotalBean bean = TotalBeanBuilder.Total()
+//        TotalBean moneda = TotalBeanBuilder.Total()
 //                .pagar(new BigDecimal("100"))
 //                .otrosCargos(new BigDecimal("10"))
 //                .descuentoGlobal(new BigDecimal("5"))
 //                .build();
 //
-//        Assert.assertNotNull(bean);
-//        Assert.assertEquals(bean.getPagar(), new BigDecimal("100"));
-//        Assert.assertEquals(bean.getOtrosCargos(), new BigDecimal("10"));
-//        Assert.assertEquals(bean.getDescuentoGlobal(), new BigDecimal("5"));
+//        Assert.assertNotNull(moneda);
+//        Assert.assertEquals(moneda.getPagar(), new BigDecimal("100"));
+//        Assert.assertEquals(moneda.getOtrosCargos(), new BigDecimal("10"));
+//        Assert.assertEquals(moneda.getDescuentoGlobal(), new BigDecimal("5"));
 //    }
 
 }

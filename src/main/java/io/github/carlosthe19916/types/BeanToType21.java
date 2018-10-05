@@ -42,7 +42,7 @@ public class BeanToType21 {
     public static InvoiceType toInvoiceType(Invoice21Bean invoice) throws Invoice21BeanValidacionException {
         Set<ConstraintViolation<Invoice21Bean>> violations = BeanUtils.validate(invoice);
         if (!violations.isEmpty()) {
-            throw new Invoice21BeanValidacionException("Invalid bean", violations);
+            throw new Invoice21BeanValidacionException("Invalid moneda", violations);
         }
 
         GlobalUBL21Defaults defaults = GlobalUBL21Defaults.getInstance();
@@ -118,7 +118,7 @@ public class BeanToType21 {
         Total21Bean total = invoice.getTotal();
         invoiceType.setLegalMonetaryTotal(buildMonetaryTotalType(total, invoice.getMoneda()));
 
-        // Total bean IGV/ISC
+        // Total moneda IGV/ISC
         Impuestos21Bean impuestos = invoice.getImpuestos();
         invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice.getTotalInformacionAdicional(), invoice.getMoneda()));
 
