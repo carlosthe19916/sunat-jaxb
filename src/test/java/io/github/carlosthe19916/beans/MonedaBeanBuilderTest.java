@@ -9,7 +9,7 @@ public class MonedaBeanBuilderTest {
 
     @Test
     public void testBuilder() {
-        MonedaBean bean = MonedaBeanBuilder.Moneda()
+        MonedaBean bean = MonedaBeanBuilder.builder()
                 .codigo("PEN")
                 .tipoCambio(new BigDecimal("3.215"))
                 .build();

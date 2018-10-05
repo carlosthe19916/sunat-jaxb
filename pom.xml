@@ -4,7 +4,7 @@
 
     <groupId>io.github.carlosthe19916</groupId>
     <artifactId>sunat-jaxb</artifactId>
-    <version>1.1.5-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
 
     <name>Sunat Jaxb</name>
     <description>Sunat Perú Jaxb Models</description>
@@ -58,6 +58,18 @@
         </repository>
     </distributionManagement>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.helger</groupId>
+                <artifactId>ph-ubl-parent-pom</artifactId>
+                <version>6.0.2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>javax.validation</groupId>
@@ -86,9 +98,41 @@
         </dependency>
 
         <dependency>
+            <groupId>com.helger</groupId>
+            <artifactId>ph-ubl20</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.helger</groupId>
+            <artifactId>ph-ubl20-codelists</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.helger</groupId>
+            <artifactId>ph-ubl21</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.helger</groupId>
+            <artifactId>ph-ubl21-codelists</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.helger</groupId>
+            <artifactId>ph-ublpe</artifactId>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.helger</groupId>-->
+            <!--<artifactId>ph-ublpe21</artifactId>-->
+            <!--<version>6.0.3-SNAPSHOT</version>-->
+        <!--</dependency>-->
+
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>23.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
         </dependency>
 
         <dependency>
@@ -101,28 +145,28 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>2.3.1</version>
-                <executions>
-                    <execution>
-                        <id>xjc</id>
-                        <goals>
-                            <goal>xjc</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <noPackageLevelAnnotations>true</noPackageLevelAnnotations>
-                    <xjbSources>
-                        <xjbSource>src/main/resources/jaxb/xjb</xjbSource>
-                    </xjbSources>
-                    <sources>
-                        <source>src/main/resources/jaxb/maindoc</source>
-                    </sources>
-                </configuration>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.codehaus.mojo</groupId>-->
+                <!--<artifactId>jaxb2-maven-plugin</artifactId>-->
+                <!--<version>2.3.1</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>xjc</id>-->
+                        <!--<goals>-->
+                            <!--<goal>xjc</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+                <!--<configuration>-->
+                    <!--<noPackageLevelAnnotations>true</noPackageLevelAnnotations>-->
+                    <!--<xjbSources>-->
+                        <!--<xjbSource>src/main/resources/jaxb/xjb</xjbSource>-->
+                    <!--</xjbSources>-->
+                    <!--<sources>-->
+                        <!--<source>src/main/resources/jaxb/maindoc</source>-->
+                    <!--</sources>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
 
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>

@@ -11,7 +11,7 @@ public class BajaBean {
     private String motivoBaja;
     private InvoiceAfectadoBean invoiceAfectado;
 
-    private ProveedorBean supplier;
+    private AbstractProveedorBean supplier;
 
     public Date getFechaEmision() {
         return fechaEmision;
@@ -37,11 +37,11 @@ public class BajaBean {
         this.invoiceAfectado = invoiceAfectado;
     }
 
-    public ProveedorBean getSupplier() {
+    public AbstractProveedorBean getSupplier() {
         return supplier;
     }
 
-    public void setSupplier(ProveedorBean supplier) {
+    public void setSupplier(AbstractProveedorBean supplier) {
         this.supplier = supplier;
     }
 
