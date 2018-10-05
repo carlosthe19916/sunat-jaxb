@@ -3,17 +3,17 @@ package io.github.carlosthe19916.beans;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-public class ImpuestosBean {
+public abstract class AbstractImpuestosBean {
 
     @NotNull
     private BigDecimal igv;
     private BigDecimal isc;
     private BigDecimal otros;
 
-    public ImpuestosBean() {
+    public AbstractImpuestosBean() {
     }
 
-    public ImpuestosBean(ImpuestosBean impuestos) {
+    public AbstractImpuestosBean(AbstractImpuestosBean impuestos) {
         igv = impuestos.igv;
         isc = impuestos.isc;
         otros = impuestos.otros;

@@ -23,7 +23,7 @@ public class NoteBean {
 
     @Valid
     @NotNull
-    private TotalBean total;
+    private AbstractTotalBean total;
 
     @Valid
     @NotNull
@@ -31,7 +31,7 @@ public class NoteBean {
 
     @Valid
     @NotNull
-    private ImpuestosBean impuestos;
+    private AbstractImpuestosBean impuestos;
 
     @Valid
     @NotNull
@@ -90,11 +90,11 @@ public class NoteBean {
         this.fecha = fecha;
     }
 
-    public TotalBean getTotal() {
+    public AbstractTotalBean getTotal() {
         return total;
     }
 
-    public void setTotal(TotalBean total) {
+    public void setTotal(AbstractTotalBean total) {
         this.total = total;
     }
 
@@ -106,11 +106,11 @@ public class NoteBean {
         this.moneda = moneda;
     }
 
-    public ImpuestosBean getImpuestos() {
+    public AbstractImpuestosBean getImpuestos() {
         return impuestos;
     }
 
-    public void setImpuestos(ImpuestosBean impuestos) {
+    public void setImpuestos(AbstractImpuestosBean impuestos) {
         this.impuestos = impuestos;
     }
 

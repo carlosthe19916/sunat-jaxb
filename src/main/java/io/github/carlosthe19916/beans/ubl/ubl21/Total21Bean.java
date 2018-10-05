@@ -1,11 +1,10 @@
 package io.github.carlosthe19916.beans.ubl.ubl21;
 
-import io.github.carlosthe19916.beans.TotalBean;
+import io.github.carlosthe19916.beans.AbstractTotalBean;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-public class Total21Bean extends TotalBean {
+public class Total21Bean extends AbstractTotalBean {
 
     private BigDecimal anticipos;
 

@@ -1,6 +1,5 @@
 package io.github.carlosthe19916.beans;
 
-import io.github.carlosthe19916.beans.catalogs.Catalogo1;
 import io.github.carlosthe19916.beans.catalogs.Catalogo12;
 
 import javax.validation.constraints.NotNull;

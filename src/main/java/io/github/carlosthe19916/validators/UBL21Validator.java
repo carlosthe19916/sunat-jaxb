@@ -1,6 +1,5 @@
 package io.github.carlosthe19916.validators;
 
-import org.apache.commons.io.FileUtils;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -15,10 +14,10 @@ import java.util.Objects;
 
 public class UBL21Validator {
 
-     static final String INVOICE_SCHEMA_FILE = "UBL21/xsd/maindoc/UBL-Invoice-2.1.xsd";
-     static final String CREDID_NOTE_SCHEMA_FILE = "UBL21/xsd/maindoc/UBL-CreditNote-2.1.xsd";
-     static final String DEBIT_NOTE_SCHEMA_FILE = "UBL21/xsd/maindoc/UBL-DebitNote-2.1.xsd";
-     static final String DESPATCH_ADVICE_SCHEMA_FILE = "UBL21/xsd/maindoc/UBL-DespatchAdvice-2.1.xsd";
+    static final String INVOICE_SCHEMA_FILE = "UBL21/xsd/maindoc/UBL-Invoice-2.1.xsd";
+    static final String CREDID_NOTE_SCHEMA_FILE = "UBL21/xsd/maindoc/UBL-CreditNote-2.1.xsd";
+    static final String DEBIT_NOTE_SCHEMA_FILE = "UBL21/xsd/maindoc/UBL-DebitNote-2.1.xsd";
+    static final String DESPATCH_ADVICE_SCHEMA_FILE = "UBL21/xsd/maindoc/UBL-DespatchAdvice-2.1.xsd";
 
     public boolean invoice(File xml) {
         try {

@@ -3,7 +3,7 @@ package io.github.carlosthe19916.beans;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-public class TotalBean {
+public abstract class AbstractTotalBean {
 
     @NotNull
     private BigDecimal pagar;

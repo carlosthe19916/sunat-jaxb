@@ -2,8 +2,8 @@ package io.github.carlosthe19916.types;
 
 import io.github.carlosthe19916.beans.*;
 import io.github.carlosthe19916.beans.catalogs.Catalogo16;
-import io.github.carlosthe19916.beans.catalogs.Catologo14;
 import io.github.carlosthe19916.beans.catalogs.Catalogo5;
+import io.github.carlosthe19916.beans.catalogs.Catologo14;
 import io.github.carlosthe19916.beans.exceptions.Invoice20BeanValidacionException;
 import io.github.carlosthe19916.beans.ubl.ubl20.Impuestos20Bean;
 import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;

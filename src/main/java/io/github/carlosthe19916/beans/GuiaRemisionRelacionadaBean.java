@@ -3,8 +3,6 @@ package io.github.carlosthe19916.beans;
 import io.github.carlosthe19916.beans.catalogs.Catalogo1;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class GuiaRemisionRelacionadaBean {
 
