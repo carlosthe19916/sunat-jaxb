@@ -1,10 +1,8 @@
 package io.github.carlosthe19916.beans.ubl.ubl20;
 
-import io.github.carlosthe19916.beans.AbstractInvoiceBeanBuilder;
-import io.github.carlosthe19916.beans.AbstractMonedaBeanBuilder;
-import io.github.carlosthe19916.beans.ClienteBean;
-import io.github.carlosthe19916.beans.MonedaBean;
+import io.github.carlosthe19916.beans.*;
 import io.github.carlosthe19916.beans.ubl.ubl21.Invoice21BeanBuilder;
+import io.github.carlosthe19916.beans.ubl.ubl21.Proveedor21Bean;
 
 public class Invoice20BeanBuilder extends AbstractInvoiceBeanBuilder<Invoice20BeanBuilder, Invoice20Bean> {
 
@@ -30,9 +28,8 @@ public class Invoice20BeanBuilder extends AbstractInvoiceBeanBuilder<Invoice20Be
         return this;
     }
 
-    public Invoice20BeanBuilder total(Total20Bean total) {
-        invoice.setTotal(total);
-        return this;
+    public Total20BeanBuilder total() {
+        return new Total20BeanBuilder();
     }
 
     public Invoice20BeanBuilder impuestos(Impuestos20Bean impuestos) {
@@ -40,22 +37,68 @@ public class Invoice20BeanBuilder extends AbstractInvoiceBeanBuilder<Invoice20Be
         return this;
     }
 
-    public Invoice20BeanBuilder proveedor(Proveedor20Bean proveedor) {
-        invoice.setProveedor(proveedor);
-        return getInvoiceBuilder();
+    public Proveedor20BeanBuilder proveedor() {
+        return new Proveedor20BeanBuilder();
     }
 
-    public Invoice20BeanBuilder cliente(ClienteBean cliente) {
-        invoice.setCliente(cliente);
-        return getInvoiceBuilder();
+    public Cliente20BeanBuilder cliente() {
+        return new Cliente20BeanBuilder();
     }
 
     public Moneda20BeanBuilder moneda() {
         return new Moneda20BeanBuilder();
     }
 
-    public class Moneda20BeanBuilder extends AbstractMonedaBeanBuilder<Moneda20BeanBuilder, MonedaBean> {
+    public class Total20BeanBuilder extends AbstractTotal20BeanBuilder<Total20BeanBuilder, Total20Bean> {
+        private Total20BeanBuilder() {
+            super(new Total20Bean());
+        }
 
+        @Override
+        protected Total20BeanBuilder getTotalBuilder() {
+            return this;
+        }
+
+        public Invoice20BeanBuilder end() {
+            invoice.setTotal(total);
+            return Invoice20BeanBuilder.this;
+        }
+
+    }
+
+    public class Proveedor20BeanBuilder extends AbstractProveedor20BeanBuilder<Proveedor20BeanBuilder, Proveedor20Bean> {
+        private Proveedor20BeanBuilder() {
+            super(new Proveedor20Bean());
+        }
+
+        @Override
+        protected Proveedor20BeanBuilder getProveedorBuilder() {
+            return this;
+        }
+
+        public Invoice20BeanBuilder end() {
+            invoice.setProveedor(proveedor);
+            return Invoice20BeanBuilder.this;
+        }
+    }
+
+    public class Cliente20BeanBuilder extends AbstractClienteBeanBuilder<Cliente20BeanBuilder, ClienteBean> {
+        private Cliente20BeanBuilder() {
+            super(new ClienteBean());
+        }
+
+        @Override
+        protected Cliente20BeanBuilder getClienteBuilder() {
+            return this;
+        }
+
+        public Invoice20BeanBuilder end() {
+            invoice.setCliente(cliente);
+            return Invoice20BeanBuilder.this;
+        }
+    }
+
+    public class Moneda20BeanBuilder extends AbstractMonedaBeanBuilder<Moneda20BeanBuilder, MonedaBean> {
         private Moneda20BeanBuilder() {
             super(new MonedaBean());
         }
@@ -69,7 +112,6 @@ public class Invoice20BeanBuilder extends AbstractInvoiceBeanBuilder<Invoice20Be
             invoice.setMoneda(moneda);
             return Invoice20BeanBuilder.this;
         }
-
     }
 
 }

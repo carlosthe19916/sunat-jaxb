@@ -2,41 +2,37 @@ package io.github.carlosthe19916.beans;
 
 public abstract class AbstractProveedorBeanBuilder<Builder extends AbstractProveedorBeanBuilder, Bean extends AbstractProveedorBean> {
 
-    private final Bean bean;
+    protected final Bean proveedor;
 
-    public AbstractProveedorBeanBuilder(Bean bean) {
-        this.bean = bean;
+    protected AbstractProveedorBeanBuilder(Bean proveedor) {
+        this.proveedor = proveedor;
     }
 
-    public Bean getBean() {
-        return bean;
-    }
-
-    public abstract Builder getBuilder();
+    protected abstract Builder getProveedorBuilder();
 
     public Builder codigoTipoDocumento(String codigoTipoDocumento) {
-        bean.setCodigoTipoDocumento(codigoTipoDocumento);
-        return getBuilder();
+        proveedor.setCodigoTipoDocumento(codigoTipoDocumento);
+        return getProveedorBuilder();
     }
 
     public Builder numeroDocumento(String numeroDocumento) {
-        bean.setNumeroDocumento(numeroDocumento);
-        return getBuilder();
+        proveedor.setNumeroDocumento(numeroDocumento);
+        return getProveedorBuilder();
     }
 
     public Builder nombreComercial(String nombreComercial) {
-        bean.setNombreComercial(nombreComercial);
-        return getBuilder();
+        proveedor.setNombreComercial(nombreComercial);
+        return getProveedorBuilder();
     }
 
     public Builder razonSocial(String razonSocial) {
-        bean.setRazonSocial(razonSocial);
-        return getBuilder();
+        proveedor.setRazonSocial(razonSocial);
+        return getProveedorBuilder();
     }
 
     public Builder codigoPostal(String codigoPostal) {
-        bean.setCodigoPostal(codigoPostal);
-        return getBuilder();
+        proveedor.setCodigoPostal(codigoPostal);
+        return getProveedorBuilder();
     }
 
 }

@@ -86,7 +86,7 @@ public class InvoiceFacadeTest {
                                 .build()
                 )
                 .proveedor(
-                        Proveedor21BeanBuilder.builder()
+                        AbstractProveedor21BeanBuilder.builder()
                                 .codigoTipoDocumento("6")
                                 .numeroDocumento("10467793549")
                                 .nombreComercial("Wolsnut4 Consultores")
@@ -95,7 +95,7 @@ public class InvoiceFacadeTest {
                                 .build()
                 )
                 .cliente(
-                        ClienteBeanBuilder.ClienteBean()
+                        AbstractClienteBeanBuilder.ClienteBean()
                                 .codigoTipoDocumento("3")
                                 .numeroDocumento("46779354")
                                 .nombre("Carlos Esteban Feria Vila")
@@ -104,7 +104,7 @@ public class InvoiceFacadeTest {
                                 .build()
                 )
                 .total(
-                        Total21BeanBuilder.builder()
+                        AbstractTotal21BeanBuilder.builder()
                                 .pagar(new BigDecimal("100"))
                                 .descuentoGlobal(new BigDecimal("200"))
                                 .otrosCargos(new BigDecimal("300"))

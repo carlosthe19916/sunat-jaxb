@@ -13,7 +13,7 @@ public class Example {
                 .moneda()
                     .tipoCambio(null)
                     .codigo("")
-                    .fin()
+                    .end()
                 .cliente(null)
                 .build();
     }

@@ -7,7 +7,7 @@ public class ClienteBeanBuilderTest {
 
     @Test
     public void testBuilder() {
-        ClienteBean bean = ClienteBeanBuilder.ClienteBean()
+        ClienteBean bean = AbstractClienteBeanBuilder.ClienteBean()
                 .codigoTipoDocumento("06")
                 .numeroDocumento("10467793549")
                 .nombre("Wolsnut4")

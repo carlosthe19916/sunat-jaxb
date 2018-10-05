@@ -23,7 +23,7 @@ public class NoteBean {
 
     @Valid
     @NotNull
-    private TotalBean total;
+    private AbstractTotalBean total;
 
     @Valid
     @NotNull
@@ -90,11 +90,11 @@ public class NoteBean {
         this.fecha = fecha;
     }
 
-    public TotalBean getTotal() {
+    public AbstractTotalBean getTotal() {
         return total;
     }
 
-    public void setTotal(TotalBean total) {
+    public void setTotal(AbstractTotalBean total) {
         this.total = total;
     }
 
