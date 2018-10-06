@@ -1,4 +1,4 @@
-package io.github.carlosthe19916.sunatjaxb.facades;
+package io.github.carlosthe19916.sunatjaxb.managers;
 
 import io.github.carlosthe19916.validators.UBL21Validator;
 import org.junit.Test;

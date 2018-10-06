@@ -8,7 +8,9 @@ import io.github.carlosthe19916.sunatjaxb.beans.beans20.Impuestos20Bean;
 import io.github.carlosthe19916.sunatjaxb.beans.beans20.Invoice20Bean;
 import io.github.carlosthe19916.sunatjaxb.beans.beans20.Proveedor20Bean;
 import io.github.carlosthe19916.sunatjaxb.beans.beans20.Total20Bean;
-import io.github.carlosthe19916.sunatjaxb.config.GlobalUBL20Defaults;
+import io.github.carlosthe19916.sunatjaxb.mappers.Invoice20Mapper;
+import io.github.carlosthe19916.sunatjaxb.mappers.core.AbstractInvoiceMapper;
+import io.github.carlosthe19916.sunatjaxb.mappers.core.GlobalCore20MapperDefaults;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,7 +22,7 @@ public class DefaultInvoice20Mapper extends AbstractInvoiceMapper implements Inv
 
     @Override
     public Invoice20Bean map(Invoice20Bean invoice) {
-        GlobalUBL20Defaults defaults = GlobalUBL20Defaults.getInstance();
+        GlobalCore20MapperDefaults defaults = GlobalCore20MapperDefaults.getInstance();
 
 
         setFechaDefaults(invoice);
@@ -81,7 +83,7 @@ public class DefaultInvoice20Mapper extends AbstractInvoiceMapper implements Inv
             }
 
             if (detalle.getValorIgv() == null) {
-                GlobalUBL20Defaults instance = GlobalUBL20Defaults.getInstance();
+                GlobalCore20MapperDefaults instance = GlobalCore20MapperDefaults.getInstance();
                 detalle.setValorIgv(instance.getIgvDecimalValue().multiply(BigDecimal.valueOf(100)));
             }
         }

@@ -48,7 +48,7 @@ public class MapperManager {
                     for (Invoice21Mapper mapper : ServiceLoader.load(Invoice21Mapper.class)) {
                         invoice21Mappers.add(mapper);
                     }
-                    invoice21Mappers.sort((t1, t2) -> t2.order() - t1.order());
+                    invoice21Mappers.sort(new MapperComparator());
                 }
             }
         }

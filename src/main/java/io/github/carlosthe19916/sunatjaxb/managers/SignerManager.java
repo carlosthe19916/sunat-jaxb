@@ -1,4 +1,4 @@
-package io.github.carlosthe19916.sunatjaxb.facades;
+package io.github.carlosthe19916.sunatjaxb.managers;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SignFacade {
+public class SignerManager {
 
-    public SignFacade() {
+    public SignerManager() {
         // Just static methods
     }
 

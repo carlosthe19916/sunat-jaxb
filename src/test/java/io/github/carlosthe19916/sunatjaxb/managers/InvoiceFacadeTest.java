@@ -1,6 +1,6 @@
-package io.github.carlosthe19916.sunatjaxb.facades;
+package io.github.carlosthe19916.sunatjaxb.managers;
 
-import io.github.carlosthe19916.sunatjaxb.config.GlobalUBL21Defaults;
+import io.github.carlosthe19916.sunatjaxb.mappers.core.GlobalCore21MapperDefaults;
 import org.junit.Before;
 
 import java.util.Date;
@@ -14,7 +14,7 @@ public class InvoiceFacadeTest {
 
     @Before
     public void before() {
-        GlobalUBL21Defaults defaults = GlobalUBL21Defaults.getInstance();
+        GlobalCore21MapperDefaults defaults = GlobalCore21MapperDefaults.getInstance();
         defaults.setTimeZone(defaultTimeZone);
         defaults.setInternalMappersApplied(true);
     }

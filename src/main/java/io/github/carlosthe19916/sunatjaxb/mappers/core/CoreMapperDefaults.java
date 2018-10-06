@@ -1,13 +1,9 @@
-package io.github.carlosthe19916.sunatjaxb.config;
+package io.github.carlosthe19916.sunatjaxb.mappers.core;
 
 import java.math.BigDecimal;
 import java.util.TimeZone;
 
-public interface UBLDefaults {
-
-    String getUBLVersion();
-
-    String getCustomizationID();
+public interface CoreMapperDefaults {
 
     boolean isInternalMappersApplied();
 

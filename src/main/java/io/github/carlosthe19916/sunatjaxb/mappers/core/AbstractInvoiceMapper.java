@@ -1,15 +1,13 @@
-package io.github.carlosthe19916.sunatjaxb.mappers;
+package io.github.carlosthe19916.sunatjaxb.mappers.core;
 
 import io.github.carlosthe19916.sunatjaxb.beans.AbstractInvoiceBean;
 import io.github.carlosthe19916.sunatjaxb.beans.FechaBean;
-import io.github.carlosthe19916.sunatjaxb.config.GlobalUBL21Defaults;
-import io.github.carlosthe19916.sunatjaxb.config.UBL21Defaults;
 
 import java.util.Date;
 
 public abstract class AbstractInvoiceMapper {
 
-    protected UBL21Defaults defaults = GlobalUBL21Defaults.getInstance();
+    protected Core21MapperDefaults defaults = GlobalCore21MapperDefaults.getInstance();
 
     protected void setFechaDefaults(AbstractInvoiceBean invoice) {
         if (invoice.getFecha() == null) {

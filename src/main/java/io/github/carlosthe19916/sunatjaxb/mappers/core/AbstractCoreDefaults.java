@@ -1,13 +1,13 @@
-package io.github.carlosthe19916.sunatjaxb.config;
+package io.github.carlosthe19916.sunatjaxb.mappers.core;
 
 import java.math.BigDecimal;
 import java.util.TimeZone;
 
-public abstract class AbstractUBLDefaults implements UBLDefaults {
+public abstract class AbstractCoreDefaults implements CoreMapperDefaults {
 
-    private boolean internalMappersApplied = false;
-    private TimeZone timeZone = TimeZone.getTimeZone("America/Lima");
-    private BigDecimal igvDecimalValue = new BigDecimal("0.18");
+    private boolean internalMappersApplied;
+    private TimeZone timeZone;
+    private BigDecimal igvDecimalValue;
 
     @Override
     public boolean isInternalMappersApplied() {

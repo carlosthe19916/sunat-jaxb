@@ -1,4 +1,4 @@
-package io.github.carlosthe19916.sunatjaxb.types;
+package io.github.carlosthe19916.sunatjaxb.utils;
 
 import io.github.carlosthe19916.sunatjaxb.beans.*;
 import io.github.carlosthe19916.sunatjaxb.beans.beans21.Impuestos21Bean;
@@ -8,8 +8,11 @@ import io.github.carlosthe19916.sunatjaxb.beans.beans21.Total21Bean;
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo16;
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo5;
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo52;
-import io.github.carlosthe19916.sunatjaxb.config.GlobalUBL21Defaults;
 import io.github.carlosthe19916.sunatjaxb.exceptions.Invoice21BeanValidacionException;
+import io.github.carlosthe19916.sunatjaxb.mappers.Invoice21Mapper;
+import io.github.carlosthe19916.sunatjaxb.mappers.MapperComparator;
+import io.github.carlosthe19916.sunatjaxb.mappers.MapperManager;
+import io.github.carlosthe19916.sunatjaxb.mappers.core.GlobalCore21MapperDefaults;
 import io.github.carlosthe19916.sunatjaxb.utils.BeanUtils;
 import io.github.carlosthe19916.sunatjaxb.utils.DateUtils;
 import io.github.carlosthe19916.sunatjaxb.utils.UBL21Utils;
@@ -24,36 +27,37 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Bean21ToType {
+
+    private static final String UBL_VERSION = "2.1;";
+    private static final String UBL_CUSTOMIZATION_ID = "2.0;";
 
     private Bean21ToType() {
         // Just util class
     }
 
-    public static InvoiceType toInvoiceType(Invoice21Bean invoice) throws Invoice21BeanValidacionException {
+    public static InvoiceType toInvoiceType(Invoice21Bean invoice) {
+        // Constraints
+
         Set<ConstraintViolation<Invoice21Bean>> violations = BeanUtils.validate(invoice);
         if (!violations.isEmpty()) {
             throw new Invoice21BeanValidacionException("Invalid firmante", violations);
         }
 
-        GlobalUBL21Defaults defaults = GlobalUBL21Defaults.getInstance();
-
         // Type
         oasis.names.specification.ubl.schema.xsd.invoice_21.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.invoice_21.ObjectFactory();
         oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType invoiceType = factory.createInvoiceType();
 
-        invoiceType.setUBLVersionID(UBL21Utils.buildUBLVersionID(defaults.getUBLVersion()));
-        invoiceType.setCustomizationID(UBL21Utils.buildCustomizationIDType(defaults.getCustomizationID()));
+        invoiceType.setUBLVersionID(UBL21Utils.buildUBLVersionID(UBL_VERSION));
+        invoiceType.setCustomizationID(UBL21Utils.buildCustomizationIDType(UBL_CUSTOMIZATION_ID));
 
         // Firma
         if (invoice.getProveedor() != null) {
             invoiceType.getSignature().add(buildSignatureType(invoice.getProveedor()));
         }
-
-        // Profile
-//        ProfileIDType profileIDType = UBL21Utils.toProfileIDType(invoice.getTipoOperacion().getCode());
-//        invoiceType.setProfileID(profileIDType);
 
         // 10 Leyendas
         if (invoice.getTotal().getPagarLetras() != null) {

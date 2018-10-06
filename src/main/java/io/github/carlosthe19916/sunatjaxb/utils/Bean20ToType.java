@@ -1,4 +1,4 @@
-package io.github.carlosthe19916.sunatjaxb.types;
+package io.github.carlosthe19916.sunatjaxb.utils;
 
 import io.github.carlosthe19916.sunatjaxb.beans.*;
 import io.github.carlosthe19916.sunatjaxb.beans.beans20.Impuestos20Bean;
@@ -34,6 +34,9 @@ import java.util.Set;
 
 public class Bean20ToType {
 
+    private static final String UBL_VERSION = "2.0;";
+    private static final String UBL_CUSTOMIZATION_ID = "2.0;";
+
     private Bean20ToType() {
         // Just util class
     }
@@ -48,8 +51,8 @@ public class Bean20ToType {
         oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory();
         oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType invoiceType = factory.createInvoiceType();
 
-        invoiceType.setUBLVersionID(UBL20Utils.buildUBLVersionID("2.0"));
-        invoiceType.setCustomizationID(UBL20Utils.buildCustomizationIDType("2.0"));
+        invoiceType.setUBLVersionID(UBL20Utils.buildUBLVersionID(UBL_VERSION));
+        invoiceType.setCustomizationID(UBL20Utils.buildCustomizationIDType(UBL_CUSTOMIZATION_ID));
 
         // Observaciones
         invoiceType.getNote().add(UBL20Utils.buildNoteType(invoice.getObservaciones()));
