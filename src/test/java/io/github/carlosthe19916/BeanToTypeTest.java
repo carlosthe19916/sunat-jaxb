@@ -1,26 +1,6 @@
 package io.github.carlosthe19916;
 
-import io.github.carlosthe19916.beans.*;
-import io.github.carlosthe19916.beans.ubl.ubl20.Invoice20Bean;
-import io.github.carlosthe19916.beans.exceptions.Invoice20BeanValidacionException;
-import io.github.carlosthe19916.types.BeanToType21;
-import io.github.carlosthe19916.utils.JaxbUtils;
-import oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.xpath.*;
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.stream.Collectors;
+import io.github.carlosthe19916.sunatjaxb.exceptions.Invoice20BeanValidacionException;
 
 public class BeanToTypeTest {
 

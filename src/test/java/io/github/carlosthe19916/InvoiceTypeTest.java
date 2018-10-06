@@ -1,13 +1,6 @@
 package io.github.carlosthe19916;
 
-import io.github.carlosthe19916.utils.JaxbUtils;
-import oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType;
-import org.junit.Assert;
-import org.junit.Test;
-import org.w3c.dom.Document;
-
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
+import io.github.carlosthe19916.sunatjaxb.utils.JaxbUtils;
 
 public class InvoiceTypeTest {
 
