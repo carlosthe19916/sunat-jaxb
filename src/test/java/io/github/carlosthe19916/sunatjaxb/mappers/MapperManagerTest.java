@@ -1,5 +1,7 @@
 package io.github.carlosthe19916.sunatjaxb.mappers;
 
+import io.github.carlosthe19916.sunatjaxb.ObjectWrapper;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;
@@ -13,20 +15,18 @@ public class MapperManagerTest {
      * Should be singleton {@link MapperManager#getInstance()}
      */
     @Test
-    public void test_should_be_singleton() {
-        MapperManager instance1 = MapperManager.getInstance();
-        
-        MapperManager instance2 = MapperManager.getInstance();
+    public void test_should_be_singleton() throws InterruptedException {
+        MapperManager instance = MapperManager.getInstance();
+        ObjectWrapper instanceWrapper = new ObjectWrapper(instance);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                instance2 = MapperManager.getInstance();
-            }
+        executorService.execute(() -> {
+            instanceWrapper.setObj(MapperManager.getInstance());
         });
 
-        MapperManager instance2 = MapperManager.getInstance();
+        Thread.sleep(100);
+
+        Assert.assertEquals(instance, instanceWrapper.getObj());
     }
 
 }
