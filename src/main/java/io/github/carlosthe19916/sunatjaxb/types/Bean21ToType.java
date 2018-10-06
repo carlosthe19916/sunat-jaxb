@@ -8,7 +8,7 @@ import io.github.carlosthe19916.sunatjaxb.beans.beans21.Total21Bean;
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo16;
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo5;
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo52;
-import io.github.carlosthe19916.sunatjaxb.config.ubl21.GlobalUBL21Defaults;
+import io.github.carlosthe19916.sunatjaxb.config.GlobalUBL21Defaults;
 import io.github.carlosthe19916.sunatjaxb.exceptions.Invoice21BeanValidacionException;
 import io.github.carlosthe19916.sunatjaxb.utils.BeanUtils;
 import io.github.carlosthe19916.sunatjaxb.utils.DateUtils;
@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class BeanToType21 {
+public class Bean21ToType {
 
-    private BeanToType21() {
+    private Bean21ToType() {
         // Just util class
     }
 

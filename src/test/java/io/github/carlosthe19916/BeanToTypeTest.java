@@ -115,7 +115,7 @@ public class BeanToTypeTest {
 //        invoiceBean.setNumero(null);
 //
 //        try {
-//            BeanToType21.toInvoiceType(invoiceBean, timeZone);
+//            Bean21ToType.toInvoiceType(invoiceBean, timeZone);
 //        } catch (Invoice20BeanValidacionException e) {
 //            Set<String> paths = e.getViolations().stream().map(f -> f.getPropertyPath().toString()).collect(Collectors.toSet());
 //            Assert.assertTrue(paths.contains("serie"));
@@ -126,12 +126,12 @@ public class BeanToTypeTest {
 //    @Test(expected = InvalidCodeException.class)
 //    public void testInvalidCodeOnInvoiceLine() {
 //        invoiceBean.getDetalle().get(0).setCodigoTipoIgv("09");
-//        BeanToType21.toInvoiceType(invoiceBean, timeZone);
+//        Bean21ToType.toInvoiceType(invoiceBean, timeZone);
 //    }
 //
 //    @Test
 //    public void toInvoiceTypeTest() throws Exception {
-//        InvoiceType invoiceType = BeanToType21.toInvoiceType(invoiceBean, timeZone);
+//        InvoiceType invoiceType = Bean21ToType.toInvoiceType(invoiceBean, timeZone);
 //
 //        oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory factories = new oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory();
 //        JAXBElement<InvoiceType> jaxbElement = factories.createInvoice(invoiceType);

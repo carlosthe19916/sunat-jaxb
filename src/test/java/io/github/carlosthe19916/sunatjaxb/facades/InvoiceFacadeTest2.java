@@ -14,7 +14,7 @@ import io.github.carlosthe19916.sunatjaxb.beans.beans21.Invoice21BeanBuilder;
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo1;
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo12;
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo7;
-import io.github.carlosthe19916.sunatjaxb.config.ubl21.GlobalUBL21Defaults;
+import io.github.carlosthe19916.sunatjaxb.config.GlobalUBL21Defaults;
 import io.github.carlosthe19916.sunatjaxb.utils.JaxbUtils;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 import org.junit.Assert;
@@ -45,7 +45,7 @@ public class InvoiceFacadeTest2 {
     public void before() {
         GlobalUBL21Defaults defaults = GlobalUBL21Defaults.getInstance();
         defaults.setTimeZone(defaultTimeZone);
-        defaults.setAplicarCalculosInternosAutomaticos(true);
+        defaults.setInternalMappersApplied(true);
     }
 
 //    @Test

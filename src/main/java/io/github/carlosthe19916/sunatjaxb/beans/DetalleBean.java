@@ -2,17 +2,30 @@ package io.github.carlosthe19916.sunatjaxb.beans;
 
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo7;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class DetalleBean {
 
+    @NotNull
     private String unidadMedida;
+
+    @NotNull
     private String descripcion;
 
+    @NotNull
     private BigDecimal cantidad;
+
+    @NotNull
     private BigDecimal valorUnitario;
+
+    @NotNull
     private BigDecimal precioUnitario;
+
+    @NotNull
     private BigDecimal subtotal;
+
+    @NotNull
     private BigDecimal total;
 
     private Catalogo7 tipoAfectacionIgv;

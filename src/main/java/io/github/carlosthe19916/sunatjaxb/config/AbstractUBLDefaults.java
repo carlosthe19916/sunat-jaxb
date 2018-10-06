@@ -5,17 +5,17 @@ import java.util.TimeZone;
 
 public abstract class AbstractUBLDefaults implements UBLDefaults {
 
-    private boolean aplicarCalculosInternosAutomaticos = false;
+    private boolean internalMappersApplied = false;
     private TimeZone timeZone = TimeZone.getTimeZone("America/Lima");
     private BigDecimal igvDecimalValue = new BigDecimal("0.18");
 
     @Override
-    public boolean applyInternalMappers() {
-        return aplicarCalculosInternosAutomaticos;
+    public boolean isInternalMappersApplied() {
+        return internalMappersApplied;
     }
 
-    public void setAplicarCalculosInternosAutomaticos(boolean aplicarCalculosInternosAutomaticos) {
-        this.aplicarCalculosInternosAutomaticos = aplicarCalculosInternosAutomaticos;
+    public void setInternalMappersApplied(boolean internalmappersapplied) {
+        this.internalMappersApplied = internalmappersapplied;
     }
 
     @Override

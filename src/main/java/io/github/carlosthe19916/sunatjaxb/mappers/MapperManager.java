@@ -12,7 +12,6 @@ public class MapperManager {
     private List<Invoice21Mapper> invoice21Mappers;
 
     private MapperManager() {
-
     }
 
     public static MapperManager getInstance() {

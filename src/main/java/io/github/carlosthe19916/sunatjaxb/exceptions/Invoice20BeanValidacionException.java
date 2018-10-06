@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Invoice20BeanValidacionException extends RuntimeException {
+public class Invoice20BeanValidacionException extends Exception {
 
     private Set<ConstraintViolation<Invoice20Bean>> violations;
 

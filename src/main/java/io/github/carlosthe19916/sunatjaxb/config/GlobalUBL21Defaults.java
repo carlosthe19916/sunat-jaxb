@@ -1,15 +1,15 @@
-package io.github.carlosthe19916.sunatjaxb.config.ubl21;
+package io.github.carlosthe19916.sunatjaxb.config;
 
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo17;
-import io.github.carlosthe19916.sunatjaxb.config.AbstractUBLDefaults;
 
 public class GlobalUBL21Defaults extends AbstractUBLDefaults implements UBL21Defaults {
 
-    private volatile static GlobalUBL21Defaults instance = new GlobalUBL21Defaults();
+    private volatile static GlobalUBL21Defaults instance;
 
-    private Catalogo17 defaultTipoOperacion = Catalogo17.VENTA_INTERNA;
     private String ublVersion = "2.1";
     private String customizationId = "2.0";
+
+    private Catalogo17 tipoOperacion = Catalogo17.VENTA_INTERNA;
 
     private GlobalUBL21Defaults() {
         // Singleton
@@ -28,18 +28,18 @@ public class GlobalUBL21Defaults extends AbstractUBLDefaults implements UBL21Def
 
     @Override
     public Catalogo17 getTipoOperacion() {
-        return defaultTipoOperacion;
+        return tipoOperacion;
     }
 
-    public Catalogo17 setTipoOperacion(Catalogo17 defaultTipoOperacion) {
-        return this.defaultTipoOperacion = defaultTipoOperacion;
+    public Catalogo17 setTipoOperacion(Catalogo17 tipoOperacion) {
+        return this.tipoOperacion = tipoOperacion;
     }
 
     public String getUBLVersion() {
         return ublVersion;
     }
 
-    public void setUblVersion(String ublVersion) {
+    public void setUBLVersion(String ublVersion) {
         this.ublVersion = ublVersion;
     }
 
@@ -47,7 +47,7 @@ public class GlobalUBL21Defaults extends AbstractUBLDefaults implements UBL21Def
         return customizationId;
     }
 
-    public void setCustomizationId(String customizationId) {
+    public void setCustomizationID(String customizationId) {
         this.customizationId = customizationId;
     }
 }

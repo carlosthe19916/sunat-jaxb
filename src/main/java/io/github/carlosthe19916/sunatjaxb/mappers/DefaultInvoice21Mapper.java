@@ -1,11 +1,14 @@
 package io.github.carlosthe19916.sunatjaxb.mappers;
 
+import io.github.carlosthe19916.sunatjaxb.beans.ClienteBean;
 import io.github.carlosthe19916.sunatjaxb.beans.DetalleBean;
+import io.github.carlosthe19916.sunatjaxb.beans.MonedaBean;
+import io.github.carlosthe19916.sunatjaxb.beans.TotalInformacionAdicionalBean;
 import io.github.carlosthe19916.sunatjaxb.beans.beans21.Impuestos21Bean;
 import io.github.carlosthe19916.sunatjaxb.beans.beans21.Invoice21Bean;
+import io.github.carlosthe19916.sunatjaxb.beans.beans21.Proveedor21Bean;
 import io.github.carlosthe19916.sunatjaxb.beans.beans21.Total21Bean;
-import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo17;
-import io.github.carlosthe19916.sunatjaxb.config.ubl21.GlobalUBL21Defaults;
+import io.github.carlosthe19916.sunatjaxb.config.GlobalUBL21Defaults;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -16,17 +19,36 @@ public class DefaultInvoice21Mapper extends AbstractInvoiceMapper implements Inv
     private final static RoundingMode METODO_REDONDEO = RoundingMode.HALF_EVEN;
 
     @Override
-    public Invoice21Bean map(Invoice21Bean invoice21Bean) {
-        if (invoice21Bean.getTipoOperacion() == null) {
-            invoice21Bean.setTipoOperacion(Catalogo17.VENTA_INTERNA);
+    public Invoice21Bean map(Invoice21Bean invoice) {
+        GlobalUBL21Defaults defaults = GlobalUBL21Defaults.getInstance();
+
+
+        setFechaDefaults(invoice);
+
+        if (invoice.getMoneda() == null) {
+            invoice.setMoneda(new MonedaBean());
+        }
+        if (invoice.getTotalInformacionAdicional() == null) {
+            invoice.setTotalInformacionAdicional(new TotalInformacionAdicionalBean());
         }
 
-        setFechaDefaults(invoice21Bean);
+        setDetalleDefaults(invoice);
 
-        setTotalDefaults(invoice21Bean);
-        setImpuestosDefaults(invoice21Bean);
+        if (invoice.getTipoOperacion() == null) {
+            invoice.setTipoOperacion(defaults.getTipoOperacion());
+        }
 
-        return invoice21Bean;
+        setTotalDefaults(invoice);
+        setImpuestosDefaults(invoice);
+
+        if (invoice.getCliente() == null) {
+            invoice.setCliente(new ClienteBean());
+        }
+        if (invoice.getProveedor() == null) {
+            invoice.setProveedor(new Proveedor21Bean());
+        }
+
+        return invoice;
     }
 
     @Override
@@ -75,17 +97,14 @@ public class DefaultInvoice21Mapper extends AbstractInvoiceMapper implements Inv
         }
 
         Impuestos21Bean impuestos = invoice.getImpuestos();
-
         if (impuestos.getIgv() != null && impuestos.getIgvAfecto() == null) {
             BigDecimal igv = impuestos.getIgv();
-
-            //: [Total valor de venta operaciones gravadas] + [Sumatoria ISC].
             BigDecimal taxableAmount = igv.divide(defaults.getIgvDecimalValue(), 2, METODO_REDONDEO);
             impuestos.setIgvAfecto(taxableAmount);
         }
+    }
 
-        // Detalle
-
+    private void setDetalleDefaults(Invoice21Bean invoice) {
         if (invoice.getDetalle() == null) {
             invoice.setDetalle(new ArrayList<>());
         }

@@ -1,4 +1,4 @@
-package io.github.carlosthe19916.sunatjaxb.config.ubl21;
+package io.github.carlosthe19916.sunatjaxb.config;
 
 import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo17;
 import io.github.carlosthe19916.sunatjaxb.config.UBLDefaults;

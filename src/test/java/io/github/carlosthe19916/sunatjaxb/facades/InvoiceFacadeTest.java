@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.sunatjaxb.facades;
 
-import io.github.carlosthe19916.sunatjaxb.config.ubl21.GlobalUBL21Defaults;
+import io.github.carlosthe19916.sunatjaxb.config.GlobalUBL21Defaults;
 import org.junit.Before;
 
 import java.util.Date;
@@ -16,7 +16,7 @@ public class InvoiceFacadeTest {
     public void before() {
         GlobalUBL21Defaults defaults = GlobalUBL21Defaults.getInstance();
         defaults.setTimeZone(defaultTimeZone);
-        defaults.setAplicarCalculosInternosAutomaticos(true);
+        defaults.setInternalMappersApplied(true);
     }
 
 //    @Test

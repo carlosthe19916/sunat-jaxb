@@ -32,9 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class BeanToType20 {
+public class Bean20ToType {
 
-    private BeanToType20() {
+    private Bean20ToType() {
         // Just util class
     }
 

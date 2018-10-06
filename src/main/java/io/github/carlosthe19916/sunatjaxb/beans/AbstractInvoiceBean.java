@@ -50,19 +50,6 @@ public abstract class AbstractInvoiceBean {
     @Valid
     private FirmanteBean firmante;
 
-    public AbstractInvoiceBean() {
-    }
-
-    public AbstractInvoiceBean(AbstractInvoiceBean invoice) {
-        serie = invoice.serie;
-        numero = invoice.numero;
-        tipoDocumento = invoice.tipoDocumento;
-        fecha = invoice.fecha;
-        moneda = invoice.moneda;
-        totalInformacionAdicional = invoice.totalInformacionAdicional;
-        detalle = invoice.detalle;
-    }
-
     public String getSerie() {
         return serie;
     }

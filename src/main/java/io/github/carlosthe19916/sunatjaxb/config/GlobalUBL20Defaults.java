@@ -1,10 +1,8 @@
-package io.github.carlosthe19916.sunatjaxb.config.ubl20;
-
-import io.github.carlosthe19916.sunatjaxb.config.AbstractUBLDefaults;
+package io.github.carlosthe19916.sunatjaxb.config;
 
 public class GlobalUBL20Defaults extends AbstractUBLDefaults implements UBL20Defaults {
 
-    private volatile static GlobalUBL20Defaults instance = new GlobalUBL20Defaults();
+    private volatile static GlobalUBL20Defaults instance;
 
     private String ublVersion = "2.0";
     private String customizationId = "2.0";
@@ -28,7 +26,7 @@ public class GlobalUBL20Defaults extends AbstractUBLDefaults implements UBL20Def
         return ublVersion;
     }
 
-    public void setUblVersion(String ublVersion) {
+    public void setUBLVersion(String ublVersion) {
         this.ublVersion = ublVersion;
     }
 
@@ -36,7 +34,7 @@ public class GlobalUBL20Defaults extends AbstractUBLDefaults implements UBL20Def
         return customizationId;
     }
 
-    public void setCustomizationId(String customizationId) {
+    public void setCustomizationID(String customizationId) {
         this.customizationId = customizationId;
     }
 

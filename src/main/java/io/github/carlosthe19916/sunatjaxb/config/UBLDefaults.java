@@ -9,7 +9,7 @@ public interface UBLDefaults {
 
     String getCustomizationID();
 
-    boolean applyInternalMappers();
+    boolean isInternalMappersApplied();
 
     TimeZone getTimeZone();
 
