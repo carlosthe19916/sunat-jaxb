@@ -1,7 +1,5 @@
 package io.github.carlosthe19916.beans;
 
-import io.github.carlosthe19916.beans.catalogs.Catalogo1;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -9,8 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-public abstract class AbstractInvoiceBean {
-
+public abstract class AbstractNoteBean {
     @NotNull
     @Size(min = 4, max = 4)
     private String serie;
@@ -19,9 +16,6 @@ public abstract class AbstractInvoiceBean {
     @Min(1)
     @Max(99_999_999)
     private String numero;
-
-    @NotNull
-    private Catalogo1 tipoDocumento;
 
     @Valid
     @NotNull
@@ -50,17 +44,16 @@ public abstract class AbstractInvoiceBean {
     @Valid
     private FirmanteBean firmante;
 
-    public AbstractInvoiceBean() {
+    public AbstractNoteBean() {
     }
 
-    public AbstractInvoiceBean(AbstractInvoiceBean invoice) {
-        serie = invoice.serie;
-        numero = invoice.numero;
-        tipoDocumento = invoice.tipoDocumento;
-        fecha = invoice.fecha;
-        moneda = invoice.moneda;
-        totalInformacionAdicional = invoice.totalInformacionAdicional;
-        detalle = invoice.detalle;
+    public AbstractNoteBean(AbstractNoteBean noteBean) {
+        serie = noteBean.serie;
+        numero = noteBean.numero;
+        fecha = noteBean.fecha;
+        moneda = noteBean.moneda;
+        totalInformacionAdicional = noteBean.totalInformacionAdicional;
+        detalle = noteBean.detalle;
     }
 
     public String getSerie() {
@@ -77,14 +70,6 @@ public abstract class AbstractInvoiceBean {
 
     public void setNumero(String numero) {
         this.numero = numero;
-    }
-
-    public Catalogo1 getTipoDocumento() {
-        return tipoDocumento;
-    }
-
-    public void setTipoDocumento(Catalogo1 tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
     }
 
     public FechaBean getFecha() {
@@ -127,14 +112,6 @@ public abstract class AbstractInvoiceBean {
         this.codigoGeneradoPorSoftware = codigoGeneradoPorSoftware;
     }
 
-    public GuiaRemisionRelacionadaBean getGuiaRemisionRelacionada() {
-        return guiaRemisionRelacionada;
-    }
-
-    public void setGuiaRemisionRelacionada(GuiaRemisionRelacionadaBean guiaRemisionRelacionada) {
-        this.guiaRemisionRelacionada = guiaRemisionRelacionada;
-    }
-
     public OtroDocumentoRelacionadoBean getOtroDocumentoRelacionado() {
         return otroDocumentoRelacionado;
     }
@@ -149,5 +126,13 @@ public abstract class AbstractInvoiceBean {
 
     public void setFirmante(FirmanteBean firmante) {
         this.firmante = firmante;
+    }
+
+    public GuiaRemisionRelacionadaBean getGuiaRemisionRelacionada() {
+        return guiaRemisionRelacionada;
+    }
+
+    public void setGuiaRemisionRelacionada(GuiaRemisionRelacionadaBean guiaRemisionRelacionada) {
+        this.guiaRemisionRelacionada = guiaRemisionRelacionada;
     }
 }

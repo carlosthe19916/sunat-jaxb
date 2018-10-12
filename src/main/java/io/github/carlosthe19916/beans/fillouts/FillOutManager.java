@@ -10,6 +10,8 @@ public class FillOutManager {
 
     private List<Invoice20FillOut> invoice20FillOut;
     private List<Invoice21FillOut> invoice21FillOut;
+    private List<CreditNote21FillOut> creditNote21FillOut;
+    private List<DebitNote21FillOut> debitNote21FillOut;
 
     private FillOutManager() {
 
@@ -56,4 +58,33 @@ public class FillOutManager {
         return invoice21FillOut;
     }
 
+    public List<CreditNote21FillOut> getCreditNote21FillOuts() {
+        if (creditNote21FillOut == null) {
+            synchronized (FillOutManager.class) {
+                if (creditNote21FillOut == null) {
+                    creditNote21FillOut = new ArrayList<>();
+                    for (CreditNote21FillOut fillOut : ServiceLoader.load(CreditNote21FillOut.class)) {
+                        creditNote21FillOut.add(fillOut);
+                    }
+                    creditNote21FillOut.sort((t1, t2) -> t2.order() - t1.order());
+                }
+            }
+        }
+        return creditNote21FillOut;
+    }
+
+    public List<DebitNote21FillOut> getDebitNote21FillOuts() {
+        if (debitNote21FillOut == null) {
+            synchronized (FillOutManager.class) {
+                if (debitNote21FillOut == null) {
+                    debitNote21FillOut = new ArrayList<>();
+                    for (DebitNote21FillOut fillOut : ServiceLoader.load(DebitNote21FillOut.class)) {
+                        debitNote21FillOut.add(fillOut);
+                    }
+                    debitNote21FillOut.sort((t1, t2) -> t2.order() - t1.order());
+                }
+            }
+        }
+        return debitNote21FillOut;
+    }
 }

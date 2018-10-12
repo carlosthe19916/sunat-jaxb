@@ -7,7 +7,6 @@ import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroWriter;
 import com.helger.xml.namespace.MapBasedNamespaceContext;
 import com.helger.xml.serialize.write.XMLWriterSettings;
-import io.github.carlosthe19916.beans.*;
 import io.github.carlosthe19916.beans.catalogs.Catalogo1;
 import io.github.carlosthe19916.beans.catalogs.Catalogo12;
 import io.github.carlosthe19916.beans.catalogs.Catalogo7;
@@ -153,6 +152,7 @@ public class InvoiceFacadeTest2 {
         fechaVencimiento.set(2018, Calendar.MAY, 15, 23, 59, 59);
         fechaVencimiento.setTimeZone(defaultTimeZone);
 
+
         Invoice21Bean invoice1 = Invoice21BeanBuilder.builder()
                 .codigoGeneradoPorSoftware(UUID.randomUUID().toString())
                 .serie("F001")
@@ -160,6 +160,10 @@ public class InvoiceFacadeTest2 {
                 .tipoComprobante(Catalogo1.FACTURA)
                 .moneda()
                     .codigo("PEN")
+                    .end()
+                .otroDocumentoRelacionado()
+                    .documentoRelacionado("F001-1")
+                    .tipoDocumentoRelacionado(Catalogo12.OTROS)
                     .end()
                 .proveedor()
                     .codigoTipoDocumento("6")

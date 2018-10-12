@@ -1,6 +1,7 @@
 package io.github.carlosthe19916.beans;
 
 import io.github.carlosthe19916.beans.catalogs.Catalogo1;
+import io.github.carlosthe19916.utils.StringUtils;
 
 public abstract class AbstractInvoiceBeanBuilder<Builder extends AbstractInvoiceBeanBuilder, Bean extends AbstractInvoiceBean> {
 
@@ -18,7 +19,8 @@ public abstract class AbstractInvoiceBeanBuilder<Builder extends AbstractInvoice
     }
 
     public Builder numero(Integer numero) {
-        invoice.setNumero(numero);
+        String documentId = StringUtils.padLeft(String.valueOf(numero), 8, "0");
+        invoice.setNumero(documentId);
         return getInvoiceBuilder();
     }
 

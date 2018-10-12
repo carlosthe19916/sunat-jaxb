@@ -1,9 +1,11 @@
 package io.github.carlosthe19916.utils;
 
+import io.github.carlosthe19916.beans.types.ReferenciaType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.*;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 public class UBL21Utils {
 
@@ -321,6 +323,91 @@ public class UBL21Utils {
         uriType.setValue(value);
         return uriType;
     }
+
+    public static ResponseType toBuildDiscrepancyResponse(String referenecID, String responseCode, String descripcion,ReferenciaType type) {
+        ResponseType responseType = new ResponseType();
+        responseType.setReferenceID(referenecID);
+        switch (type) {
+            case CREDIT_NOTE:
+                responseType.setResponseCode(buildCNResponseCode(responseCode));
+                break;
+            case DEBIT_NOTE:
+                responseType.setResponseCode(buildDNResponseCode(responseCode));
+                break;
+        }
+        responseType.setDescription(Arrays.asList(buildDescriptionType(descripcion)));
+        return responseType;
+    }
+
+    public static BillingReferenceType buildBillingReference(String documentoRelacionado, String code, ReferenciaType type) {
+        BillingReferenceType billingReferenceType = new BillingReferenceType();
+        billingReferenceType.setInvoiceDocumentReference(buildDocumentReference(documentoRelacionado, code));
+ /*       switch (type) {
+            case INVOICE:
+                billingReferenceType.setInvoiceDocumentReference(buildDocumentReference(documentoRelacionado, code));
+                break;
+            case CREDIT_NOTE:
+                billingReferenceType.setCreditNoteDocumentReference(buildDocumentReference(documentoRelacionado, code));
+                break;
+            case DEBIT_NOTE:
+                billingReferenceType.setDebitNoteDocumentReference(buildDocumentReference(documentoRelacionado, code));
+                break;
+        }*/
+        return billingReferenceType;
+    }
+
+    public static DocumentReferenceType buildDocumentReference(String ID, String documentTypeCode) {
+        DocumentReferenceType documentReferenceType = new DocumentReferenceType();
+        documentReferenceType.setID(buildIDType(ID));
+        documentReferenceType.setDocumentTypeCode(buildDocumentTypeCodeType(documentTypeCode));
+        return documentReferenceType;
+    }
+
+    public static DocumentTypeCodeType buildDocumentTypeCodeType(String value) {
+        DocumentTypeCodeType documentTypeCodeType = new DocumentTypeCodeType();
+        documentTypeCodeType.setValue(value);
+        documentTypeCodeType.setListAgencyName("PE:SUNAT");
+        documentTypeCodeType.setListName("SUNAT:Identificador de Tipo de Documento");
+        documentTypeCodeType.setListURI("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01");
+        return documentTypeCodeType;
+    }
+
+    public static ResponseCodeType buildDNResponseCode(String value) {
+        ResponseCodeType response = new ResponseCodeType();
+        response.setValue(value);
+        response.setListAgencyName("PE:SUNAT");
+        response.setListName("SUNAT: Identificador de tipo de nota de debito");
+        response.setListURI("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo10");
+        return response;
+    }
+    public static ResponseCodeType buildCNResponseCode(String value) {
+        ResponseCodeType response = new ResponseCodeType();
+        response.setValue(value);
+        response.setListAgencyName("PE:SUNAT");
+        response.setListName("SUNAT: Identificador de tipo de nota de credito");
+        response.setListURI("urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo09");
+        return response;
+    }
+
+    public static CreditedQuantityType buildCreditNoteQuantityType(String unitCode, BigDecimal value) {
+        CreditedQuantityType creditedQuantityType = new CreditedQuantityType();
+        creditedQuantityType.setValue(value);
+        creditedQuantityType.setUnitCode(unitCode);
+        creditedQuantityType.setUnitCodeListID("UN/ECE rec 20");
+        creditedQuantityType.setUnitCodeListAgencyName("United Nations Economic Commission for Europe");
+        return creditedQuantityType;
+    }
+
+    public static DebitedQuantityType buildDebitNoteQuantityType(String unitCode, BigDecimal value) {
+        DebitedQuantityType debitedQuantityType = new DebitedQuantityType();
+        debitedQuantityType.setValue(value);
+        debitedQuantityType.setUnitCode(unitCode);
+        debitedQuantityType.setUnitCodeListID("UN/ECE rec 20");
+        debitedQuantityType.setUnitCodeListAgencyName("United Nations Economic Commission for Europe");
+        return debitedQuantityType;
+    }
+
+
 
 //    public static IssueDateType buildIssueDateType(XMLGregorianCalendar value) {
 //        IssueDateType issueDateType = new IssueDateType();
