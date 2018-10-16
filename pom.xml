@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.carlosthe19916</groupId>
@@ -8,7 +9,7 @@
 
     <name>Sunat Jaxb</name>
     <description>Sunat Perú Jaxb Models</description>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -58,6 +59,12 @@
         </repository>
     </distributionManagement>
 
+    <modules>
+        <module>core</module>
+        <!--<module>ubl20</module>-->
+        <!--<module>ubl21</module>-->
+    </modules>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -67,6 +74,22 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>io.github.carlosthe19916</groupId>
+                <artifactId>sunat-jaxb-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>io.github.carlosthe19916</groupId>-->
+                <!--<artifactId>sunat-jaxb-ubl20</artifactId>-->
+                <!--<version>${project.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>io.github.carlosthe19916</groupId>-->
+                <!--<artifactId>sunat-jaxb-ubl21</artifactId>-->
+                <!--<version>${project.version}</version>-->
+            <!--</dependency>-->
         </dependencies>
     </dependencyManagement>
 
@@ -118,9 +141,9 @@
             <artifactId>ph-ublpe</artifactId>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>com.helger</groupId>-->
-            <!--<artifactId>ph-ublpe21</artifactId>-->
-            <!--<version>6.0.3-SNAPSHOT</version>-->
+        <!--<groupId>com.helger</groupId>-->
+        <!--<artifactId>ph-ublpe21</artifactId>-->
+        <!--<version>6.0.3-SNAPSHOT</version>-->
         <!--</dependency>-->
 
         <dependency>
@@ -146,26 +169,26 @@
     <build>
         <plugins>
             <!--<plugin>-->
-                <!--<groupId>org.codehaus.mojo</groupId>-->
-                <!--<artifactId>jaxb2-maven-plugin</artifactId>-->
-                <!--<version>2.3.1</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>xjc</id>-->
-                        <!--<goals>-->
-                            <!--<goal>xjc</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-                <!--<configuration>-->
-                    <!--<noPackageLevelAnnotations>true</noPackageLevelAnnotations>-->
-                    <!--<xjbSources>-->
-                        <!--<xjbSource>src/main/resources/jaxb/xjb</xjbSource>-->
-                    <!--</xjbSources>-->
-                    <!--<sources>-->
-                        <!--<source>src/main/resources/jaxb/maindoc</source>-->
-                    <!--</sources>-->
-                <!--</configuration>-->
+            <!--<groupId>org.codehaus.mojo</groupId>-->
+            <!--<artifactId>jaxb2-maven-plugin</artifactId>-->
+            <!--<version>2.3.1</version>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>xjc</id>-->
+            <!--<goals>-->
+            <!--<goal>xjc</goal>-->
+            <!--</goals>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--<configuration>-->
+            <!--<noPackageLevelAnnotations>true</noPackageLevelAnnotations>-->
+            <!--<xjbSources>-->
+            <!--<xjbSource>src/main/resources/jaxb/xjb</xjbSource>-->
+            <!--</xjbSources>-->
+            <!--<sources>-->
+            <!--<source>src/main/resources/jaxb/maindoc</source>-->
+            <!--</sources>-->
+            <!--</configuration>-->
             <!--</plugin>-->
 
             <plugin>
