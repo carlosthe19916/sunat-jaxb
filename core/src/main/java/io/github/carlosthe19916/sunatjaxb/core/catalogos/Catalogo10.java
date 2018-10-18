@@ -1,22 +1,14 @@
 package io.github.carlosthe19916.sunatjaxb.core.catalogos;
 
-import java.util.stream.Stream;
-
 public enum Catalogo10 implements Catalogo {
-    INTERES("01", "INTERES POR MORA"),
-    AUMENTO("02", "AUMENTO EN EL VALOR"),
-    PENALIDAD("03", "PENALIDADES / OTROS CONCEPTOS");
+    INTERES_POR_MORA("01"),
+    AUMENTO_EN_EL_VALOR("02"),
+    PENALIDAD_Y_OTROS_CONCEPTOS("03");
 
     private final String code;
-    private final String denominacion;
 
-    Catalogo10(String code, String denominacion) {
+    Catalogo10(String code) {
         this.code = code;
-        this.denominacion = denominacion;
-    }
-
-    public String getDenominacion() {
-        return denominacion;
     }
 
     @Override
@@ -24,10 +16,4 @@ public enum Catalogo10 implements Catalogo {
         return code;
     }
 
-    public static Catalogo10 valueOfCode(String code) {
-        return Stream.of(Catalogo10.values())
-                .filter(p -> p.code.equals(code))
-                .findFirst()
-                .orElse(null);
-    }
 }

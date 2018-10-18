@@ -1,7 +1,6 @@
 package io.github.carlosthe19916.sunatjaxb.core.beans;
 
 import io.github.carlosthe19916.sunatjaxb.core.catalogos.Catalogo10;
-import io.github.carlosthe19916.sunatjaxb.core.catalogos.Catalogo9;
 
 import javax.validation.constraints.NotNull;
 
