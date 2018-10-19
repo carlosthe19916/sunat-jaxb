@@ -1,11 +1,16 @@
 package io.github.carlosthe19916.sunatjaxb.ubl21.beans;
 
-import io.github.carlosthe19916.sunatjaxb.beans.*;
+import io.github.carlosthe19916.sunatjaxb.core.beans.AbstractNoteBean;
+import io.github.carlosthe19916.sunatjaxb.core.beans.ClienteBean;
+import io.github.carlosthe19916.sunatjaxb.core.catalogos.Catalogo10;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 public class DebitNote21Bean extends AbstractNoteBean {
+
+    @NotNull
+    private Catalogo10 tipoNotaDebito;
 
     @Valid
     @NotNull
@@ -18,14 +23,6 @@ public class DebitNote21Bean extends AbstractNoteBean {
     @Valid
     @NotNull
     private ClienteBean cliente;
-
-    @Valid
-    @NotNull
-    private DebitNoteDiscrepancyResponseBean documentoRelacionado;
-
-    @Valid
-    @NotNull
-    private DocumentReferenceBean documentoModificado;
 
     @Valid
     @NotNull
@@ -47,22 +44,6 @@ public class DebitNote21Bean extends AbstractNoteBean {
         this.total = total;
     }
 
-    public DebitNoteDiscrepancyResponseBean getDocumentoRelacionado() {
-        return documentoRelacionado;
-    }
-
-    public void setDocumentoRelacionado(DebitNoteDiscrepancyResponseBean documentoRelacionado) {
-        this.documentoRelacionado = documentoRelacionado;
-    }
-
-    public DocumentReferenceBean getDocumentoModificado() {
-        return documentoModificado;
-    }
-
-    public void setDocumentoModificado(DocumentReferenceBean documentoModificado) {
-        this.documentoModificado = documentoModificado;
-    }
-
     public ClienteBean getCliente() {
         return cliente;
     }
@@ -77,5 +58,14 @@ public class DebitNote21Bean extends AbstractNoteBean {
 
     public void setImpuestos(Impuestos21Bean impuestos) {
         this.impuestos = impuestos;
+    }
+
+    @NotNull
+    public Catalogo10 getTipoNotaDebito() {
+        return tipoNotaDebito;
+    }
+
+    public void setTipoNotaDebito(@NotNull Catalogo10 tipoNotaDebito) {
+        this.tipoNotaDebito = tipoNotaDebito;
     }
 }

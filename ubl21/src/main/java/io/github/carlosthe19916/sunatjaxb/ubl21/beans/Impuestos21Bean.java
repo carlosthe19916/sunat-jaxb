@@ -1,6 +1,6 @@
 package io.github.carlosthe19916.sunatjaxb.ubl21.beans;
 
-import io.github.carlosthe19916.sunatjaxb.beans.AbstractImpuestosBean;
+import io.github.carlosthe19916.sunatjaxb.core.beans.AbstractImpuestosBean;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -11,13 +11,6 @@ public class Impuestos21Bean extends AbstractImpuestosBean {
     private BigDecimal igvAfecto;
     private BigDecimal iscAfecto;
     private BigDecimal otrosAfecto;
-
-    public Impuestos21Bean() {
-    }
-
-    public Impuestos21Bean(AbstractImpuestosBean impuestos) {
-        super(impuestos);
-    }
 
     public BigDecimal getIgvAfecto() {
         return igvAfecto;

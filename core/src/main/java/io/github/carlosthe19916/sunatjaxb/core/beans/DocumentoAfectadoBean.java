@@ -20,7 +20,6 @@ public class DocumentoAfectadoBean {
     @NotNull
     private Catalogo1 tipoComprobante;
 
-
     public String getSerie() {
         return serie;
     }
@@ -45,4 +44,12 @@ public class DocumentoAfectadoBean {
         this.fechaEmision = fechaEmision;
     }
 
+    @NotNull
+    public Catalogo1 getTipoComprobante() {
+        return tipoComprobante;
+    }
+
+    public void setTipoComprobante(@NotNull Catalogo1 tipoComprobante) {
+        this.tipoComprobante = tipoComprobante;
+    }
 }

@@ -36,9 +36,10 @@ public abstract class AbstractInvoiceBean {
     @Valid
     private FirmanteBean firmante;
 
+    @Valid
     @Size(min = 1)
     @NotNull
-    private List<@Valid DetalleBean> detalle;
+    private List<DetalleBean> detalle;
 
     @Valid
     private GuiaRemisionRelacionadaBean guiaRemisionRelacionada;

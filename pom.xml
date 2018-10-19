@@ -17,6 +17,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <version.validadion-api>1.1.0.Final</version.validadion-api>
+        <version.hibernate-validator>5.3.5.Final</version.hibernate-validator>
     </properties>
 
     <url>http://carlosthe19916.com</url>
@@ -62,7 +64,7 @@
     <modules>
         <module>core</module>
         <!--<module>ubl20</module>-->
-        <!--<module>ubl21</module>-->
+        <module>ubl21</module>
     </modules>
 
     <dependencyManagement>
@@ -74,6 +76,18 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${version.validadion-api}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${version.hibernate-validator}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>io.github.carlosthe19916</groupId>
@@ -102,10 +116,7 @@
             <!--<groupId>com.helger</groupId>-->
             <!--<artifactId>ph-ubl20-codelists</artifactId>-->
         <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.helger</groupId>-->
-            <!--<artifactId>ph-ubl21</artifactId>-->
-        <!--</dependency>-->
+
         <!--<dependency>-->
             <!--<groupId>com.helger</groupId>-->
             <!--<artifactId>ph-ubl21-codelists</artifactId>-->

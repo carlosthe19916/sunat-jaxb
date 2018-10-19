@@ -1,6 +1,7 @@
 package io.github.carlosthe19916.sunatjaxb.ubl21.exceptions;
 
-import io.github.carlosthe19916.sunatjaxb.beans.beans21.CreditNote21Bean;
+
+import io.github.carlosthe19916.sunatjaxb.ubl21.beans.CreditNote21Bean;
 
 import javax.validation.ConstraintViolation;
 import java.util.Collections;

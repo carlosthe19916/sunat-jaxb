@@ -1,8 +1,8 @@
 package io.github.carlosthe19916.sunatjaxb.ubl21.beans;
 
-import io.github.carlosthe19916.sunatjaxb.beans.AbstractInvoiceBean;
-import io.github.carlosthe19916.sunatjaxb.beans.ClienteBean;
-import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo17;
+import io.github.carlosthe19916.sunatjaxb.core.beans.AbstractInvoiceBean;
+import io.github.carlosthe19916.sunatjaxb.core.beans.ClienteBean;
+import io.github.carlosthe19916.sunatjaxb.core.catalogos.Catalogo17;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -67,4 +67,5 @@ public class Invoice21Bean extends AbstractInvoiceBean {
     public void setProveedor(Proveedor21Bean proveedor) {
         this.proveedor = proveedor;
     }
+
 }

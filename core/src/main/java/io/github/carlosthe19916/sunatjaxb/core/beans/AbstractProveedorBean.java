@@ -1,11 +1,13 @@
 package io.github.carlosthe19916.sunatjaxb.core.beans;
 
+import io.github.carlosthe19916.sunatjaxb.core.catalogos.Catalogo6;
+
 import javax.validation.constraints.NotNull;
 
 public class AbstractProveedorBean {
 
     @NotNull
-    protected String codigoTipoDocumento;
+    protected Catalogo6 codigoTipoDocumento;
 
     @NotNull
     protected String numeroDocumento;
@@ -19,11 +21,11 @@ public class AbstractProveedorBean {
     @NotNull
     protected String codigoPostal;
 
-    public String getCodigoTipoDocumento() {
+    public Catalogo6 getCodigoTipoDocumento() {
         return codigoTipoDocumento;
     }
 
-    public void setCodigoTipoDocumento(String codigoTipoDocumento) {
+    public void setCodigoTipoDocumento(Catalogo6 codigoTipoDocumento) {
         this.codigoTipoDocumento = codigoTipoDocumento;
     }
 

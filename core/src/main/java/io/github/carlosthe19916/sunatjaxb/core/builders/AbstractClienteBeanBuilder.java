@@ -1,6 +1,7 @@
 package io.github.carlosthe19916.sunatjaxb.core.builders;
 
 import io.github.carlosthe19916.sunatjaxb.core.beans.ClienteBean;
+import io.github.carlosthe19916.sunatjaxb.core.catalogos.Catalogo6;
 
 public abstract class AbstractClienteBeanBuilder<Builder extends AbstractClienteBeanBuilder, Bean extends ClienteBean> {
 
@@ -12,7 +13,7 @@ public abstract class AbstractClienteBeanBuilder<Builder extends AbstractCliente
 
     protected abstract Builder getClienteBuilder();
 
-    public Builder codigoTipoDocumento(String codigoTipoDocumento) {
+    public Builder codigoTipoDocumento(Catalogo6 codigoTipoDocumento) {
         cliente.setCodigoTipoDocumento(codigoTipoDocumento);
         return getClienteBuilder();
     }

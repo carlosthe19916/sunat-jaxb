@@ -1,15 +1,15 @@
 package io.github.carlosthe19916.sunatjaxb.ubl21.utils;
 
-import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo16;
-import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo5;
-import io.github.carlosthe19916.sunatjaxb.catalogos.Catalogo52;
-import io.github.carlosthe19916.sunatjaxb.catalogos.ReferenciaType;
-import io.github.carlosthe19916.sunatjaxb.exceptions.CreditNote21BeanValidacionException;
-import io.github.carlosthe19916.sunatjaxb.exceptions.DebitNote21BeanValidacionException;
-import io.github.carlosthe19916.sunatjaxb.exceptions.Invoice21BeanValidacionException;
+import io.github.carlosthe19916.sunatjaxb.core.beans.*;
+import io.github.carlosthe19916.sunatjaxb.core.catalogos.*;
+import io.github.carlosthe19916.sunatjaxb.core.utils.BeanUtils;
+import io.github.carlosthe19916.sunatjaxb.core.utils.DateUtils;
+import io.github.carlosthe19916.sunatjaxb.ubl21.beans.*;
+import io.github.carlosthe19916.sunatjaxb.ubl21.exceptions.CreditNote21BeanValidacionException;
+import io.github.carlosthe19916.sunatjaxb.ubl21.exceptions.DebitNote21BeanValidacionException;
+import io.github.carlosthe19916.sunatjaxb.ubl21.exceptions.Invoice21BeanValidacionException;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.*;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoiceTypeCodeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.*;
 import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 import oasis.names.specification.ubl.schema.xsd.debitnote_21.DebitNoteType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
@@ -18,7 +18,6 @@ import javax.validation.ConstraintViolation;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -32,52 +31,25 @@ public class Bean21ToType {
     }
 
     public static InvoiceType toInvoiceType(Invoice21Bean invoice) {
-        // Constraints
-
         Set<ConstraintViolation<Invoice21Bean>> violations = BeanUtils.validate(invoice);
         if (!violations.isEmpty()) {
-            throw new Invoice21BeanValidacionException("Invalid firmante", violations);
+            throw new Invoice21BeanValidacionException("Invalid bean", violations);
         }
 
-        // Type
         oasis.names.specification.ubl.schema.xsd.invoice_21.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.invoice_21.ObjectFactory();
         oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType invoiceType = factory.createInvoiceType();
 
-        invoiceType.setUBLVersionID(UBL21Utils.buildUBLVersionID(UBL_VERSION));
-        invoiceType.setCustomizationID(UBL21Utils.buildCustomizationIDType(UBL_CUSTOMIZATION_ID));
+        // Version
+        invoiceType.setUBLVersionID(new UBLVersionIDType(UBL_VERSION));
+        invoiceType.setCustomizationID(new CustomizationIDType(UBL_CUSTOMIZATION_ID));
 
-        // Firma
-        if (invoice.getProveedor() != null) {
+        // Signature
+        if (invoice.getFirmante() != null) {
             invoiceType.getSignature().add(buildSignatureType(invoice.getFirmante()));
         }
 
-        // 10 Leyendas
-        if (invoice.getTotal().getPagarLetras() != null) {
-            invoiceType.addNote(UBL21Utils.buildNoteType(invoice.getTotal().getPagarLetras(), Catalogo52.MONTO_EXPRESADO_EN_LETRAS.getCode()));
-        }
-        if (invoice.getCodigoGeneradoPorSoftware() != null) {
-            invoiceType.addNote(UBL21Utils.buildNoteType(invoice.getCodigoGeneradoPorSoftware(), Catalogo52.CODIGO_INTERNO_GENERADO_POR_EL_SOFTWARE_DE_FACTURACION.getCode()));
-        }
-
-        // 12 Guia de remision relacionada
-        if (invoice.getGuiaRemisionRelacionada() != null) {
-            GuiaRemisionRelacionadaBean guiaRemisionRelacionada = invoice.getGuiaRemisionRelacionada();
-            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceType1(guiaRemisionRelacionada.getGuiaRemision(), guiaRemisionRelacionada.getTipoGuiaRemision().getCode());
-            invoiceType.addDespatchDocumentReference(documentReferenceType);
-        }
-
-        // 13 otro documento relacionado
-        if (invoice.getOtroDocumentoRelacionado() != null) {
-            OtroDocumentoRelacionadoBean otroDocumentoRelacionado = invoice.getOtroDocumentoRelacionado();
-            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceType2(otroDocumentoRelacionado.getDocumentoRelacionado(), otroDocumentoRelacionado.getTipoDocumentoRelacionado().getCode());
-            invoiceType.addAdditionalDocumentReference(documentReferenceType);
-        }
-
-        // 20 direccion donde se entrega el bien
-        // 21 descuentos globales
-
         // Serie y numero
-        IDType idType = UBL21Utils.buildIDType(MessageFormat.format("{0}-{1}", invoice.getSerie(), invoice.getNumero()));
+        IDType idType = new IDType(MessageFormat.format("{0}-{1}", invoice.getSerie(), invoice.getNumero()));
         invoiceType.setID(idType);
 
         // Fecha y hora de emision
@@ -95,6 +67,14 @@ public class Bean21ToType {
         InvoiceTypeCodeType invoiceTypeCodeType = UBL21Utils.buildInvoiceTypeCodeType(codigoTipoComprobante, invoice.getTipoOperacion().getCode());
         invoiceType.setInvoiceTypeCode(invoiceTypeCodeType);
 
+        // Leyendas
+        if (invoice.getTotal().getPagarLetras() != null) {
+            invoiceType.addNote(UBL21Utils.buildNoteType(invoice.getTotal().getPagarLetras(), Catalogo52.MONTO_EXPRESADO_EN_LETRAS.getCode()));
+        }
+        if (invoice.getCodigoGeneradoPorSoftware() != null) {
+            invoiceType.addNote(UBL21Utils.buildNoteType(invoice.getCodigoGeneradoPorSoftware(), Catalogo52.CODIGO_INTERNO_GENERADO_POR_EL_SOFTWARE_DE_FACTURACION.getCode()));
+        }
+
         // Moneda
         MonedaBean moneda = invoice.getMoneda();
         invoiceType.setDocumentCurrencyCode(UBL21Utils.buildDocumentCurrencyCodeType(moneda.getCodigo()));
@@ -111,7 +91,7 @@ public class Bean21ToType {
         Total21Bean total = invoice.getTotal();
         invoiceType.setLegalMonetaryTotal(buildMonetaryTotalType(total, invoice.getMoneda()));
 
-        // Total firmante IGV/ISC
+        // Total impuestos
         Impuestos21Bean impuestos = invoice.getImpuestos();
         invoiceType.getTaxTotal().addAll(buildTaxTotalType(impuestos, invoice.getTotalInformacionAdicional(), invoice.getMoneda()));
 
@@ -121,8 +101,21 @@ public class Bean21ToType {
             invoiceType.getInvoiceLine().add(buildInvoiceLineType(i, moneda.getCodigo(), detalle));
             i++;
         }
-
         invoiceType.setLineCountNumeric(BigDecimal.valueOf(invoice.getDetalle().size()));
+
+        // Guia de remision relacionada
+        if (invoice.getGuiaRemisionRelacionada() != null) {
+            GuiaRemisionRelacionadaBean guiaRemisionRelacionada = invoice.getGuiaRemisionRelacionada();
+            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceTypeGuiaRemisionRelacionada(guiaRemisionRelacionada.getGuiaRemision(), guiaRemisionRelacionada.getTipoGuiaRemision().getCode());
+            invoiceType.addDespatchDocumentReference(documentReferenceType);
+        }
+
+        // Otro documento relacionado
+        if (invoice.getOtroDocumentoRelacionado() != null) {
+            OtroDocumentoRelacionadoBean otroDocumentoRelacionado = invoice.getOtroDocumentoRelacionado();
+            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceTypeOtroDocumentoRelacionado(otroDocumentoRelacionado.getDocumentoRelacionado(), otroDocumentoRelacionado.getTipoDocumentoRelacionado().getCode());
+            invoiceType.addAdditionalDocumentReference(documentReferenceType);
+        }
 
         return invoiceType;
     }
@@ -131,18 +124,23 @@ public class Bean21ToType {
     public static CreditNoteType toCreditNoteType(CreditNote21Bean creditNote) {
         Set<ConstraintViolation<CreditNote21Bean>> violations = BeanUtils.validate(creditNote);
         if (!violations.isEmpty()) {
-            throw new CreditNote21BeanValidacionException("Invalid firmante", violations);
+            throw new CreditNote21BeanValidacionException("Invalid bean", violations);
         }
 
-        // Type
         oasis.names.specification.ubl.schema.xsd.creditnote_21.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.creditnote_21.ObjectFactory();
         oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType creditNoteType = factory.createCreditNoteType();
 
-        creditNoteType.setUBLVersionID(UBL21Utils.buildUBLVersionID(UBL_VERSION));
-        creditNoteType.setCustomizationID(UBL21Utils.buildCustomizationIDType(UBL_CUSTOMIZATION_ID));
+        // Version
+        creditNoteType.setUBLVersionID(new UBLVersionIDType(UBL_VERSION));
+        creditNoteType.setCustomizationID(new CustomizationIDType(UBL_CUSTOMIZATION_ID));
+
+        // Signature
+        if (creditNote.getFirmante() != null) {
+            creditNoteType.getSignature().add(buildSignatureType(creditNote.getFirmante()));
+        }
 
         // Serie y numero
-        IDType idType = UBL21Utils.buildIDType(MessageFormat.format("{0}-{1}", creditNote.getSerie(), creditNote.getNumero()));
+        IDType idType = new IDType(MessageFormat.format("{0}-{1}", creditNote.getSerie(), creditNote.getNumero()));
         creditNoteType.setID(idType);
 
         // Fecha y hora de emision
@@ -162,35 +160,6 @@ public class Bean21ToType {
         MonedaBean moneda = creditNote.getMoneda();
         creditNoteType.setDocumentCurrencyCode(UBL21Utils.buildDocumentCurrencyCodeType(moneda.getCodigo()));
 
-        // DiscrepancyResponseBean
-        if (creditNote.getDocumentoRelacionado() != null) {
-            creditNoteType.setDiscrepancyResponse(Arrays.asList(UBL21Utils.toBuildDiscrepancyResponse(creditNote.getDocumentoRelacionado().getReferenceID(), creditNote.getDocumentoRelacionado().getResponseCode().getCode(), creditNote.getDocumentoRelacionado().getDescription(), ReferenciaType.CREDIT_NOTE)));
-        }
-
-        // BillingReference -> DocumentReferenceBean
-        if (creditNote.getDocumentoModificado() != null) {
-            creditNoteType.setBillingReference(Arrays.asList(UBL21Utils.buildBillingReference(creditNote.getDocumentoModificado().getDocumentoRelacionado(), creditNote.getDocumentoModificado().getTipoDocumentoRelacionado().getCode(), ReferenciaType.CREDIT_NOTE)));
-        }
-
-        // Guia de remision relacionada
-        if (creditNote.getGuiaRemisionRelacionada() != null) {
-            GuiaRemisionRelacionadaBean guiaRemisionRelacionada = creditNote.getGuiaRemisionRelacionada();
-            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceType1(guiaRemisionRelacionada.getGuiaRemision(), guiaRemisionRelacionada.getTipoGuiaRemision().getCode());
-            creditNoteType.addDespatchDocumentReference(documentReferenceType);
-        }
-
-        // 13 otro documento relacionado
-        if (creditNote.getOtroDocumentoRelacionado() != null) {
-            OtroDocumentoRelacionadoBean otroDocumentoRelacionado = creditNote.getOtroDocumentoRelacionado();
-            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceType2(otroDocumentoRelacionado.getDocumentoRelacionado(), otroDocumentoRelacionado.getTipoDocumentoRelacionado().getCode());
-            creditNoteType.addAdditionalDocumentReference(documentReferenceType);
-        }
-
-        // Firma
-        if (creditNote.getFirmante() != null) {
-            creditNoteType.getSignature().add(buildSignatureType(creditNote.getFirmante()));
-        }
-
         // Proveedor
         Proveedor21Bean proveedor = creditNote.getProveedor();
         creditNoteType.setAccountingSupplierParty(buildSupplierPartyType(proveedor));
@@ -203,7 +172,7 @@ public class Bean21ToType {
         Total21Bean total = creditNote.getTotal();
         creditNoteType.setLegalMonetaryTotal(buildMonetaryTotalType(total, creditNote.getMoneda()));
 
-        // Total firmante IGV/ISC
+        // Total impuestos
         Impuestos21Bean impuestos = creditNote.getImpuestos();
         creditNoteType.getTaxTotal().addAll(buildTaxTotalType(impuestos, creditNote.getTotalInformacionAdicional(), creditNote.getMoneda()));
 
@@ -213,99 +182,131 @@ public class Bean21ToType {
             creditNoteType.getCreditNoteLine().add(buildCreditNoteLineType(i, moneda.getCodigo(), detalle));
             i++;
         }
-
         creditNoteType.setLineCountNumeric(BigDecimal.valueOf(creditNote.getDetalle().size()));
+
+        // Guia de remision relacionada
+        if (creditNote.getGuiaRemisionRelacionada() != null) {
+            GuiaRemisionRelacionadaBean guiaRemisionRelacionada = creditNote.getGuiaRemisionRelacionada();
+            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceTypeGuiaRemisionRelacionada(guiaRemisionRelacionada.getGuiaRemision(), guiaRemisionRelacionada.getTipoGuiaRemision().getCode());
+            creditNoteType.addDespatchDocumentReference(documentReferenceType);
+        }
+
+        // Otro documento relacionado
+        if (creditNote.getOtroDocumentoRelacionado() != null) {
+            OtroDocumentoRelacionadoBean otroDocumentoRelacionado = creditNote.getOtroDocumentoRelacionado();
+            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceTypeOtroDocumentoRelacionado(otroDocumentoRelacionado.getDocumentoRelacionado(), otroDocumentoRelacionado.getTipoDocumentoRelacionado().getCode());
+            creditNoteType.addAdditionalDocumentReference(documentReferenceType);
+        }
+
+
+        // DiscrepancyResponseBean
+        DocumentoAfectadoBean documentoAfectado = creditNote.getDocumentoAfectado();
+        String documentoAfectadoID = documentoAfectado.getSerie() + documentoAfectado.getNumero();
+        String motivoNota = creditNote.getMotivoNota();
+        Catalogo9 tipoNotaCredito = creditNote.getTipoNotaCredito();
+
+        ResponseCodeType responseCodeType = UBL21Utils.buildCreditNoteResponseCode(tipoNotaCredito.getCode());
+        ResponseType responseType = buildResponseType(documentoAfectadoID, motivoNota, responseCodeType);
+        creditNoteType.addDiscrepancyResponse(responseType);
+
+        // BillingReference
+        BillingReferenceType billingReferenceType = buildBillingReferenceType(documentoAfectado);
+        creditNoteType.addBillingReference(billingReferenceType);
 
         return creditNoteType;
     }
 
-    public static DebitNoteType toDebitNoteType(DebitNote21Bean bean) {
-        Set<ConstraintViolation<DebitNote21Bean>> violations = BeanUtils.validate(bean);
+    public static DebitNoteType toDebitNoteType(DebitNote21Bean debitNote) {
+        Set<ConstraintViolation<DebitNote21Bean>> violations = BeanUtils.validate(debitNote);
         if (!violations.isEmpty()) {
-            throw new DebitNote21BeanValidacionException("Invalid firmante", violations);
+            throw new DebitNote21BeanValidacionException("Invalid bean", violations);
         }
 
-        // Type
         oasis.names.specification.ubl.schema.xsd.debitnote_21.ObjectFactory factory = new oasis.names.specification.ubl.schema.xsd.debitnote_21.ObjectFactory();
         oasis.names.specification.ubl.schema.xsd.debitnote_21.DebitNoteType debitNoteType = factory.createDebitNoteType();
 
-        debitNoteType.setUBLVersionID(UBL21Utils.buildUBLVersionID(UBL_VERSION));
-        debitNoteType.setCustomizationID(UBL21Utils.buildCustomizationIDType(UBL_CUSTOMIZATION_ID));
+        // Type
+        debitNoteType.setUBLVersionID(new UBLVersionIDType(UBL_VERSION));
+        debitNoteType.setCustomizationID(new CustomizationIDType(UBL_CUSTOMIZATION_ID));
+
+        // Signature
+        if (debitNote.getFirmante() != null) {
+            debitNoteType.getSignature().add(buildSignatureType(debitNote.getFirmante()));
+        }
 
         // Serie y numero
-        IDType idType = UBL21Utils.buildIDType(MessageFormat.format("{0}-{1}", bean.getSerie(), bean.getNumero()));
+        IDType idType = new IDType(MessageFormat.format("{0}-{1}", debitNote.getSerie(), debitNote.getNumero()));
         debitNoteType.setID(idType);
 
         // Fecha y hora de emision
-        FechaBean fecha = bean.getFecha();
+        FechaBean fecha = debitNote.getFecha();
         debitNoteType.setIssueDate(DateUtils.toGregorianCalendar(fecha.getFechaEmision(), fecha.getTimeZone()));
         debitNoteType.setIssueTime(DateUtils.toGregorianCalendarTime(fecha.getFechaEmision(), fecha.getTimeZone()));
 
         // Leyendas
-        if (bean.getTotal().getPagarLetras() != null) {
-            debitNoteType.addNote(UBL21Utils.buildNoteType(bean.getTotal().getPagarLetras(), Catalogo52.MONTO_EXPRESADO_EN_LETRAS.getCode()));
+        if (debitNote.getTotal().getPagarLetras() != null) {
+            debitNoteType.addNote(UBL21Utils.buildNoteType(debitNote.getTotal().getPagarLetras(), Catalogo52.MONTO_EXPRESADO_EN_LETRAS.getCode()));
         }
-        if (bean.getCodigoGeneradoPorSoftware() != null) {
-            debitNoteType.addNote(UBL21Utils.buildNoteType(bean.getCodigoGeneradoPorSoftware(), Catalogo52.CODIGO_INTERNO_GENERADO_POR_EL_SOFTWARE_DE_FACTURACION.getCode()));
+        if (debitNote.getCodigoGeneradoPorSoftware() != null) {
+            debitNoteType.addNote(UBL21Utils.buildNoteType(debitNote.getCodigoGeneradoPorSoftware(), Catalogo52.CODIGO_INTERNO_GENERADO_POR_EL_SOFTWARE_DE_FACTURACION.getCode()));
         }
 
         // Moneda
-        MonedaBean moneda = bean.getMoneda();
+        MonedaBean moneda = debitNote.getMoneda();
         debitNoteType.setDocumentCurrencyCode(UBL21Utils.buildDocumentCurrencyCodeType(moneda.getCodigo()));
 
-        // DiscrepancyResponseBean
-        if (bean.getDocumentoRelacionado() != null) {
-            debitNoteType.setDiscrepancyResponse(Arrays.asList(UBL21Utils.toBuildDiscrepancyResponse(bean.getDocumentoRelacionado().getReferenceID(), bean.getDocumentoRelacionado().getResponseCode().getCode(), bean.getDocumentoRelacionado().getDescription(), ReferenciaType.DEBIT_NOTE)));
-        }
-
-        // BillingReference -> DocumentReferenceBean
-        if (bean.getDocumentoModificado() != null) {
-            debitNoteType.setBillingReference(Arrays.asList(UBL21Utils.buildBillingReference(bean.getDocumentoModificado().getDocumentoRelacionado(), bean.getDocumentoModificado().getTipoDocumentoRelacionado().getCode(), ReferenciaType.DEBIT_NOTE)));
-        }
-
-        // Guia de remision relacionada
-        if (bean.getGuiaRemisionRelacionada() != null) {
-            GuiaRemisionRelacionadaBean guiaRemisionRelacionada = bean.getGuiaRemisionRelacionada();
-            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceType1(guiaRemisionRelacionada.getGuiaRemision(), guiaRemisionRelacionada.getTipoGuiaRemision().getCode());
-            debitNoteType.addDespatchDocumentReference(documentReferenceType);
-        }
-
-        // 13 otro documento relacionado
-        if (bean.getOtroDocumentoRelacionado() != null) {
-            OtroDocumentoRelacionadoBean otroDocumentoRelacionado = bean.getOtroDocumentoRelacionado();
-            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceType2(otroDocumentoRelacionado.getDocumentoRelacionado(), otroDocumentoRelacionado.getTipoDocumentoRelacionado().getCode());
-            debitNoteType.addAdditionalDocumentReference(documentReferenceType);
-        }
-
-        // Firma
-        if (bean.getFirmante() != null) {
-            debitNoteType.getSignature().add(buildSignatureType(bean.getFirmante()));
-        }
-
         // Proveedor
-        Proveedor21Bean proveedor = bean.getProveedor();
+        Proveedor21Bean proveedor = debitNote.getProveedor();
         debitNoteType.setAccountingSupplierParty(buildSupplierPartyType(proveedor));
 
         // Cliente
-        ClienteBean cliente = bean.getCliente();
+        ClienteBean cliente = debitNote.getCliente();
         debitNoteType.setAccountingCustomerParty(buildCustomerPartyType(cliente));
 
         // Totales pagar/descuentos/otros cargos
-        Total21Bean total = bean.getTotal();
-        debitNoteType.setRequestedMonetaryTotal(buildMonetaryTotalType(total, bean.getMoneda()));
+        Total21Bean total = debitNote.getTotal();
+        debitNoteType.setRequestedMonetaryTotal(buildMonetaryTotalType(total, debitNote.getMoneda()));
 
-        // Total firmante IGV/ISC
-        Impuestos21Bean impuestos = bean.getImpuestos();
-        debitNoteType.getTaxTotal().addAll(buildTaxTotalType(impuestos, bean.getTotalInformacionAdicional(), bean.getMoneda()));
+        // Total impuestos
+        Impuestos21Bean impuestos = debitNote.getImpuestos();
+        debitNoteType.getTaxTotal().addAll(buildTaxTotalType(impuestos, debitNote.getTotalInformacionAdicional(), debitNote.getMoneda()));
 
         // Detalle
         int i = 1;
-        for (DetalleBean detalle : bean.getDetalle()) {
+        for (DetalleBean detalle : debitNote.getDetalle()) {
             debitNoteType.getDebitNoteLine().add(buildDebitNoteLineType(i, moneda.getCodigo(), detalle));
             i++;
         }
+        debitNoteType.setLineCountNumeric(BigDecimal.valueOf(debitNote.getDetalle().size()));
 
-        //  debitNoteType.setLineCountNumeric(BigDecimal.valueOf(bean.getDetalle().size()));
+        // Guia de remision relacionada
+        if (debitNote.getGuiaRemisionRelacionada() != null) {
+            GuiaRemisionRelacionadaBean guiaRemisionRelacionada = debitNote.getGuiaRemisionRelacionada();
+            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceTypeGuiaRemisionRelacionada(guiaRemisionRelacionada.getGuiaRemision(), guiaRemisionRelacionada.getTipoGuiaRemision().getCode());
+            debitNoteType.addDespatchDocumentReference(documentReferenceType);
+        }
+
+        // Otro documento relacionado
+        if (debitNote.getOtroDocumentoRelacionado() != null) {
+            OtroDocumentoRelacionadoBean otroDocumentoRelacionado = debitNote.getOtroDocumentoRelacionado();
+            DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReferenceTypeOtroDocumentoRelacionado(otroDocumentoRelacionado.getDocumentoRelacionado(), otroDocumentoRelacionado.getTipoDocumentoRelacionado().getCode());
+            debitNoteType.addAdditionalDocumentReference(documentReferenceType);
+        }
+
+
+        // DiscrepancyResponseBean
+        DocumentoAfectadoBean documentoAfectado = debitNote.getDocumentoAfectado();
+        String documentoAfectadoID = documentoAfectado.getSerie() + documentoAfectado.getNumero();
+        String motivoNota = debitNote.getMotivoNota();
+        Catalogo10 tipoNotaDebito = debitNote.getTipoNotaDebito();
+
+        ResponseCodeType responseCodeType = UBL21Utils.buildCreditNoteResponseCode(tipoNotaDebito.getCode());
+        ResponseType responseType = buildResponseType(documentoAfectadoID, motivoNota, responseCodeType);
+        debitNoteType.addDiscrepancyResponse(responseType);
+
+        // BillingReference
+        BillingReferenceType billingReferenceType = buildBillingReferenceType(documentoAfectado);
+        debitNoteType.addBillingReference(billingReferenceType);
 
         return debitNoteType;
     }
@@ -329,9 +330,9 @@ public class Bean21ToType {
 
         // Documento identidad
         String numeroDocumento = proveedor.getNumeroDocumento();
-        String codigoTipoDocumento = proveedor.getCodigoTipoDocumento();
+        Catalogo6 codigoTipoDocumento = proveedor.getCodigoTipoDocumento();
 
-        partyIdentificationType.setID(UBL21Utils.buildIDTypeCatalogo6(numeroDocumento, codigoTipoDocumento));
+        partyIdentificationType.setID(UBL21Utils.buildIDTypeCatalogo6(numeroDocumento, codigoTipoDocumento.getCode()));
 
         // Nombre comercial
         String nombreComercial = proveedor.getNombreComercial();
@@ -365,9 +366,9 @@ public class Bean21ToType {
 
         // Documento identidad
         String numeroDocumento = cliente.getNumeroDocumento();
-        String codigoTipoDocumento = cliente.getCodigoTipoDocumento();
+        Catalogo6 codigoTipoDocumento = cliente.getCodigoTipoDocumento();
 
-        partyIdentificationType.setID(UBL21Utils.buildIDTypeCatalogo6(numeroDocumento, codigoTipoDocumento));
+        partyIdentificationType.setID(UBL21Utils.buildIDTypeCatalogo6(numeroDocumento, codigoTipoDocumento.getCode()));
 
         // Razon social
         String razonSocial = cliente.getNombre();
@@ -452,7 +453,7 @@ public class Bean21ToType {
     private static InvoiceLineType buildInvoiceLineType(int index, String moneda, DetalleBean lineBean) {
         InvoiceLineType invoiceLineType = new InvoiceLineType();
 
-        invoiceLineType.setID(UBL21Utils.buildIDType(String.valueOf(index)));
+        invoiceLineType.setID(new IDType(String.valueOf(index)));
         invoiceLineType.setInvoicedQuantity(UBL21Utils.buildInvoicedQuantityType(lineBean.getUnidadMedida(), lineBean.getCantidad()));
         invoiceLineType.setLineExtensionAmount(UBL21Utils.buildLineExtensionAmountType(lineBean.getSubtotal(), moneda));
         invoiceLineType.setItem(UBL21Utils.buildItemType(lineBean.getDescripcion()));
@@ -471,7 +472,7 @@ public class Bean21ToType {
 
     private static DebitNoteLineType buildDebitNoteLineType(int index, String moneda, DetalleBean lineBean) {
         DebitNoteLineType debitNoteLineType = new DebitNoteLineType();
-        debitNoteLineType.setID(UBL21Utils.buildIDType(String.valueOf(index)));
+        debitNoteLineType.setID(new IDType(String.valueOf(index)));
         debitNoteLineType.setDebitedQuantity(UBL21Utils.buildDebitNoteQuantityType(lineBean.getUnidadMedida(), lineBean.getCantidad()));
         debitNoteLineType.setLineExtensionAmount(UBL21Utils.buildLineExtensionAmountType(lineBean.getSubtotal(), moneda));
         debitNoteLineType.setItem(UBL21Utils.buildItemType(lineBean.getDescripcion()));
@@ -491,7 +492,7 @@ public class Bean21ToType {
     private static CreditNoteLineType buildCreditNoteLineType(int index, String moneda, DetalleBean lineBean) {
         CreditNoteLineType creditNoteLineType = new CreditNoteLineType();
 
-        creditNoteLineType.setID(UBL21Utils.buildIDType(String.valueOf(index)));
+        creditNoteLineType.setID(new IDType(String.valueOf(index)));
         creditNoteLineType.setCreditedQuantity(UBL21Utils.buildCreditNoteQuantityType(lineBean.getUnidadMedida(), lineBean.getCantidad()));
         creditNoteLineType.setLineExtensionAmount(UBL21Utils.buildLineExtensionAmountType(lineBean.getSubtotal(), moneda));
         creditNoteLineType.setItem(UBL21Utils.buildItemType(lineBean.getDescripcion()));
@@ -566,27 +567,65 @@ public class Bean21ToType {
         return taxCategoryType;
     }
 
-    // Firma
+    // Signature
 
-    private static SignatureType buildSignatureType(FirmanteBean firmanteBean) {
+    private static SignatureType buildSignatureType(FirmanteBean firmante) {
         SignatureType signatureType = new SignatureType();
-
-        String signID = "IDSign_" + firmanteBean.getIdFirma().replaceAll("\\s", "");
-        signatureType.setID(UBL21Utils.buildIDType(signID));
-
-
         PartyType partyType = new PartyType();
-        partyType.getPartyName().add(UBL21Utils.buildPartyNameType(firmanteBean.getNombreEmpresa()));
-        partyType.getPartyIdentification().add(UBL21Utils.buildPartyIdentificationType(firmanteBean.getIdEmpresa()));
-
         signatureType.setSignatoryParty(partyType);
-
-        String URI = "#signature_" + firmanteBean.getNombreEmpresa().replaceAll("\\s", "");
         AttachmentType attachmentType = new AttachmentType();
-        attachmentType.setExternalReference(UBL21Utils.buildExternalReferenceType(URI));
         signatureType.setDigitalSignatureAttachment(attachmentType);
+
+        String signID = "IDSign_" + firmante.getIdFirma().replaceAll("\\s", "");
+        signatureType.setID(new IDType(signID));
+
+        partyType.getPartyName().add(UBL21Utils.buildPartyNameType(firmante.getNombreEmpresa()));
+        partyType.getPartyIdentification().add(UBL21Utils.buildPartyIdentificationType(firmante.getIdEmpresa()));
+
+        String URI = "#signature_" + firmante.getNombreEmpresa().replaceAll("\\s", "");
+        attachmentType.setExternalReference(UBL21Utils.buildExternalReferenceType(URI));
 
         return signatureType;
     }
 
+
+    // Discrepancy response
+
+    public static ResponseType buildResponseType(String referenceID, String description, ResponseCodeType responseCodeType) {
+        ResponseType responseType = new ResponseType();
+        responseType.setReferenceID(referenceID);
+        responseType.setResponseCode(responseCodeType);
+        responseType.addDescription(new DescriptionType(description));
+        return responseType;
+    }
+
+    // Billing reference
+
+    public static BillingReferenceType buildBillingReferenceType(DocumentoAfectadoBean documentoAfectado) {
+        BillingReferenceType billingReferenceType = new BillingReferenceType();
+
+        String ID = documentoAfectado.getSerie() + documentoAfectado.getNumero();
+        Catalogo1 tipoComprobante = documentoAfectado.getTipoComprobante();
+
+        DocumentReferenceType documentReferenceType = UBL21Utils.buildDocumentReference(ID, tipoComprobante.getCode());
+
+        switch (tipoComprobante) {
+            case BOLETA:
+                billingReferenceType.setInvoiceDocumentReference(documentReferenceType);
+                break;
+            case FACTURA:
+                billingReferenceType.setInvoiceDocumentReference(documentReferenceType);
+                break;
+            case NOTA_CREDITO:
+                billingReferenceType.setCreditNoteDocumentReference(documentReferenceType);
+                break;
+            case NOTA_DEBITO:
+                billingReferenceType.setDebitNoteDocumentReference(documentReferenceType);
+                break;
+            default:
+                throw new IllegalStateException("Invalid reference type");
+        }
+
+        return billingReferenceType;
+    }
 }

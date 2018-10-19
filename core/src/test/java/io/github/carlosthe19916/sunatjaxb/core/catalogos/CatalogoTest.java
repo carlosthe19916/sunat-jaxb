@@ -12,7 +12,7 @@ public class CatalogoTest {
         Catalogo1 value = Catalogo.valueOfCode(Catalogo1.class, "03");
         Assert.assertNotNull(value);
         Assert.assertEquals(Catalogo1.BOLETA, value);
-        
+
         value = Catalogo.valueOfCode(Catalogo1.class, "00");
         Assert.assertNull(value);
     }

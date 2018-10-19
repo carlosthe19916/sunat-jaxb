@@ -1,15 +1,13 @@
 package io.github.carlosthe19916.sunatjaxb.ubl21.beans;
 
-import io.github.carlosthe19916.sunatjaxb.beans.AbstractTotalBean;
+import io.github.carlosthe19916.sunatjaxb.core.beans.AbstractTotalBean;
 
 import java.math.BigDecimal;
 
 public class Total21Bean extends AbstractTotalBean {
 
     private BigDecimal anticipos;
-
     private BigDecimal extensionAmount;
-
     private BigDecimal inclusiveAmount;
 
     public BigDecimal getAnticipos() {

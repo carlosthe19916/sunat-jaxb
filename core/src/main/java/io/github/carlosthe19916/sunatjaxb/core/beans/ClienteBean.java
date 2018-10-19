@@ -1,18 +1,20 @@
 package io.github.carlosthe19916.sunatjaxb.core.beans;
 
+import io.github.carlosthe19916.sunatjaxb.core.catalogos.Catalogo6;
+
 public class ClienteBean {
 
-    private String codigoTipoDocumento;
+    private Catalogo6 codigoTipoDocumento;
     private String numeroDocumento;
     private String nombre;
     private String email;
     private String direccion;
 
-    public String getCodigoTipoDocumento() {
+    public Catalogo6 getCodigoTipoDocumento() {
         return codigoTipoDocumento;
     }
 
-    public void setCodigoTipoDocumento(String codigoTipoDocumento) {
+    public void setCodigoTipoDocumento(Catalogo6 codigoTipoDocumento) {
         this.codigoTipoDocumento = codigoTipoDocumento;
     }
 

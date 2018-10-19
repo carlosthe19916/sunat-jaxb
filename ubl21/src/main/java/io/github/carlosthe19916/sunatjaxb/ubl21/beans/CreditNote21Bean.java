@@ -1,14 +1,16 @@
 package io.github.carlosthe19916.sunatjaxb.ubl21.beans;
 
-import io.github.carlosthe19916.sunatjaxb.beans.AbstractNoteBean;
-import io.github.carlosthe19916.sunatjaxb.beans.ClienteBean;
-import io.github.carlosthe19916.sunatjaxb.beans.CreditNoteDiscrepancyResponseBean;
-import io.github.carlosthe19916.sunatjaxb.beans.DocumentReferenceBean;
+import io.github.carlosthe19916.sunatjaxb.core.beans.AbstractNoteBean;
+import io.github.carlosthe19916.sunatjaxb.core.beans.ClienteBean;
+import io.github.carlosthe19916.sunatjaxb.core.catalogos.Catalogo9;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 public class CreditNote21Bean extends AbstractNoteBean {
+
+    @NotNull
+    private Catalogo9 tipoNotaCredito;
 
     @Valid
     @NotNull
@@ -21,14 +23,6 @@ public class CreditNote21Bean extends AbstractNoteBean {
     @Valid
     @NotNull
     private ClienteBean cliente;
-
-    @Valid
-    @NotNull
-    private CreditNoteDiscrepancyResponseBean documentoRelacionado;
-
-    @Valid
-    @NotNull
-    private DocumentReferenceBean documentoModificado;
 
     @Valid
     @NotNull
@@ -50,22 +44,6 @@ public class CreditNote21Bean extends AbstractNoteBean {
         this.total = total;
     }
 
-    public CreditNoteDiscrepancyResponseBean getDocumentoRelacionado() {
-        return documentoRelacionado;
-    }
-
-    public void setDocumentoRelacionado(CreditNoteDiscrepancyResponseBean documentoRelacionado) {
-        this.documentoRelacionado = documentoRelacionado;
-    }
-
-    public DocumentReferenceBean getDocumentoModificado() {
-        return documentoModificado;
-    }
-
-    public void setDocumentoModificado(DocumentReferenceBean documentoModificado) {
-        this.documentoModificado = documentoModificado;
-    }
-
     public ClienteBean getCliente() {
         return cliente;
     }
@@ -80,5 +58,13 @@ public class CreditNote21Bean extends AbstractNoteBean {
 
     public void setImpuestos(Impuestos21Bean impuestos) {
         this.impuestos = impuestos;
+    }
+
+    public Catalogo9 getTipoNotaCredito() {
+        return tipoNotaCredito;
+    }
+
+    public void setTipoNotaCredito(Catalogo9 tipoNotaCredito) {
+        this.tipoNotaCredito = tipoNotaCredito;
     }
 }

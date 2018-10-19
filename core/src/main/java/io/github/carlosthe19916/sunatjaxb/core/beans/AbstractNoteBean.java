@@ -37,9 +37,10 @@ public abstract class AbstractNoteBean {
     @NotNull
     private TotalInformacionAdicionalBean totalInformacionAdicional;
 
+    @Valid
     @Size(min = 1)
     @NotNull
-    private List<@Valid DetalleBean> detalle;
+    private List<DetalleBean> detalle;
 
     private String codigoGeneradoPorSoftware;
 

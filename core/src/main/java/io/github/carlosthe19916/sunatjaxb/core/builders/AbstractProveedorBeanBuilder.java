@@ -1,6 +1,7 @@
 package io.github.carlosthe19916.sunatjaxb.core.builders;
 
 import io.github.carlosthe19916.sunatjaxb.core.beans.AbstractProveedorBean;
+import io.github.carlosthe19916.sunatjaxb.core.catalogos.Catalogo6;
 
 public abstract class AbstractProveedorBeanBuilder<Builder extends AbstractProveedorBeanBuilder, Bean extends AbstractProveedorBean> {
 
@@ -12,7 +13,7 @@ public abstract class AbstractProveedorBeanBuilder<Builder extends AbstractProve
 
     protected abstract Builder getProveedorBuilder();
 
-    public Builder codigoTipoDocumento(String codigoTipoDocumento) {
+    public Builder codigoTipoDocumento(Catalogo6 codigoTipoDocumento) {
         proveedor.setCodigoTipoDocumento(codigoTipoDocumento);
         return getProveedorBuilder();
     }
