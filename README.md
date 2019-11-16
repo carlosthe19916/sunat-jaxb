@@ -2,6 +2,9 @@
 [![Coverage Status](https://coveralls.io/repos/github/carlosthe19916/sunat-jaxb/badge.svg?branch=master)](https://coveralls.io/github/carlosthe19916/sunat-jaxb?branch=master)
 [![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=sunat-jaxb&metric=alert_status)](https://sonarcloud.io/dashboard?id=sunat-jaxb)
 
+# Project OpenUBL
+**Este proyecto sentó las bases para el proyecto https://github.com/project-openubl/xml-builder. Este repositorio será, de hoy en adelante, de solo lectura. Vease xml-builder como la segunda generacion de creador de XMLs para la facturacion electronica. https://github.com/project-openubl/xml-builder**
+
 # sunat-jaxb
 Libreria que permite la creación de comprobantes de pago electrónicos de acuerdo al estadar UBL 2.
 
